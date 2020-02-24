@@ -3,7 +3,7 @@
     <el-header class="el-header" style="height: 80px">
       <IndexHeader style="width: 100%"></IndexHeader>
     </el-header>
-    <el-header class="el-banner" style="height: 250px">
+    <el-header class="el-banner" style="height: 350px">
       <IndexBanner></IndexBanner>
     </el-header>
     <el-container style=" margin: 100px 50px 0 50px">
@@ -18,21 +18,6 @@
       <CommonFooter></CommonFooter>
     </el-footer>
   </el-container>
-<!--    <div class="container">-->
-<!--      <el-row style="height: 80px">-->
-<!--        <IndexHeader style="position: absolute;width: 100%;"></IndexHeader>-->
-<!--      </el-row>-->
-<!--      <el-row style="height: 250px">-->
-<!--        <IndexBanner style="position: absolute;width: 100%;"></IndexBanner>-->
-<!--      </el-row>-->
-<!--      <el-row style="height: 400px">-->
-<!--        <IndexBody style="position: absolute;width: 100%;"></IndexBody>-->
-<!--      </el-row>-->
-<!--      <el-row>-->
-<!--        <CommonFooter style="position: absolute;width: 100%;"></CommonFooter>-->
-<!--      </el-row>-->
-<!--      <router-view/>-->
-<!--    </div>-->
 </template>
 
 <script>

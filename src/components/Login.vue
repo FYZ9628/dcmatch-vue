@@ -18,6 +18,7 @@
       <el-button type="primary" style="width: 100%;background: #505458;
       border: none" @click.native.prevent="login" :loading="logining">登录</el-button>
     </el-form-item>
+    <el-link href="http://localhost:8081/register" style="font-size: 10px; color: #409EFF">注 册</el-link>
   </el-form>
   </body>
 </template>
@@ -72,6 +73,12 @@ export default {
                 path = this.$route.query.redirect
 
                 this.$router.replace({path: path === '/' || path === undefined ? '/student' : path})
+              } else if (successResponse.data.code === 500) { // 跳转到学生
+                this.$store.commit('login', successResponse.data)
+                // _this.$store.commit('login', _this.loginForm)
+                path = this.$route.query.redirect
+
+                this.$router.replace({path: path === '/' || path === undefined ? '/default' : path})
               } else {
                 _this.$message({
                   message: '账号或密码错误',

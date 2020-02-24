@@ -1,14 +1,33 @@
 <template>
-  <el-carousel height="250px">
-    <el-carousel-item v-for="item in 4" :key="item">
-      <h3 class="small">{{ item }}</h3>
+  <el-carousel height="350px" indicator-position="outside" arrow="always">
+    <el-carousel-item v-for="item in bannerImg" :key="item">
+      <img :src="item.src">
+<!--      <h3 class="small">{{ item.name }}</h3>-->
     </el-carousel-item>
   </el-carousel>
 </template>
 
 <script>
 export default {
-  name: 'IndexBanner'
+  name: 'IndexBanner',
+  data: function () {
+    return {
+      bannerImg: []
+    }
+  },
+  mounted: function () {
+    this.loadBannerImg()
+  },
+  methods: {
+    loadBannerImg () {
+      let _this = this
+      this.$axios.get('/getAllBanner').then(resp => {
+        if (resp && resp.status === 200) {
+          _this.bannerImg = resp.data
+        }
+      })
+    }
+  }
 }
 </script>
 
