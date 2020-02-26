@@ -14,8 +14,13 @@ import test9 from '@/components/admin/home/test9'
 import test10 from '@/components/admin/home/test10'
 import test11 from '@/components/admin/home/test11'
 import AdminSetting from '@/components/admin/setting/AdminSetting'
-import NoticeList from '@/components/index/NoticeList'
-import NoticeDetails from '@/components/index/NoticeDetails'
+import NoticeList from '@/components/index/notice/NoticeList'
+import NoticeDetails from '@/components/index/notice/NoticeDetails'
+import ContestList from '@/components/index/contest/ContestList'
+import ContestDetails from '@/components/index/contest/ContestDetails'
+import AllContest from '@/components/index/contest/AllContest'
+import IndividualContest from '@/components/index/contest/IndividualContest'
+import TeamContest from '@/components/index/contest/TeamContest'
 import Register from '@/components/Register'
 
 Vue.use(Router)
@@ -58,6 +63,34 @@ export default new Router({
       path: '/index/noticeDetails',
       name: 'NoticeDetails',
       component: NoticeDetails
+    },
+    {
+      path: '/index/contestList',
+      name: 'ContestList',
+      component: ContestList,
+      redirect: '/index/contestList/allContest',
+      children: [
+        {
+          path: '/index/contestList/allContest',
+          name: 'AllContest',
+          component: AllContest
+        },
+        {
+          path: '/index/contestList/individualContest',
+          name: 'IndividualContest',
+          component: IndividualContest
+        },
+        {
+          path: '/index/contestList/teamContest',
+          name: 'TeamContest',
+          component: TeamContest
+        }
+      ]
+    },
+    {
+      path: '/index/contestDetails',
+      name: 'ContestDetails',
+      component: ContestDetails
     },
     {
       path: '/default',

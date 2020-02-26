@@ -3,12 +3,9 @@
     <el-header class="el-header" style="height: 80px">
       <IndexHeader></IndexHeader>
     </el-header>
-    <el-main>
-      <h3>main</h3>
-      <h3>main</h3>
-      <h3>main</h3>
-      <h3>main</h3>
-      <h3>main</h3>
+    <el-main style="padding: 0; margin: 0">
+      <ContestMenu></ContestMenu>
+      <router-view/>
     </el-main>
     <el-footer class="el-footer">
       <CommonFooter></CommonFooter>
@@ -19,9 +16,10 @@
 <script>
 import IndexHeader from '@/components/index/IndexHeader'
 import CommonFooter from '@/components/common/CommonFooter'
+import ContestMenu from '@/components/index/contest/ContestMenu'
 export default {
-  name: 'NoticeDetails',
-  components: {IndexHeader, CommonFooter}
+  name: 'ContestList',
+  components: {ContestMenu, IndexHeader, CommonFooter}
 }
 </script>
 
@@ -39,6 +37,6 @@ export default {
   }
   .el-footer {
     padding: 0;
-    margin: 100px 0 0 0;
+    margin: 10px 0 0 0;
   }
 </style>

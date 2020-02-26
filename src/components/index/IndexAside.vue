@@ -5,13 +5,13 @@
       <a href="http://localhost:8081/index/noticeList" target="_blank">MORE>></a>
     </div>
     <div style="margin-top: 18px">
-      <div v-for="item in tempNotice"
+      <div v-for="item in tempContestDetail"
            :key="item.value" class="content">
         <div class="content_title">
-          <el-link :underline="false" style="display: block" :href="item.link" target="_blank">
+          <el-link :underline="false" style="display: block" v-on:click="gotoNoticeDetail(item)" target="_blank">
             <i class="el-icon-caret-right"></i>
-            <p class="content_title_text">{{item.title +"    "}}</p>
-            <p class="content_title_time">{{item.time }}</p>
+            <p class="content_title_text">{{item.contestTitle +"    "}}</p>
+            <p class="content_title_time">{{item.publishTime }}</p>
           </el-link>
         </div>
       </div>
@@ -25,11 +25,14 @@ export default {
   data: function () {
     return {
       notice: [],
-      tempNotice: []
+      tempNotice: [],
+      contestDetail: [],
+      tempContestDetail: []
     }
   },
   mounted: function () {
     this.loadNotice()
+    this.loadContestDetail()
   },
   methods: {
     loadNotice () {
@@ -56,6 +59,62 @@ export default {
           }
         }
       })
+    },
+    loadContestDetail () {
+      let _this = this
+      this.$axios.get('/getAllContestDetail').then(resp => {
+        if (resp && resp.status === 200) {
+          _this.contestDetail = resp.data
+          if (_this.contestDetail.length >= 7) {
+            for (let i = 0; i < 7; ++i) {
+              let tempContestDetail = {
+                id: '',
+                contestTitle: '',
+                organizerId: '',
+                contestContent: '',
+                startTime: '',
+                endTime: '',
+                publishTime: '',
+                link: ''
+              }
+              tempContestDetail.id = _this.contestDetail[i].id
+              tempContestDetail.contestTitle = _this.contestDetail[i].contestTitle
+              tempContestDetail.organizerId = _this.contestDetail[i].organizerId
+              tempContestDetail.contestContent = _this.contestDetail[i].contestContent
+              tempContestDetail.startTime = _this.contestDetail[i].startTime
+              tempContestDetail.endTime = _this.contestDetail[i].endTime
+              tempContestDetail.publishTime = _this.contestDetail[i].publishTime
+              tempContestDetail.link = _this.contestDetail[i].link
+              _this.tempContestDetail.push(tempContestDetail)
+            }
+            console.log(_this.tempContestDetail)
+          } else {
+            _this.tempContestDetail = _this.contestDetail
+            console.log(_this.tempContestDetail)
+          }
+        }
+      })
+    },
+    gotoNoticeDetail: function (contestDetail) {
+      let contestDetailJson = JSON.stringify(contestDetail)
+      // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
+      // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
+      sessionStorage.setItem('contestDetailJson', contestDetailJson)
+      // 点击后新开一个窗口
+      window.open(
+        this.$router.resolve({
+          path: '/index/noticeDetails'
+        }).href, '_blank'
+        // 打开新窗口：_blank
+        // 在本地窗口打开：_self
+      )
+      // this.$router.push({
+      //   path: '/index/noticeDetails'
+      //   // name: 'noticeDetails/'
+      //   // query: {
+      //   //   data: contestDetailJson
+      //   // }
+      // })
     }
   }
 }

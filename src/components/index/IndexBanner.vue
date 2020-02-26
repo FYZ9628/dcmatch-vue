@@ -1,6 +1,6 @@
 <template>
   <el-carousel height="350px" indicator-position="outside" arrow="always">
-    <el-carousel-item v-for="item in bannerImg" :key="item">
+    <el-carousel-item v-for="item in bannerImg" :key="item.value">
       <img :src="item.src">
 <!--      <h3 class="small">{{ item.name }}</h3>-->
     </el-carousel-item>
