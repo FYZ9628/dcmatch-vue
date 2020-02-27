@@ -3,7 +3,7 @@
     <el-header class="el-header" style="padding-left: 50px">
       <el-input
         @keyup.enter.native="searchClick"
-        placeholder="通过姓名或ID搜索..."
+        placeholder="通过竞赛名称或发布方搜索..."
         prefix-icon="el-icon-search"
         size="medium"
         style="width: 400px;margin-right: 10px; margin-top: 20px"
@@ -12,7 +12,7 @@
       <el-button size="medium" type="primary" icon="el-icon-search" style="background-color: #545c64"
                  @click="searchClick">搜 索</el-button>
     </el-header>
-    <el-main style="margin: 0 30px">
+    <el-main style="margin: 0 50px">
       <el-container  v-for="(item, index) in currentPageData"
                      :key="item.value">
         <el-container>
@@ -25,12 +25,14 @@
               <p style="line-height: 7px; font-size: 12px; display: block; float: right">{{currentPageData[index].organizer.user.name}}</p>
             </el-container>
           </el-header>
-          <el-main style="text-align: left">
-            <p style="font-size: 16px">内容方发几个发送到发送发送到发送分割阿斯顿发顺丰我刚刚撒地方阿士内容方发几个发送到发送发送到发送分割阿斯顿发顺丰我刚刚撒地方阿士大内容方发几个发送到发送发送到发送分割阿斯顿发顺丰我刚刚撒地方阿士大大夫撒地方哈地方</p>
+          <el-main style="text-align: left; padding: 0">
+            <p style="font-size: 16px; max-height: 105px; overflow: hidden; text-overflow:ellipsis;">{{currentPageData[index].contestContent}}</p>
           </el-main>
-          <el-footer>
-            <p style="font-size: 12px; color: #a0a0a0;; display: block; float: left">{{currentPageData[index].publishTime}}</p>
-            <el-button type="text" style="display: block; float: right; color: #409EFF; line-height: 30px; font-size: 12px;" v-on:click="gotoDetail(item)">阅读全文</el-button>
+          <el-footer style="padding: 0; margin: 0">
+            <p style="font-size: 12px; color: #a0a0a0;; display: block; float: left">发布时间：{{currentPageData[index].publishTime}}</p>
+            <p style="font-size: 12px; color: #5c5c5c;; display: block; float: left; margin-left: 50px">报名开始时间：{{currentPageData[index].startTime}}</p>
+            <p style="font-size: 12px; color: #5c5c5c;; display: block; float: left; margin-left: 50px">报名截止时间：{{currentPageData[index].endTime}}</p>
+            <el-button type="text" style="display: block; float: right; color: #409EFF; line-height: 30px; font-size: 12px;" v-on:click="gotoCompetitionDetail(item)">详 情</el-button>
           </el-footer>
           <el-divider></el-divider>
         </el-container>
@@ -62,7 +64,9 @@ export default {
       currentTotal: 0,
       noticeData: [],
       contestDetailData: [],
-      currentPageData: []
+      currentPageData: [],
+      keywords: '',
+      searchResult: []
     }
   },
   mounted: function () {
@@ -79,7 +83,7 @@ export default {
           let currentNum1 = this.pageSize * (this.currentPage - 1)
           let endNum = currentNum1 + this.pageSize
           for (let currentNum = 0; currentNum < endNum; currentNum++) {
-            if (currentNum < this.contestDetailData.length - 1) {
+            if (currentNum <= this.contestDetailData.length - 1) {
               let tempContestDetail = {
                 id: '',
                 contestTitle: '',
@@ -236,21 +240,29 @@ export default {
         // name: 'noticeDetails/'
         // query: {
         //   data: contestDetailJson
+        // // 以加问号接续的方式显示内容
+        // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
         // }
       })
     },
     // 查询
     searchClick () {
       let _this = this
-      // this.$axios
-      //   .post('/searchStudent', {
-      //     keywords: this.keywords
-      //   }).then(resp => {
-      //     if (resp && resp.status === 200) {
-      //       _this.searchResult = resp.data
-      //       _this.students = _this.searchResult
-      //     }
-      //   })
+      this.$axios
+        .post('/searchContestDetail', {
+          keywords: this.keywords
+        }).then(resp => {
+          if (resp && resp.status === 200) {
+            console.log('测试')
+            console.log('测试')
+            console.log('测试')
+            _this.searchResult = resp.data
+            _this.contestDetailData = _this.searchResult
+            console.log(resp.data)
+            _this.handleCurrentChange(1)
+            _this.currentTotal = _this.contestDetailData.length
+          }
+        })
     }
   }
 }
@@ -258,7 +270,8 @@ export default {
 
 <style scoped>
   .container{
-    height: 100%;
+    /*height: 100%;*/
+    min-height: 300px;
     width: 100%;
     margin: 0;
     padding: 0;

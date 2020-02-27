@@ -5,11 +5,11 @@
     </el-header>
     <el-main style="margin: 0 30px">
       <el-container  v-for="(item, index) in currentPageData"
-                     :key="item.value">
+                     :key="item.value" style="min-height: 300px">
         <el-container>
           {{ currentPage - 1 > 0 ? ((currentPage - 1) * pageSize + index) : index }}
           <el-header>
-            <el-button type="text" style="display: block; float: left; font-size: 18px" v-on:click="gotoNoticeDetail(item)">{{currentPageData[index].contestTitle}}</el-button>
+            <el-button type="text" style="display: block; float: left; font-size: 18px" v-on:click="gotoNoticeDetail(item)">{{currentPageData[index].title}}</el-button>
 <!--            <el-link :underline="false" style="display: block; float: left; font-size: 18px" :href="item.link" target="_blank">{{currentPageData[index].contestTitle}}</el-link>-->
             <el-container style="line-height: 30px; font-size: 12px; display: block; float: right">
               <i class="el-icon-s-custom"></i>
@@ -17,11 +17,11 @@
             </el-container>
           </el-header>
           <el-main style="text-align: left">
-            <p style="font-size: 16px">内容方发几个发送到发送发送到发送分割阿斯顿发顺丰我刚刚撒地方阿士内容方发几个发送到发送发送到发送分割阿斯顿发顺丰我刚刚撒地方阿士大内容方发几个发送到发送发送到发送分割阿斯顿发顺丰我刚刚撒地方阿士大大夫撒地方哈地方</p>
+            <p style="font-size: 16px; max-height: 105px; overflow: hidden; text-overflow:ellipsis;">{{currentPageData[index].content}}</p>
           </el-main>
-          <el-footer>
-            <p style="font-size: 12px; color: #a0a0a0;; display: block; float: left">{{currentPageData[index].publishTime}}</p>
-            <el-button type="text" style="display: block; float: right; color: #409EFF; line-height: 30px; font-size: 12px;" v-on:click="gotoDetail(item)">阅读全文</el-button>
+          <el-footer style="padding: 0; margin: 0">
+            <p style="font-size: 12px; color: #a0a0a0;; display: block; float: left">{{currentPageData[index].time}}</p>
+            <el-button type="text" style="display: block; float: right; color: #409EFF; line-height: 30px; font-size: 12px;" v-on:click="gotoNoticeDetail(item)">阅读全文</el-button>
           </el-footer>
           <el-divider></el-divider>
         </el-container>
@@ -61,23 +61,25 @@ export default {
     }
   },
   mounted: function () {
-    // this.loadNotice()
-    this.loadContestDetail()
+    this.loadNotice()
+    // this.loadContestDetail()
   },
   methods: {
-    loadContestDetail () {
+    loadNotice () {
       let _this = this
-      this.$axios.get('/getAllContestDetail').then(resp => {
+      this.$axios.get('/getAllNotice').then(resp => {
         if (resp && resp.status === 200) {
-          _this.contestDetailData = resp.data
-          _this.currentTotal = _this.contestDetailData.length
+          _this.noticeData = resp.data
+          _this.currentTotal = _this.noticeData.length
+          console.log(_this.noticeData)
           let currentNum1 = this.pageSize * (this.currentPage - 1)
           let endNum = currentNum1 + this.pageSize
           for (let currentNum = 0; currentNum < endNum; currentNum++) {
-            if (currentNum < this.contestDetailData.length - 1) {
-              let tempContestDetail = {
+            if (currentNum <= this.noticeData.length - 1) {
+              let tempNotice = {
                 id: '',
-                contestTitle: '',
+                title: '',
+                time: '',
                 organizer: {
                   id: '',
                   user: {
@@ -91,29 +93,22 @@ export default {
                   phone: '',
                   name: ''
                 },
-                contestContent: '',
-                startTime: '',
-                endTime: '',
-                publishTime: '',
-                link: ''
+                content: ''
               }
-              tempContestDetail.id = _this.contestDetailData[currentNum].id
-              tempContestDetail.contestTitle = _this.contestDetailData[currentNum].contestTitle
-              tempContestDetail.organizer.id = _this.contestDetailData[currentNum].organizer.id
-              tempContestDetail.organizer.phone = _this.contestDetailData[currentNum].organizer.phone
-              tempContestDetail.organizer.name = _this.contestDetailData[currentNum].organizer.name
-              tempContestDetail.organizer.user.id = _this.contestDetailData[currentNum].organizer.user.id
-              tempContestDetail.organizer.user.account = _this.contestDetailData[currentNum].organizer.user.account
-              tempContestDetail.organizer.user.phone = _this.contestDetailData[currentNum].organizer.user.phone
-              tempContestDetail.organizer.user.password = _this.contestDetailData[currentNum].organizer.user.password
-              tempContestDetail.organizer.user.name = _this.contestDetailData[currentNum].organizer.user.name
-              tempContestDetail.organizer.user.type = _this.contestDetailData[currentNum].organizer.user.type
-              tempContestDetail.contestContent = _this.contestDetailData[currentNum].contestContent
-              tempContestDetail.startTime = _this.contestDetailData[currentNum].startTime
-              tempContestDetail.endTime = _this.contestDetailData[currentNum].endTime
-              tempContestDetail.publishTime = _this.contestDetailData[currentNum].publishTime
-              tempContestDetail.link = _this.contestDetailData[currentNum].link
-              this.currentPageData.push(tempContestDetail)
+              tempNotice.id = _this.noticeData[currentNum].id
+              tempNotice.title = _this.noticeData[currentNum].title
+              tempNotice.time = _this.noticeData[currentNum].time
+              tempNotice.organizer.id = _this.noticeData[currentNum].organizer.id
+              tempNotice.organizer.phone = _this.noticeData[currentNum].organizer.phone
+              tempNotice.organizer.name = _this.noticeData[currentNum].organizer.name
+              tempNotice.organizer.user.id = _this.noticeData[currentNum].organizer.user.id
+              tempNotice.organizer.user.account = _this.noticeData[currentNum].organizer.user.account
+              tempNotice.organizer.user.phone = _this.noticeData[currentNum].organizer.user.phone
+              tempNotice.organizer.user.password = _this.noticeData[currentNum].organizer.user.password
+              tempNotice.organizer.user.name = _this.noticeData[currentNum].organizer.user.name
+              tempNotice.organizer.user.type = _this.noticeData[currentNum].organizer.user.type
+              tempNotice.content = this.noticeData[currentNum].content
+              this.currentPageData.push(tempNotice)
             }
           }
         }
@@ -127,10 +122,11 @@ export default {
       let endNum = currentNum1 + this.pageSize
       this.currentPageData = []
       for (let currentNum = currentNum1; currentNum < endNum; currentNum++) {
-        if (currentNum < this.contestDetailData.length) {
-          let tempContestDetail = {
+        if (currentNum < this.noticeData.length) {
+          let tempNotice = {
             id: '',
-            contestTitle: '',
+            title: '',
+            time: '',
             organizer: {
               id: '',
               user: {
@@ -144,29 +140,22 @@ export default {
               phone: '',
               name: ''
             },
-            contestContent: '',
-            startTime: '',
-            endTime: '',
-            publishTime: '',
-            link: ''
+            content: ''
           }
-          tempContestDetail.id = _this.contestDetailData[currentNum].id
-          tempContestDetail.contestTitle = _this.contestDetailData[currentNum].contestTitle
-          tempContestDetail.organizer.id = _this.contestDetailData[currentNum].organizer.id
-          tempContestDetail.organizer.phone = _this.contestDetailData[currentNum].organizer.phone
-          tempContestDetail.organizer.name = _this.contestDetailData[currentNum].organizer.name
-          tempContestDetail.organizer.user.id = _this.contestDetailData[currentNum].organizer.user.id
-          tempContestDetail.organizer.user.account = _this.contestDetailData[currentNum].organizer.user.account
-          tempContestDetail.organizer.user.phone = _this.contestDetailData[currentNum].organizer.user.phone
-          tempContestDetail.organizer.user.password = _this.contestDetailData[currentNum].organizer.user.password
-          tempContestDetail.organizer.user.name = _this.contestDetailData[currentNum].organizer.user.name
-          tempContestDetail.organizer.user.type = _this.contestDetailData[currentNum].organizer.user.type
-          tempContestDetail.contestContent = _this.contestDetailData[currentNum].contestContent
-          tempContestDetail.startTime = _this.contestDetailData[currentNum].startTime
-          tempContestDetail.endTime = _this.contestDetailData[currentNum].endTime
-          tempContestDetail.publishTime = _this.contestDetailData[currentNum].publishTime
-          tempContestDetail.link = _this.contestDetailData[currentNum].link
-          this.currentPageData.push(tempContestDetail)
+          tempNotice.id = _this.noticeData[currentNum].id
+          tempNotice.title = _this.noticeData[currentNum].title
+          tempNotice.time = _this.noticeData[currentNum].time
+          tempNotice.organizer.id = _this.noticeData[currentNum].organizer.id
+          tempNotice.organizer.phone = _this.noticeData[currentNum].organizer.phone
+          tempNotice.organizer.name = _this.noticeData[currentNum].organizer.name
+          tempNotice.organizer.user.id = _this.noticeData[currentNum].organizer.user.id
+          tempNotice.organizer.user.account = _this.noticeData[currentNum].organizer.user.account
+          tempNotice.organizer.user.phone = _this.noticeData[currentNum].organizer.user.phone
+          tempNotice.organizer.user.password = _this.noticeData[currentNum].organizer.user.password
+          tempNotice.organizer.user.name = _this.noticeData[currentNum].organizer.user.name
+          tempNotice.organizer.user.type = _this.noticeData[currentNum].organizer.user.type
+          tempNotice.content = this.noticeData[currentNum].content
+          this.currentPageData.push(tempNotice)
         }
       }
     },
@@ -178,10 +167,11 @@ export default {
       let endNum = currentNum1 + this.pageSize
       this.currentPageData = []
       for (let currentNum = currentNum1; currentNum < endNum; currentNum++) {
-        if (currentNum < this.contestDetailData.length) {
-          let tempContestDetail = {
+        if (currentNum < this.noticeData.length) {
+          let tempNotice = {
             id: '',
-            contestTitle: '',
+            title: '',
+            time: '',
             organizer: {
               id: '',
               user: {
@@ -195,116 +185,196 @@ export default {
               phone: '',
               name: ''
             },
-            contestContent: '',
-            startTime: '',
-            endTime: '',
-            publishTime: '',
-            link: ''
+            content: ''
           }
-          tempContestDetail.id = _this.contestDetailData[currentNum].id
-          tempContestDetail.contestTitle = _this.contestDetailData[currentNum].contestTitle
-          tempContestDetail.organizer.id = _this.contestDetailData[currentNum].organizer.id
-          tempContestDetail.organizer.phone = _this.contestDetailData[currentNum].organizer.phone
-          tempContestDetail.organizer.name = _this.contestDetailData[currentNum].organizer.name
-          tempContestDetail.organizer.user.id = _this.contestDetailData[currentNum].organizer.user.id
-          tempContestDetail.organizer.user.account = _this.contestDetailData[currentNum].organizer.user.account
-          tempContestDetail.organizer.user.phone = _this.contestDetailData[currentNum].organizer.user.phone
-          tempContestDetail.organizer.user.password = _this.contestDetailData[currentNum].organizer.user.password
-          tempContestDetail.organizer.user.name = _this.contestDetailData[currentNum].organizer.user.name
-          tempContestDetail.organizer.user.type = _this.contestDetailData[currentNum].organizer.user.type
-          tempContestDetail.contestContent = _this.contestDetailData[currentNum].contestContent
-          tempContestDetail.startTime = _this.contestDetailData[currentNum].startTime
-          tempContestDetail.endTime = _this.contestDetailData[currentNum].endTime
-          tempContestDetail.publishTime = _this.contestDetailData[currentNum].publishTime
-          tempContestDetail.link = _this.contestDetailData[currentNum].link
-          this.currentPageData.push(tempContestDetail)
+          tempNotice.id = _this.noticeData[currentNum].id
+          tempNotice.title = _this.noticeData[currentNum].title
+          tempNotice.time = _this.noticeData[currentNum].time
+          tempNotice.organizer.id = _this.noticeData[currentNum].organizer.id
+          tempNotice.organizer.phone = _this.noticeData[currentNum].organizer.phone
+          tempNotice.organizer.name = _this.noticeData[currentNum].organizer.name
+          tempNotice.organizer.user.id = _this.noticeData[currentNum].organizer.user.id
+          tempNotice.organizer.user.account = _this.noticeData[currentNum].organizer.user.account
+          tempNotice.organizer.user.phone = _this.noticeData[currentNum].organizer.user.phone
+          tempNotice.organizer.user.password = _this.noticeData[currentNum].organizer.user.password
+          tempNotice.organizer.user.name = _this.noticeData[currentNum].organizer.user.name
+          tempNotice.organizer.user.type = _this.noticeData[currentNum].organizer.user.type
+          tempNotice.content = this.noticeData[currentNum].content
+          this.currentPageData.push(tempNotice)
         }
       }
     },
-    gotoNoticeDetail: function (contestDetail) {
-      let contestDetailJson = JSON.stringify(contestDetail)
+    gotoNoticeDetail: function (notice) {
+      let noticeJson = JSON.stringify(notice)
       // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
       // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
-      sessionStorage.setItem('contestDetailJson', contestDetailJson)
+      sessionStorage.setItem('noticeJson', noticeJson)
       this.$router.push({
         path: '/index/noticeDetails'
         // name: 'noticeDetails/'
         // query: {
         //   data: contestDetailJson
+        // // 以加问号接续的方式显示内容
+        // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
         // }
       })
     }
-    // loadNotice () {
+    // loadContestDetail () {
     //   let _this = this
-    //   this.$axios.get('/getAllNotice').then(resp => {
+    //   this.$axios.get('/getAllContestDetail').then(resp => {
     //     if (resp && resp.status === 200) {
-    //       _this.noticeData = resp.data
-    //       _this.currentTotal = _this.noticeData.length
-    //       console.log(_this.noticeData)
+    //       _this.contestDetailData = resp.data
+    //       _this.currentTotal = _this.contestDetailData.length
     //       let currentNum1 = this.pageSize * (this.currentPage - 1)
     //       let endNum = currentNum1 + this.pageSize
     //       for (let currentNum = 0; currentNum < endNum; currentNum++) {
-    //         if (currentNum < this.noticeData.length - 1) {
-    //           let tempNotice = {
+    //         if (currentNum < this.contestDetailData.length - 1) {
+    //           let tempContestDetail = {
     //             id: '',
-    //             title: '',
-    //             time: '',
+    //             contestTitle: '',
+    //             organizer: {
+    //               id: '',
+    //               user: {
+    //                 id: '',
+    //                 account: '',
+    //                 phone: '',
+    //                 password: '',
+    //                 name: '',
+    //                 type: ''
+    //               },
+    //               phone: '',
+    //               name: ''
+    //             },
+    //             contestContent: '',
+    //             startTime: '',
+    //             endTime: '',
+    //             publishTime: '',
     //             link: ''
     //           }
-    //           tempNotice.id = this.noticeData[currentNum].id
-    //           tempNotice.title = this.noticeData[currentNum].title
-    //           tempNotice.time = this.noticeData[currentNum].time
-    //           tempNotice.link = this.noticeData[currentNum].link
-    //           this.currentPageData.push(tempNotice)
+    //           tempContestDetail.id = _this.contestDetailData[currentNum].id
+    //           tempContestDetail.contestTitle = _this.contestDetailData[currentNum].contestTitle
+    //           tempContestDetail.organizer.id = _this.contestDetailData[currentNum].organizer.id
+    //           tempContestDetail.organizer.phone = _this.contestDetailData[currentNum].organizer.phone
+    //           tempContestDetail.organizer.name = _this.contestDetailData[currentNum].organizer.name
+    //           tempContestDetail.organizer.user.id = _this.contestDetailData[currentNum].organizer.user.id
+    //           tempContestDetail.organizer.user.account = _this.contestDetailData[currentNum].organizer.user.account
+    //           tempContestDetail.organizer.user.phone = _this.contestDetailData[currentNum].organizer.user.phone
+    //           tempContestDetail.organizer.user.password = _this.contestDetailData[currentNum].organizer.user.password
+    //           tempContestDetail.organizer.user.name = _this.contestDetailData[currentNum].organizer.user.name
+    //           tempContestDetail.organizer.user.type = _this.contestDetailData[currentNum].organizer.user.type
+    //           tempContestDetail.contestContent = _this.contestDetailData[currentNum].contestContent
+    //           tempContestDetail.startTime = _this.contestDetailData[currentNum].startTime
+    //           tempContestDetail.endTime = _this.contestDetailData[currentNum].endTime
+    //           tempContestDetail.publishTime = _this.contestDetailData[currentNum].publishTime
+    //           tempContestDetail.link = _this.contestDetailData[currentNum].link
+    //           this.currentPageData.push(tempContestDetail)
     //         }
     //       }
     //     }
     //   })
     // },
     // handleSizeChange (val) {
+    //   let _this = this
     //   this.pageSize = val
     //   console.log(`每页 ${val} 条`)
     //   let currentNum1 = this.pageSize * (this.currentPage - 1)
     //   let endNum = currentNum1 + this.pageSize
     //   this.currentPageData = []
     //   for (let currentNum = currentNum1; currentNum < endNum; currentNum++) {
-    //     if (currentNum < this.noticeData.length) {
-    //       let tempNotice = {
+    //     if (currentNum < this.contestDetailData.length) {
+    //       let tempContestDetail = {
     //         id: '',
-    //         title: '',
-    //         time: '',
+    //         contestTitle: '',
+    //         organizer: {
+    //           id: '',
+    //           user: {
+    //             id: '',
+    //             account: '',
+    //             phone: '',
+    //             password: '',
+    //             name: '',
+    //             type: ''
+    //           },
+    //           phone: '',
+    //           name: ''
+    //         },
+    //         contestContent: '',
+    //         startTime: '',
+    //         endTime: '',
+    //         publishTime: '',
     //         link: ''
     //       }
-    //       tempNotice.id = this.noticeData[currentNum].id
-    //       tempNotice.title = this.noticeData[currentNum].title
-    //       tempNotice.time = this.noticeData[currentNum].time
-    //       tempNotice.link = this.noticeData[currentNum].link
-    //       this.currentPageData.push(tempNotice)
+    //       tempContestDetail.id = _this.contestDetailData[currentNum].id
+    //       tempContestDetail.contestTitle = _this.contestDetailData[currentNum].contestTitle
+    //       tempContestDetail.organizer.id = _this.contestDetailData[currentNum].organizer.id
+    //       tempContestDetail.organizer.phone = _this.contestDetailData[currentNum].organizer.phone
+    //       tempContestDetail.organizer.name = _this.contestDetailData[currentNum].organizer.name
+    //       tempContestDetail.organizer.user.id = _this.contestDetailData[currentNum].organizer.user.id
+    //       tempContestDetail.organizer.user.account = _this.contestDetailData[currentNum].organizer.user.account
+    //       tempContestDetail.organizer.user.phone = _this.contestDetailData[currentNum].organizer.user.phone
+    //       tempContestDetail.organizer.user.password = _this.contestDetailData[currentNum].organizer.user.password
+    //       tempContestDetail.organizer.user.name = _this.contestDetailData[currentNum].organizer.user.name
+    //       tempContestDetail.organizer.user.type = _this.contestDetailData[currentNum].organizer.user.type
+    //       tempContestDetail.contestContent = _this.contestDetailData[currentNum].contestContent
+    //       tempContestDetail.startTime = _this.contestDetailData[currentNum].startTime
+    //       tempContestDetail.endTime = _this.contestDetailData[currentNum].endTime
+    //       tempContestDetail.publishTime = _this.contestDetailData[currentNum].publishTime
+    //       tempContestDetail.link = _this.contestDetailData[currentNum].link
+    //       this.currentPageData.push(tempContestDetail)
     //     }
     //   }
     // },
     // handleCurrentChange (val) {
+    //   let _this = this
     //   this.currentPage = val
     //   console.log(`当前页: ${val}`)
     //   let currentNum1 = this.pageSize * (this.currentPage - 1)
     //   let endNum = currentNum1 + this.pageSize
     //   this.currentPageData = []
     //   for (let currentNum = currentNum1; currentNum < endNum; currentNum++) {
-    //     if (currentNum < this.noticeData.length) {
-    //       let tempNotice = {
+    //     if (currentNum < this.contestDetailData.length) {
+    //       let tempContestDetail = {
     //         id: '',
-    //         title: '',
-    //         time: '',
+    //         contestTitle: '',
+    //         organizer: {
+    //           id: '',
+    //           user: {
+    //             id: '',
+    //             account: '',
+    //             phone: '',
+    //             password: '',
+    //             name: '',
+    //             type: ''
+    //           },
+    //           phone: '',
+    //           name: ''
+    //         },
+    //         contestContent: '',
+    //         startTime: '',
+    //         endTime: '',
+    //         publishTime: '',
     //         link: ''
     //       }
-    //       tempNotice.id = this.noticeData[currentNum].id
-    //       tempNotice.title = this.noticeData[currentNum].title
-    //       tempNotice.time = this.noticeData[currentNum].time
-    //       tempNotice.link = this.noticeData[currentNum].link
-    //       this.currentPageData.push(tempNotice)
+    //       tempContestDetail.id = _this.contestDetailData[currentNum].id
+    //       tempContestDetail.contestTitle = _this.contestDetailData[currentNum].contestTitle
+    //       tempContestDetail.organizer.id = _this.contestDetailData[currentNum].organizer.id
+    //       tempContestDetail.organizer.phone = _this.contestDetailData[currentNum].organizer.phone
+    //       tempContestDetail.organizer.name = _this.contestDetailData[currentNum].organizer.name
+    //       tempContestDetail.organizer.user.id = _this.contestDetailData[currentNum].organizer.user.id
+    //       tempContestDetail.organizer.user.account = _this.contestDetailData[currentNum].organizer.user.account
+    //       tempContestDetail.organizer.user.phone = _this.contestDetailData[currentNum].organizer.user.phone
+    //       tempContestDetail.organizer.user.password = _this.contestDetailData[currentNum].organizer.user.password
+    //       tempContestDetail.organizer.user.name = _this.contestDetailData[currentNum].organizer.user.name
+    //       tempContestDetail.organizer.user.type = _this.contestDetailData[currentNum].organizer.user.type
+    //       tempContestDetail.contestContent = _this.contestDetailData[currentNum].contestContent
+    //       tempContestDetail.startTime = _this.contestDetailData[currentNum].startTime
+    //       tempContestDetail.endTime = _this.contestDetailData[currentNum].endTime
+    //       tempContestDetail.publishTime = _this.contestDetailData[currentNum].publishTime
+    //       tempContestDetail.link = _this.contestDetailData[currentNum].link
+    //       this.currentPageData.push(tempContestDetail)
     //     }
     //   }
-    // }
+    // },
   }
 }
 </script>

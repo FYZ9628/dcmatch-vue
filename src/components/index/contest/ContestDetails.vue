@@ -4,16 +4,27 @@
       <IndexHeader></IndexHeader>
     </el-header>
     <el-main>
-      <el-container style="margin: 0 200px; text-align: left">
+      <el-container style="margin: 0 200px; text-align: left; min-height: 300px">
         <el-header>
           <h3 style="float: left; font-size: 24px">{{contestDetailData.contestTitle}}</h3>
         </el-header>
-        <el-header>
-          <p style="font-size: 14px; color: #a0a0a0;; display: block; float: left">{{contestDetailData.publishTime}}</p>
-          <i class="el-icon-s-custom"></i>
-          <p style="display: block; float: left; color: #000000;  font-size: 14px; line-height: 16px;">{{contestDetailData.organizer.user.name}}</p>
+        <el-header height="50px">
+          <div style="display: block; float: left">
+            <el-row style="line-height: 30px">
+              <p style="width: 280px; font-size: 14px; color: #a0a0a0; display: block; float: left; padding: 0; margin: 0">发布时间：{{contestDetailData.publishTime}}</p>
+              <i class="el-icon-s-custom"></i>
+              <p style="display: block; float: left; color: #000000; line-height: 28px; font-size: 14px; padding: 0; margin: 0">{{contestDetailData.organizer.user.name}}</p>
+            </el-row>
+            <el-row>
+              <p style="width: 280px; font-size: 14px; color: #5c5c5c; display: block; float: left; padding: 0; margin: 0">报名开始时间：{{contestDetailData.startTime}}</p>
+              <p style="font-size: 14px; color: #5c5c5c; display: block; float: left; margin: 0 0 0 50px; padding: 0;">报名截止时间：{{contestDetailData.endTime}}</p>
+            </el-row>
+          </div>
+          <div  style="display: block; float: right">
+            <el-button class="sign-up" @click="signUp">报名</el-button>
+          </div>
         </el-header>
-        <el-main style="margin: 0; padding: 0">
+        <el-main style="margin: 0; padding: 30px 0">
           <p>{{contestDetailData.contestContent}}</p>
         </el-main>
       </el-container>
@@ -32,12 +43,10 @@ export default {
   components: {IndexHeader, CommonFooter},
   data: function () {
     return {
-      contestDetailData: '',
-      noticeData: []
+      contestDetailData: ''
     }
   },
   mounted: function () {
-    // this.loadNotice()
     console.log(this.contestDetailData)
     // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
     // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
@@ -46,22 +55,29 @@ export default {
     console.log(contestDetailJson)
   },
   methods: {
-    // loadNotice () {
-    //   let _this = this
-    //   this.$axios.get('/getAllNotice').then(resp => {
-    //     if (resp && resp.status === 200) {
-    //       _this.noticeData = resp.data
-    //       console.log(_this.noticeData)
-    //     }
-    //   })
-    // }
+    signUp: function () {
+      let signUpContestDetailJson = JSON.stringify(this.contestDetailData)
+      // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
+      // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
+      sessionStorage.setItem('signUpContestDetailJson', signUpContestDetailJson)
+      this.$router.push({
+        path: '/index/signUp'
+        // name: 'noticeDetails/'
+        // query: {
+        //   data: contestDetailJson
+        // // 以加问号接续的方式显示内容
+        // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+        // }
+      })
+    }
   }
 }
 </script>
 
 <style scoped>
   .container{
-    height: 100%;
+    /*height: 100%;*/
+    min-height: 300px;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -75,8 +91,18 @@ export default {
     padding: 0;
     margin: 0 5px 0 50px;
     display: block;
-    line-height: 43px;
+    line-height: 25px;
     float: left;
+  }
+  .sign-up {
+    width: 80px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #4ea2e2;
+    color: white;
+    padding: 0;
+    font-size: 18px;
+    margin-right: 20px;
   }
   .el-footer {
     padding: 0;

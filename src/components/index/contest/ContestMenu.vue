@@ -1,7 +1,6 @@
 <template>
   <el-menu class="nav-menu"
            router :default-active="$route.path"
-           router
            mode="horizontal"
 
            background-color="#545c64"

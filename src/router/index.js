@@ -21,6 +21,7 @@ import ContestDetails from '@/components/index/contest/ContestDetails'
 import AllContest from '@/components/index/contest/AllContest'
 import IndividualContest from '@/components/index/contest/IndividualContest'
 import TeamContest from '@/components/index/contest/TeamContest'
+import SignUp from '@/components/index/contest/SignUp'
 import Register from '@/components/Register'
 
 Vue.use(Router)
@@ -91,6 +92,11 @@ export default new Router({
       path: '/index/contestDetails',
       name: 'ContestDetails',
       component: ContestDetails
+    },
+    {
+      path: '/index/signUp',
+      name: 'SignUp',
+      component: SignUp
     },
     {
       path: '/default',

@@ -5,13 +5,13 @@
       <a href="http://localhost:8081/index/noticeList" target="_blank">MORE>></a>
     </div>
     <div style="margin-top: 18px">
-      <div v-for="item in tempContestDetail"
+      <div v-for="item in tempNotice"
            :key="item.value" class="content">
         <div class="content_title">
           <el-link :underline="false" style="display: block" v-on:click="gotoNoticeDetail(item)" target="_blank">
             <i class="el-icon-caret-right"></i>
-            <p class="content_title_text">{{item.contestTitle +"    "}}</p>
-            <p class="content_title_time">{{item.publishTime }}</p>
+            <p class="content_title_text">{{item.title +"    "}}</p>
+            <p class="content_title_time">{{item.time }}</p>
           </el-link>
         </div>
       </div>
@@ -42,17 +42,39 @@ export default {
           _this.notice = resp.data
           if (_this.notice.length >= 7) {
             for (let i = 0; i < 7; ++i) {
-              let temp = {
+              let tempNotice = {
                 id: '',
                 title: '',
                 time: '',
-                link: ''
+                organizer: {
+                  id: '',
+                  user: {
+                    id: '',
+                    account: '',
+                    phone: '',
+                    password: '',
+                    name: '',
+                    type: ''
+                  },
+                  phone: '',
+                  name: ''
+                },
+                content: ''
               }
-              temp.id = _this.notice[i].id
-              temp.title = _this.notice[i].title
-              temp.time = _this.notice[i].time
-              temp.link = _this.notice[i].link
-              _this.tempNotice.push(temp)
+              tempNotice.id = _this.noticeData[i].id
+              tempNotice.title = _this.noticeData[i].title
+              tempNotice.time = _this.noticeData[i].time
+              tempNotice.organizer.id = _this.noticeData[i].organizer.id
+              tempNotice.organizer.phone = _this.noticeData[i].organizer.phone
+              tempNotice.organizer.name = _this.noticeData[i].organizer.name
+              tempNotice.organizer.user.id = _this.noticeData[i].organizer.user.id
+              tempNotice.organizer.user.account = _this.noticeData[i].organizer.user.account
+              tempNotice.organizer.user.phone = _this.noticeData[i].organizer.user.phone
+              tempNotice.organizer.user.password = _this.noticeData[i].organizer.user.password
+              tempNotice.organizer.user.name = _this.noticeData[i].organizer.user.name
+              tempNotice.organizer.user.type = _this.noticeData[i].organizer.user.type
+              tempNotice.content = this.noticeData[i].content
+              _this.tempNotice.push(tempNotice)
             }
           } else {
             _this.tempNotice = _this.notice
@@ -95,11 +117,11 @@ export default {
         }
       })
     },
-    gotoNoticeDetail: function (contestDetail) {
-      let contestDetailJson = JSON.stringify(contestDetail)
+    gotoNoticeDetail: function (notice) {
+      let noticeJson = JSON.stringify(notice)
       // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
       // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
-      sessionStorage.setItem('contestDetailJson', contestDetailJson)
+      sessionStorage.setItem('noticeJson', noticeJson)
       // 点击后新开一个窗口
       window.open(
         this.$router.resolve({
@@ -108,12 +130,14 @@ export default {
         // 打开新窗口：_blank
         // 在本地窗口打开：_self
       )
+      // // 以加问号接续的方式显示内容
+      // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
       // this.$router.push({
-      //   path: '/index/noticeDetails'
+      //   path: '/index/noticeDetails',
       //   // name: 'noticeDetails/'
-      //   // query: {
-      //   //   data: contestDetailJson
-      //   // }
+      //   query: {
+      //     data: notice
+      //   }
       // })
     }
   }
