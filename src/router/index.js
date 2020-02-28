@@ -4,11 +4,24 @@ import AppIndex from '@/components/AppIndex'
 import Login from '@/components/Login'
 import AdminLogin from '@/components/AdminLogin'
 import DefaultIndex from '@/components/default/DefaultIndex'
+import DefaultAuthentication from '@/components/default/DefaultAuthentication'
+import DefaultMyNews from '@/components/default/DefaultMyNews'
+import DefaultAccountSetting from '@/components/default/DefaultAccountSetting'
 import StudentIndex from '@/components/student/StudentIndex'
+import StudentAuthentication from '@/components/student/StudentAuthentication'
+import StudentMyContest from '@/components/student/StudentMyContest'
+import StudentPrizeWinning from '@/components/student/StudentPrizeWinning'
+import StudentMyOrder from '@/components/student/StudentMyOrder'
+import StudentMyNews from '@/components/student/StudentMyNews'
+import StudentMyAddress from '@/components/student/StudentMyAddress'
+import StudentAccountSetting from '@/components/student/StudentAccountSetting'
 import TeacherIndex from '@/components/teacher/TeacherIndex'
-import test1 from '@/components/teacher/test1'
-import test2 from '@/components/teacher/test2'
-import test3 from '@/components/teacher/test3'
+import TeacherMyContest from '@/components/teacher/TeacherMyContest'
+import TeacherAuthentication from '@/components/teacher/TeacherAuthentication'
+import TeacherMyOrder from '@/components/teacher/TeacherMyOrder'
+import TeacherMyNews from '@/components/teacher/TeacherMyNews'
+import TeacherMyAddress from '@/components/teacher/TeacherMyAddress'
+import TeacherAccountSetting from '@/components/teacher/TeacherAccountSetting'
 import AdminIndex from '@/components/admin/AdminIndex'
 import test9 from '@/components/admin/home/test9'
 import test10 from '@/components/admin/home/test10'
@@ -104,19 +117,19 @@ export default new Router({
       component: DefaultIndex,
       children: [
         {
-          path: 'test1',
-          name: 'test1',
-          component: test1
+          path: 'authentication',
+          name: 'DefaultAuthentication',
+          component: DefaultAuthentication
         },
         {
-          path: 'test2',
-          name: 'test2',
-          component: test2
+          path: 'myNews',
+          name: 'DefaultMyNews',
+          component: DefaultMyNews
         },
         {
-          path: 'test3',
-          name: 'test3',
-          component: test3
+          path: 'accountSetting',
+          name: 'DefaultAccountSetting',
+          component: DefaultAccountSetting
         }
       ]
     },
@@ -124,21 +137,42 @@ export default new Router({
       path: '/student',
       name: 'StudentIndex',
       component: StudentIndex,
+      redirect: '/student/authentication',
       children: [
         {
-          path: 'test1',
-          name: 'test1',
-          component: test1
+          path: 'authentication',
+          name: 'StudentAuthentication',
+          component: StudentAuthentication
         },
         {
-          path: 'test2',
-          name: 'test2',
-          component: test2
+          path: 'myContest',
+          name: 'StudentMyContest',
+          component: StudentMyContest
         },
         {
-          path: 'test3',
-          name: 'test3',
-          component: test3
+          path: 'prizeWinning',
+          name: 'StudentPrizeWinning',
+          component: StudentPrizeWinning
+        },
+        {
+          path: 'myOrder',
+          name: 'StudentMyOrder',
+          component: StudentMyOrder
+        },
+        {
+          path: 'myNews',
+          name: 'StudentMyNews',
+          component: StudentMyNews
+        },
+        {
+          path: 'myAddress',
+          name: 'StudentMyAddress',
+          component: StudentMyAddress
+        },
+        {
+          path: 'accountSetting',
+          name: 'StudentAccountSetting',
+          component: StudentAccountSetting
         }
       ]
     },
@@ -146,21 +180,37 @@ export default new Router({
       path: '/teacher',
       name: 'TeacherIndex',
       component: TeacherIndex,
+      redirect: '/teacher/myContest',
       children: [
         {
-          path: 'test1',
-          name: 'test1',
-          component: test1
+          path: 'myContest',
+          name: 'TeacherMyContest',
+          component: TeacherMyContest
         },
         {
-          path: 'test2',
-          name: 'test2',
-          component: test2
+          path: 'authentication',
+          name: 'TeacherAuthentication',
+          component: TeacherAuthentication
         },
         {
-          path: 'test3',
-          name: 'test3',
-          component: test3
+          path: 'myOrder',
+          name: 'TeacherMyOrder',
+          component: TeacherMyOrder
+        },
+        {
+          path: 'myNews',
+          name: 'TeacherMyNews',
+          component: TeacherMyNews
+        },
+        {
+          path: 'myAddress',
+          name: 'TeacherMyAddress',
+          component: TeacherMyAddress
+        },
+        {
+          path: 'accountSetting',
+          name: 'TeacherAccountSetting',
+          component: TeacherAccountSetting
         }
       ]
     },

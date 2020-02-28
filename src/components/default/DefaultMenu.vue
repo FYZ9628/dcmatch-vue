@@ -9,27 +9,15 @@
     <el-menu
       default-active="this.$route.path"
       router=true>
-      <el-menu-item index="/student/test1">
-        <i class="el-icon-menu"></i>
+      <el-menu-item index="/default/authentication">
+        <i class="el-icon-s-custom"></i>
         <span slot="title">个人认证</span>
       </el-menu-item>
-      <el-menu-item index="/student/test2">
-        <i class="el-icon-menu"></i>
-        <span slot="title">我的大赛</span>
-      </el-menu-item>
-      <el-menu-item index="/student/test3">
-        <i class="el-icon-document"></i>
-        <span slot="title">获奖查询</span>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
+      <el-menu-item index="/default/myNews">
+        <i class="el-icon-chat-square"></i>
         <span slot="title">我的消息</span>
       </el-menu-item>
-      <el-menu-item index="5">
-        <i class="el-icon-document"></i>
-        <span slot="title">我的地址</span>
-      </el-menu-item>
-      <el-menu-item index="6">
+      <el-menu-item index="/default/accountSetting">
         <i class="el-icon-setting"></i>
         <span slot="title">账号设置</span>
       </el-menu-item>

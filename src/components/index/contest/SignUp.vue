@@ -113,6 +113,21 @@ export default {
   },
   methods: {
     confirmSignUp: function () {
+      this.$confirm('确认报名', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '报名成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消报名'
+        })
+      })
     }
   }
 }

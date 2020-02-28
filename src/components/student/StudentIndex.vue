@@ -5,7 +5,7 @@
       <StudentHeader></StudentHeader>
 <!--      <CommonHeader></CommonHeader>-->
     </el-header>
-    <el-container>
+    <el-container style="margin: 0 auto">
       <el-aside class="el-aside" style="width: 250px;">
         <StudentMenu></StudentMenu>
       </el-aside>
@@ -39,16 +39,13 @@ export default {
   }
   .el-aside{
     /*background-color: #1a1a1a;*/
-    width: 800px;
     height: 600px;
-    margin-left: 100px;
     margin-top: 100px;
     text-align: center;
   }
   .el-main{
     height: 100%;
     margin-top: 100px;
-    margin-right: 100px;
     margin-left: 20px;
     padding: 0;
     text-align: left;
