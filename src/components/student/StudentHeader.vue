@@ -3,23 +3,24 @@
     <a >
       <img src="../../assets/logoIcon.png" alt="" width="55px" style="float: left;margin-top: -5px;">
     </a>
-    <span style="font-size: 32px;font-weight: bold;position:absolute;left: 100px">科竞赛赛程管理信息系统</span>
-    <el-dropdown  show-timeout="10" hide-timeout="100" style="float: right;padding-right: 10px">
+    <span style="font-size: 32px; font-weight: bold; position:absolute;left: 100px">科竞赛赛程管理信息系统</span>
+    <el-dropdown style="float: right; padding-right: 10px">
+<!--      show-timeout="10" hide-timeout="100"-->
       <div class="el-dropdown-link" >
-        <span >
+        <span>
           你好，{{$store.getters.name}}
         </span>
-        <span style="float: right;margin-left: 10px">
-          <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" size="80"></el-avatar>
+        <span style="float: right; margin-left: 10px">
+          <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
         </span>
 
         <el-dropdown-menu slot="dropdown" >
-          <el-dropdown-item divided="true" @click.native="identification">个人认证</el-dropdown-item>
-          <el-dropdown-item divided="true" @click.native="myContest">我的大赛</el-dropdown-item>
-          <el-dropdown-item divided="true">获奖查询</el-dropdown-item>
-          <el-dropdown-item divided="true">我的消息</el-dropdown-item>
-          <el-dropdown-item divided="true">我的地址</el-dropdown-item>
-          <el-dropdown-item divided="true">账号设置</el-dropdown-item>
+          <el-dropdown-item divided @click.native="identification">个人认证</el-dropdown-item>
+          <el-dropdown-item divided @click.native="myContest">我的大赛</el-dropdown-item>
+          <el-dropdown-item divided>获奖查询</el-dropdown-item>
+          <el-dropdown-item divided>我的消息</el-dropdown-item>
+          <el-dropdown-item divided>我的地址</el-dropdown-item>
+          <el-dropdown-item divided>账号设置</el-dropdown-item>
         </el-dropdown-menu>
 
         <i class="el-icon-arrow-down el-icon--right"></i>
@@ -32,7 +33,9 @@
 export default {
   name: 'StudentHeader',
   data: function () {
-    // username:''
+    return {
+      // username: ''
+    }
   },
   methods: {
     identification: function () {
@@ -69,7 +72,9 @@ export default {
   .el-dropdown-link {
     cursor: pointer;
     color: #409EFF;
-    text-size:20px;
+    height: 70px;
+    width: 120px;
+    /*text-size:20px;*/
   }
   .el-icon-arrow-down {
     font-size: 12px;

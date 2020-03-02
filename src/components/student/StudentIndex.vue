@@ -1,9 +1,7 @@
 <template>
   <el-container>
     <el-header class="el-header">
-      <!--      <TeacherHeader></TeacherHeader>-->
       <StudentHeader></StudentHeader>
-<!--      <CommonHeader></CommonHeader>-->
     </el-header>
     <el-container style="margin: 0 auto">
       <el-aside class="el-aside" style="width: 250px;">
@@ -39,7 +37,7 @@ export default {
   }
   .el-aside{
     /*background-color: #1a1a1a;*/
-    height: 600px;
+    height: 620px;
     margin-top: 100px;
     text-align: center;
   }

@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 600px; width: 240px; background-color: white">
+  <div style="height: 620px; width: 240px; background-color: white">
     <div class="title">
       <a href="#img">
         <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="height: 100px; width: 100px; margin-top: 40px"></el-avatar>
@@ -8,7 +8,7 @@
     </div>
     <el-menu
       default-active="this.$route.path"
-      router=true>
+      router>
       <el-menu-item index="/student/authentication">
         <i class="el-icon-s-custom"></i>
         <span slot="title">个人认证</span>
