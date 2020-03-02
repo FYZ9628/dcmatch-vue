@@ -115,6 +115,7 @@ export default new Router({
       path: '/default',
       name: 'DefaultIndex',
       component: DefaultIndex,
+      redirect: '/default/authentication',
       children: [
         {
           path: 'authentication',
