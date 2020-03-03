@@ -8,7 +8,7 @@
     </div>
     <el-menu
       default-active="this.$route.path"
-      router=true>
+      router>
       <el-menu-item index="/default/authentication">
         <i class="el-icon-s-custom"></i>
         <span slot="title">个人认证</span>
