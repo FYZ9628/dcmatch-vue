@@ -1,6 +1,6 @@
 <template>
     <el-card class="common-header">
-    <a >
+      <a href="http://localhost:8081/index">
       <img src="../../assets/logoIcon.png" alt="" width="55px" style="float: left;margin-top: -5px;">
     </a>
     <span style="font-size: 32px;

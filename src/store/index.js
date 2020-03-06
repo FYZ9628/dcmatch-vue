@@ -15,6 +15,7 @@ export default new Vuex.Store({
     account: '' || localStorage.getItem('account'),
     password: '' || localStorage.getItem('password'),
     name: '' || localStorage.getItem('name'),
+    code: '' || localStorage.getItem('code'),
     user: {
       // 用于拦截没有登录的用户
       // 在路由中设置 requireAuth: true  就是表示当前页面要拦截
@@ -39,18 +40,23 @@ export default new Vuex.Store({
         state.name = user.name
         localStorage.setItem('name', user.name)
       }
+
+      state.code = user.code
+      localStorage.setItem('code', user.code)
     },
     logout (state) {
       localStorage.clear()
       state.account = null
       state.password = null
       state.name = null
+      state.code = null
     }
   },
   getters: {
     account: (state) => state.account,
     password: (state) => state.password,
-    name: (state) => state.name
+    name: (state) => state.name,
+    code: (state) => state.code
   }
   // state: {
   //   user: {

@@ -19,8 +19,9 @@ import StudentMyAddress from '@/components/student/StudentMyAddress'
 import StudentAccountSetting from '@/components/student/StudentAccountSetting'
 import TeacherIndex from '@/components/teacher/TeacherIndex'
 import TeacherHome from '@/components/teacher/TeacherHome'
-import TeacherMyContest from '@/components/teacher/TeacherMyContest'
 import TeacherAuthentication from '@/components/teacher/TeacherAuthentication'
+import TeacherMyContest from '@/components/teacher/TeacherMyContest'
+import TeacherPrizeWinning from '@/components/teacher/TeacherPrizeWinning'
 import TeacherMyOrder from '@/components/teacher/TeacherMyOrder'
 import TeacherMyNews from '@/components/teacher/TeacherMyNews'
 import TeacherMyAddress from '@/components/teacher/TeacherMyAddress'
@@ -210,6 +211,11 @@ export default new Router({
           path: 'myContest',
           name: 'TeacherMyContest',
           component: TeacherMyContest
+        },
+        {
+          path: 'prizeWinning',
+          name: 'TeacherPrizeWinning',
+          component: TeacherPrizeWinning
         },
         {
           path: 'myOrder',

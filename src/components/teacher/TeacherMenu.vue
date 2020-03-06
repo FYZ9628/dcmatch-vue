@@ -17,6 +17,10 @@
         <i class="el-icon-star-off"></i>
         <span slot="title">我的大赛</span>
       </el-menu-item>
+      <el-menu-item index="/teacher/prizeWinning">
+        <i class="el-icon-star-off"></i>
+        <span slot="title">获奖查询</span>
+      </el-menu-item>
       <el-menu-item index="/teacher/myOrder">
         <i class="el-icon-s-order"></i>
         <span slot="title">我的订单</span>
