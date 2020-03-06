@@ -9,7 +9,7 @@
     <el-menu
       default-active="this.$route.path"
       router>
-      <el-menu-item index="/default/authentication">
+      <el-menu-item index="/default/authentication/authenticationStudent">
         <i class="el-icon-s-custom"></i>
         <span slot="title">个人认证</span>
       </el-menu-item>

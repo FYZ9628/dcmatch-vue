@@ -21,13 +21,13 @@
 </template>
 
 <script>
-  import CommonFooter from '@/components/common/CommonFooter'
-  import DefaultMenu from '@/components/default/DefaultMenu'
-  import DefaultHeader from '@/components/default/DefaultHeader'
-  export default {
-    name: 'DefaultIndex',
-    components: {DefaultHeader, DefaultMenu, CommonFooter}
-  }
+import CommonFooter from '@/components/common/CommonFooter'
+import DefaultMenu from '@/components/default/DefaultMenu'
+import DefaultHeader from '@/components/default/DefaultHeader'
+export default {
+  name: 'DefaultIndex',
+  components: {DefaultHeader, DefaultMenu, CommonFooter}
+}
 </script>
 
 <style scoped>

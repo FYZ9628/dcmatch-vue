@@ -6,6 +6,9 @@ import AdminLogin from '@/components/AdminLogin'
 import DefaultIndex from '@/components/default/DefaultIndex'
 import DefaultHome from '@/components/default/DefaultHome'
 import DefaultAuthentication from '@/components/default/DefaultAuthentication'
+import DefaultAuthenticationStudent from '@/components/default/DefaultAuthenticationStudent'
+import DefaultAuthenticationTeacher from '@/components/default/DefaultAuthenticationTeacher'
+import DefaultAuthenticationOrganizer from '@/components/default/DefaultAuthenticationOrganizer'
 import DefaultMyNews from '@/components/default/DefaultMyNews'
 import DefaultAccountSetting from '@/components/default/DefaultAccountSetting'
 import StudentIndex from '@/components/student/StudentIndex'
@@ -124,12 +127,29 @@ export default new Router({
       path: '/default',
       name: 'DefaultHome',
       component: DefaultHome,
-      redirect: '/default/authentication',
+      redirect: '/default/authentication/authenticationStudent',
       children: [
         {
           path: 'authentication',
           name: 'DefaultAuthentication',
-          component: DefaultAuthentication
+          component: DefaultAuthentication,
+          children: [
+            {
+              path: 'authenticationStudent',
+              name: 'DefaultAuthenticationStudent',
+              component: DefaultAuthenticationStudent
+            },
+            {
+              path: 'authenticationTeacher',
+              name: 'DefaultAuthenticationTeacher',
+              component: DefaultAuthenticationTeacher
+            },
+            {
+              path: 'authenticationOrganizer',
+              name: 'DefaultAuthenticationOrganizer',
+              component: DefaultAuthenticationOrganizer
+            }
+          ]
         },
         {
           path: 'myNews',

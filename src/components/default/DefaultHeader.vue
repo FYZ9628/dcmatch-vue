@@ -38,7 +38,7 @@ export default {
   methods: {
     identification: function () {
       this.$router.push({
-        path: '/default/authentication'
+        path: '/default/authentication/authenticationStudent'
       })
     },
     myNews: function () {
