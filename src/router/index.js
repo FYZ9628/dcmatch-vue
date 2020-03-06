@@ -4,10 +4,12 @@ import AppIndex from '@/components/AppIndex'
 import Login from '@/components/Login'
 import AdminLogin from '@/components/AdminLogin'
 import DefaultIndex from '@/components/default/DefaultIndex'
+import DefaultHome from '@/components/default/DefaultHome'
 import DefaultAuthentication from '@/components/default/DefaultAuthentication'
 import DefaultMyNews from '@/components/default/DefaultMyNews'
 import DefaultAccountSetting from '@/components/default/DefaultAccountSetting'
 import StudentIndex from '@/components/student/StudentIndex'
+import StudentHome from '@/components/student/StudentHome'
 import StudentAuthentication from '@/components/student/StudentAuthentication'
 import StudentMyContest from '@/components/student/StudentMyContest'
 import StudentPrizeWinning from '@/components/student/StudentPrizeWinning'
@@ -16,6 +18,7 @@ import StudentMyNews from '@/components/student/StudentMyNews'
 import StudentMyAddress from '@/components/student/StudentMyAddress'
 import StudentAccountSetting from '@/components/student/StudentAccountSetting'
 import TeacherIndex from '@/components/teacher/TeacherIndex'
+import TeacherHome from '@/components/teacher/TeacherHome'
 import TeacherMyContest from '@/components/teacher/TeacherMyContest'
 import TeacherAuthentication from '@/components/teacher/TeacherAuthentication'
 import TeacherMyOrder from '@/components/teacher/TeacherMyOrder'
@@ -65,7 +68,7 @@ export default new Router({
         /**
          * 为了区分页面是否需要拦截
          */
-        requireAuth: true
+        requireAuth: false
       }
     },
     {
@@ -112,9 +115,14 @@ export default new Router({
       component: SignUp
     },
     {
-      path: '/default',
+      path: '/defaultIndex',
       name: 'DefaultIndex',
-      component: DefaultIndex,
+      component: DefaultIndex
+    },
+    {
+      path: '/default',
+      name: 'DefaultHome',
+      component: DefaultHome,
       redirect: '/default/authentication',
       children: [
         {
@@ -135,9 +143,14 @@ export default new Router({
       ]
     },
     {
-      path: '/student',
+      path: '/studentIndex',
       name: 'StudentIndex',
-      component: StudentIndex,
+      component: StudentIndex
+    },
+    {
+      path: '/student',
+      name: 'StudentHome',
+      component: StudentHome,
       redirect: '/student/authentication',
       children: [
         {
@@ -178,20 +191,25 @@ export default new Router({
       ]
     },
     {
-      path: '/teacher',
+      path: '/teacherIndex',
       name: 'TeacherIndex',
-      component: TeacherIndex,
-      redirect: '/teacher/myContest',
+      component: TeacherIndex
+    },
+    {
+      path: '/teacher',
+      name: 'TeacherHome',
+      component: TeacherHome,
+      redirect: '/teacher/authentication',
       children: [
-        {
-          path: 'myContest',
-          name: 'TeacherMyContest',
-          component: TeacherMyContest
-        },
         {
           path: 'authentication',
           name: 'TeacherAuthentication',
           component: TeacherAuthentication
+        },
+        {
+          path: 'myContest',
+          name: 'TeacherMyContest',
+          component: TeacherMyContest
         },
         {
           path: 'myOrder',

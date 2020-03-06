@@ -42,6 +42,7 @@ export default {
     cursor: pointer;
     color: #409EFF;
     text-size:20px;
+    height: 70px;
   }
   .el-icon-arrow-down {
     font-size: 12px;

@@ -66,19 +66,19 @@ export default {
                 // _this.$store.commit('login', _this.loginForm)
                 path = this.$route.query.redirect
 
-                this.$router.replace({path: path === '/' || path === undefined ? '/teacher' : path})
+                this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
               } else if (successResponse.data.code === 300) { // 跳转到学生
                 this.$store.commit('login', successResponse.data)
                 // _this.$store.commit('login', _this.loginForm)
                 path = this.$route.query.redirect
 
-                this.$router.replace({path: path === '/' || path === undefined ? '/student' : path})
+                this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
               } else if (successResponse.data.code === 500) { // 跳转到学生
                 this.$store.commit('login', successResponse.data)
                 // _this.$store.commit('login', _this.loginForm)
                 path = this.$route.query.redirect
 
-                this.$router.replace({path: path === '/' || path === undefined ? '/default' : path})
+                this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
               } else {
                 _this.$message({
                   message: '账号或密码错误',

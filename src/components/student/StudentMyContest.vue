@@ -13,7 +13,7 @@
             <i class="el-icon-search el-icon--right" ></i>
             {{item.name}}
           </el-button>
-          <el-button v-if="index == 2" type="primary" plain style="height: 60px; margin-left: 80px">
+          <el-button v-if="index === 2" type="primary" plain style="height: 60px; margin-left: 80px">
             更多
             <i class="el-icon-d-arrow-right el-icon--right" ></i>
           </el-button>

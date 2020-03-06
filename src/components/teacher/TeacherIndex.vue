@@ -1,19 +1,20 @@
 <template>
-  <el-container>
-    <el-header class="el-header">
-      <TeacherHeader></TeacherHeader>
-<!--      <CommonHeader></CommonHeader>-->
+  <el-container class="container">
+    <el-header class="el-header" style="height: 80px">
+      <TeacherHeader style="width: 100%"></TeacherHeader>
     </el-header>
-    <el-container style="margin: 0 auto">
-      <el-aside class="el-aside" style="width: 250px;">
-        <TeacherMenu></TeacherMenu>
+    <el-header class="el-banner" style="height: 350px">
+      <IndexBanner></IndexBanner>
+    </el-header>
+    <el-container style=" margin: 100px 50px 0 50px">
+      <el-aside  class="el-aside" style="width: 640px">
+        <IndexAside></IndexAside>
       </el-aside>
-      <el-main class="el-main" style="background-color: #f6f6f6">
-<!--        <h3>main内容</h3>-->
-        <router-view/>
+      <el-main class="el-main" style="width: 500px;  overflow-x: hidden;">
+        <IndexMain></IndexMain>
       </el-main>
     </el-container>
-    <el-footer style="margin: 100px 0 0 0; padding: 0">
+    <el-footer class="el-footer">
       <CommonFooter></CommonFooter>
     </el-footer>
   </el-container>
@@ -21,32 +22,55 @@
 
 <script>
 import TeacherHeader from '@/components/teacher/TeacherHeader'
-import TeacherMenu from '@/components/teacher/TeacherMenu'
 import CommonFooter from '@/components/common/CommonFooter'
-import CommonHeader from '@/components/common/CommonHeader'
+import IndexBanner from '@/components/index/IndexBanner'
+import IndexBody from '@/components/index/IndexBody'
+import IndexAside from '@/components/index/IndexAside'
+import IndexMain from '@/components/index/IndexMain'
 export default {
   name: 'TeacherIndex',
-  components: {CommonHeader, CommonFooter, TeacherMenu, TeacherHeader}
+  components: {IndexMain, IndexAside, IndexBody, IndexBanner, CommonFooter, TeacherHeader},
+  data: function () {
+    return {
+    }
+  },
+  methods: {
+  }
 }
 </script>
 
 <style scoped>
-  .el-header{
-    /*background-color: #475669;*/
+  .container{
+    height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
+    background: #fff;
   }
-  .el-aside{
-    /*background-color: #1a1a1a;*/
-    height: 620px;
-    margin-top: 100px;
-    text-align: center;
-  }
-  .el-main{
-    height: 100%;
-    margin-top: 100px;
-    margin-left: 20px;
+  .el-header {
     padding: 0;
-    text-align: left;
+    margin: 0;
+  }
+  .el-banner {
+    height: 250px;
+    padding: 0;
+  }
+  .el-aside {
+    height: 350px;
+    text-align: center;
+    float: left;
+    /*background-color: #409EFF;*/
+    border:10px solid #f4f4f4;
+  }
+  .el-main {
+    height: 350px;
+    float: right;
+    text-align: center;
+    margin-left: 30px;
+    border:10px solid #f4f4f4
+  }
+  .el-footer {
+    padding: 0;
+    margin: 100px 0 0 0;
   }
 </style>

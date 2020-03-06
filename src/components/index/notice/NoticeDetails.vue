@@ -1,7 +1,13 @@
 <template>
   <el-container class="container">
     <el-header class="el-header" style="height: 80px">
-      <IndexHeader></IndexHeader>
+      <!--      已登录就显示 CommonHeader 没有登录就显示 IndexHeader-->
+      <div v-if="isLogin === true">
+        <CommonHeader></CommonHeader>
+      </div>
+      <div v-if="isLogin === false">
+        <IndexHeader></IndexHeader>
+      </div>
     </el-header>
     <el-main>
       <el-container style="margin: 0 200px; text-align: left; min-height: 300px">
@@ -26,13 +32,15 @@
 
 <script>
 import IndexHeader from '@/components/index/IndexHeader'
+import CommonHeader from '@/components/common/CommonHeader'
 import CommonFooter from '@/components/common/CommonFooter'
 export default {
   name: 'NoticeDetails',
-  components: {IndexHeader, CommonFooter},
+  components: {IndexHeader, CommonHeader, CommonFooter},
   data: function () {
     return {
-      noticeData: []
+      noticeData: [],
+      isLogin: false
     }
   },
   mounted: function () {
@@ -42,6 +50,9 @@ export default {
     let noticeJson = sessionStorage.getItem('noticeJson')
     this.noticeData = JSON.parse(noticeJson)
     console.log(noticeJson)
+    if (this.$store.getters.name) {
+      this.isLogin = true
+    }
   }
 }
 </script>

@@ -6,8 +6,8 @@
     <span style="font-size: 32px;
       font-weight: bold;position:absolute;left: 100px">学科竞赛赛程管理信息系统</span>
       <div class="rightButton">
-      <el-link :underline="false" class="el-link" href="http://localhost:8081/login" target="_blank">登 录</el-link>
-      <el-link :underline="false"  href="http://localhost:8081/register" target="_blank">注 册</el-link>
+      <el-link :underline="false" class="el-link" href="http://localhost:8081/login">登 录</el-link>
+      <el-link :underline="false"  href="http://localhost:8081/register">注 册</el-link>
       </div>
   </el-card>
 </template>
@@ -20,9 +20,6 @@ export default {
       // username:''
     }
   },
-  // data () {
-  //   // username:''
-  // },
   methods: {
     passwordModify: function () {
       this.$router.push({

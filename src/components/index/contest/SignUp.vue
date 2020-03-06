@@ -1,7 +1,7 @@
 <template>
   <el-container class="container">
     <el-header class="el-header" style="height: 80px">
-      <IndexHeader></IndexHeader>
+      <CommonHeader></CommonHeader>
     </el-header>
     <el-main style="min-height: 300px; margin: 0 auto">
       <div style="border: 1.5px solid rgba(60,60,60,0.87); font-size: 16px; text-align: left; width: 800px; height: 800px; padding: 30px">
@@ -94,11 +94,11 @@
 </template>
 
 <script>
-import IndexHeader from '@/components/index/IndexHeader'
+import CommonHeader from '@/components/common/CommonHeader'
 import CommonFooter from '@/components/common/CommonFooter'
 export default {
   name: 'SignUp',
-  components: {IndexHeader, CommonFooter},
+  components: {CommonHeader, CommonFooter},
   data: function () {
     return {
       signUpContestDetailData: ''

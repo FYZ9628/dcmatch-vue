@@ -12,7 +12,13 @@ Vue.use(Vuex)
  */
 export default new Vuex.Store({
   state: {
+    account: '' || localStorage.getItem('account'),
+    password: '' || localStorage.getItem('password'),
+    name: '' || localStorage.getItem('name'),
     user: {
+      // 用于拦截没有登录的用户
+      // 在路由中设置 requireAuth: true  就是表示当前页面要拦截
+      // 同时在 main.js 也要写上 router.beforeEach 配置
       account: window.localStorage
         .getItem('user' || '[]') == null ? '' : JSON.parse(
           window.localStorage.getItem('user' || '[]')).account
@@ -20,14 +26,47 @@ export default new Vuex.Store({
   },
   mutations: {
     login (state, user) {
-      state.user = user
-      /**
-       * 这里我们还用到了 localStorage，即本地存储，
-       * 在项目打开的时候会判断本地存储中是否有 user 这个对象存在，
-       * 如果存在就取出来并获得 account 的值，否则则把 account 设置为空。
-       * 这样我们只要不清除缓存，登录的状态就会一直保存。
-       */
-      window.localStorage.setItem('user', JSON.stringify(user))
+      state.account = user.account
+      localStorage.setItem('account', user.account)
+
+      state.password = user.password
+      localStorage.setItem('password', user.password)
+
+      if (user.name == null) {
+        state.name = user.name
+        localStorage.setItem('name', '管理员')
+      } else {
+        state.name = user.name
+        localStorage.setItem('name', user.name)
+      }
+    },
+    logout (state) {
+      localStorage.clear()
+      state.account = null
+      state.password = null
+      state.name = null
     }
+  },
+  getters: {
+    account: (state) => state.account,
+    password: (state) => state.password,
+    name: (state) => state.name
   }
+  // state: {
+  //   user: {
+  //     account: window.localStorage
+  //       .getItem('user' || '[]') == null ? '' : JSON.parse(
+  //         window.localStorage.getItem('user' || '[]')).account
+  //   }
+  // },
+  // login (state, user) {
+  //   state.user = user
+  //   /**
+  //    * 这里我们还用到了 localStorage，即本地存储，
+  //    * 在项目打开的时候会判断本地存储中是否有 user 这个对象存在，
+  //    * 如果存在就取出来并获得 account 的值，否则则把 account 设置为空。
+  //    * 这样我们只要不清除缓存，登录的状态就会一直保存。
+  //    */
+  //   window.localStorage.setItem('user', JSON.stringify(user))
+  // }
 })

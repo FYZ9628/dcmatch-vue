@@ -1,7 +1,13 @@
 <template>
   <el-container class="container">
     <el-header class="el-header" style="height: 80px">
-      <IndexHeader></IndexHeader>
+      <!--      已登录就显示 CommonHeader 没有登录就显示 IndexHeader-->
+      <div v-if="isLogin === true">
+        <CommonHeader></CommonHeader>
+      </div>
+      <div v-if="isLogin === false">
+        <IndexHeader></IndexHeader>
+      </div>
     </el-header>
     <el-main style="margin: 0 30px">
       <el-container  v-for="(item, index) in currentPageData"
@@ -46,10 +52,11 @@
 
 <script>
 import IndexHeader from '@/components/index/IndexHeader'
+import CommonHeader from '@/components/common/CommonHeader'
 import CommonFooter from '@/components/common/CommonFooter'
 export default {
   name: 'NoticeList',
-  components: {IndexHeader, CommonFooter},
+  components: {IndexHeader, CommonHeader, CommonFooter},
   data: function () {
     return {
       currentPage: 1,
@@ -57,12 +64,16 @@ export default {
       currentTotal: 0,
       noticeData: [],
       contestDetailData: [],
-      currentPageData: []
+      currentPageData: [],
+      isLogin: false
     }
   },
   mounted: function () {
     this.loadNotice()
     // this.loadContestDetail()
+    if (this.$store.getters.name) {
+      this.isLogin = true
+    }
   },
   methods: {
     loadNotice () {

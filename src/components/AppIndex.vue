@@ -1,7 +1,13 @@
 <template>
   <el-container class="container">
     <el-header class="el-header" style="height: 80px">
-      <IndexHeader style="width: 100%"></IndexHeader>
+      <!--      已登录就显示 CommonHeader 没有登录就显示 IndexHeader-->
+      <div v-if="isLogin === true">
+        <CommonHeader style="width: 100%"></CommonHeader>
+      </div>
+      <div v-if="isLogin === false">
+        <IndexHeader></IndexHeader>
+      </div>
     </el-header>
     <el-header class="el-banner" style="height: 350px">
       <IndexBanner></IndexBanner>
@@ -22,6 +28,7 @@
 
 <script>
 import IndexHeader from './index/IndexHeader'
+import CommonHeader from '@/components/common/CommonHeader'
 import CommonFooter from '@/components/common/CommonFooter'
 import IndexBanner from '@/components/index/IndexBanner'
 import IndexBody from '@/components/index/IndexBody'
@@ -29,9 +36,15 @@ import IndexAside from '@/components/index/IndexAside'
 import IndexMain from '@/components/index/IndexMain'
 export default {
   name: 'AppIndex',
-  components: {IndexMain, IndexAside, IndexBody, IndexBanner, CommonFooter, IndexHeader},
+  components: {IndexMain, IndexAside, IndexBody, IndexBanner, CommonFooter, CommonHeader, IndexHeader},
   data: function () {
     return {
+      isLogin: false
+    }
+  },
+  mounted: function () {
+    if (this.$store.getters.name) {
+      this.isLogin = true
     }
   },
   methods: {

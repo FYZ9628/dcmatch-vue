@@ -9,13 +9,13 @@
     <el-menu
       default-active="this.$route.path"
       router=true>
-      <el-menu-item index="/teacher/myContest">
-        <i class="el-icon-star-off"></i>
-        <span slot="title">我的大赛</span>
-      </el-menu-item>
       <el-menu-item index="/teacher/authentication">
         <i class="el-icon-s-custom"></i>
         <span slot="title">个人认证</span>
+      </el-menu-item>
+      <el-menu-item index="/teacher/myContest">
+        <i class="el-icon-star-off"></i>
+        <span slot="title">我的大赛</span>
       </el-menu-item>
       <el-menu-item index="/teacher/myOrder">
         <i class="el-icon-s-order"></i>

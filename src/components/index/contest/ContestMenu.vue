@@ -1,4 +1,5 @@
 <template>
+<!--  router :default-active="$route.path"-->
   <el-menu class="nav-menu"
            router :default-active="$route.path"
            mode="horizontal"
