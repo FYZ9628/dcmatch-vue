@@ -12,7 +12,8 @@
 export default {
   name: 'AdminHeader',
   data: function () {
-    // username:''
+    return {
+    }
   },
   methods: {
     logout () {

@@ -43,6 +43,10 @@ import IndividualContest from '@/components/index/contest/IndividualContest'
 import TeamContest from '@/components/index/contest/TeamContest'
 import SignUp from '@/components/index/contest/SignUp'
 import Register from '@/components/Register'
+import AuthenticationIndex from '@/components/admin/authentication/AuthenticationIndex'
+import StudentAuthentic from '@/components/admin/authentication/StudentAuthentic'
+import TeacherAuthentic from '@/components/admin/authentication/TeacherAuthentic'
+import OrganizerAuthentic from '@/components/admin/authentication/OrganizerAuthentic'
 
 Vue.use(Router)
 
@@ -265,6 +269,28 @@ export default new Router({
       redirect: '/admin/home/test9',
       component: AdminIndex,
       children: [
+        {
+          path: 'authentication',
+          name: 'AuthenticationIndex',
+          component: AuthenticationIndex,
+          children: [
+            {
+              path: 'studentAuthentic',
+              name: 'StudentAuthentic',
+              component: StudentAuthentic
+            },
+            {
+              path: 'teacherAuthentic',
+              name: 'TeacherAuthentic',
+              component: TeacherAuthentic
+            },
+            {
+              path: 'organizerAuthentic',
+              name: 'OrganizerAuthentic',
+              component: OrganizerAuthentic
+            }
+          ]
+        },
         {
           path: '/admin/home/test9',
           name: 'test9',

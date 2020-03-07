@@ -5,7 +5,7 @@
     </el-header>
     <!--<el-row style="height: 100%;">-->
     <el-container>
-      <el-aside style="height: 600px; width: 250px; background-color: #545c64">
+      <el-aside style="height: 560px; width: 250px; background-color: #545c64">
         <AdminMenu></AdminMenu>
       </el-aside>
       <el-main>
