@@ -28,7 +28,7 @@
         </el-form>
       </div>
     </div>
-    <div style="height: 900px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
+    <div style="height: 850px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
       <span style="font-size: 16px; font-weight: bolder">院校认证</span>
       <div style="margin-top: 30px">
         <el-form :model="schoolAuthenticationForm" ref="schoolAuthenticationForm" label-width="80px" :rules="schoolAuthenticationFormRules"
@@ -98,23 +98,23 @@
             </el-select>
           </el-form-item>
         </el-form>
-        <div style="height: 250px; margin-top: 30px">
+        <div style="height: 200px; margin-top: 30px">
           <p>学生证照片  2M以内的JPG、PNG格式，请上传学生证粘贴照片一页</p>
-          <div style="width: 200px; height: 150px ; display: block; float: left">
-            <p style="padding: 0; margin: 0">示例</p>
-            <img src="../../assets/student_id_card.jpg" style="width: 200px; height: 150px; margin-top: 10px">
-          </div>
           <el-upload
-            drag
-            action="https://jsonplaceholder.typicode.com/posts/"
-            multiple
-            style="display: block; float: right; margin-top: 10px">
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">将照片拖到此处，或<em>点击上传</em></div>
+            id="avatar-uploader"
+            action="http://localhost:8999/api/upLoadImg"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <div v-if="!imageUrl" style="margin: 50px 85px 50px 85px; width: 50px; height: 50px; border: 2px solid #ffffff;border-radius: 60px">
+              <i class="el-icon-plus avatar-uploader-icon"></i>
+              <div style="font-size: 12px; margin-top: 10px; color: #ffffff">点击上传</div>
+            </div>
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" @click="removeImageUrl">
           </el-upload>
         </div>
-        <div style="text-align: center; margin-top: 40px">
-          <el-divider style="margin-top: 800px"></el-divider>
+        <div style="text-align: center;">
+          <el-divider ></el-divider>
         </div>
         <div style="margin-top: 30px;text-align: center">
           <el-button @click="resetForm" style="width: 100px">重置</el-button>
@@ -196,7 +196,8 @@ export default {
           id: 4,
           name: '博士研究生'
         }
-      ]
+      ],
+      imageUrl: ''
     }
   },
   mounted: function () {
@@ -224,68 +225,126 @@ export default {
           k = 1
         }
       })
-      if (i === 1 && k === 1) {
-        this.$confirm('确认提交吗？', '提示', {}).then(() => {
-          this.$axios
-            .post('/addStudent', {
-              id: '',
-              user: {
+      if (this.imageUrl) {
+        if (i === 1 && k === 1) {
+          this.$confirm('确认提交吗？', '提示', {}).then(() => {
+            this.$axios
+              .post('/addStudent', {
                 id: '',
-                account: this.schoolAuthenticationForm.student_id,
-                phone: this.$store.getters.account,
-                password: this.$store.getters.password,
-                name: this.individualAuthenticationForm.name,
-                // 认证为学生 30 ，认证为院校 20，认证为教师 40
-                type: 30
-              },
-              sex: this.individualAuthenticationForm.sex,
-              email: this.individualAuthenticationForm.email,
-              school: this.schoolAuthenticationForm.school,
-              // 日期格式 2020/3/6
-              admissionDate: this.schoolAuthenticationForm.admission_date.toLocaleDateString(),
-              graduationDate: this.schoolAuthenticationForm.graduation_date.toLocaleDateString(),
-              academy: this.schoolAuthenticationForm.academy,
-              major: this.schoolAuthenticationForm.major,
-              education: this.schoolAuthenticationForm.education,
-              idImg: '1'
-            })
-            .then(successResponse => {
-              // 只要数据库有添加了（只加在了一个表，但其它表不成功也算）
-              // 就会返回 successResponse.status 状态码 200
-              this.student = successResponse.data
-              console.log('测试添加学生后返回的数据')
-              console.log(successResponse.status)
-              console.log(successResponse.code)
-              console.log(this.student)
-              if (successResponse.data) {
+                user: {
+                  id: '',
+                  account: this.schoolAuthenticationForm.student_id,
+                  phone: this.$store.getters.account,
+                  password: this.$store.getters.password,
+                  name: this.individualAuthenticationForm.name,
+                  // 认证为学生 30 ，认证为院校 20，认证为教师 40
+                  type: 30
+                },
+                sex: this.individualAuthenticationForm.sex,
+                email: this.individualAuthenticationForm.email,
+                school: this.schoolAuthenticationForm.school,
+                // 日期格式 2020/3/6
+                admissionDate: this.schoolAuthenticationForm.admission_date.toLocaleDateString(),
+                graduationDate: this.schoolAuthenticationForm.graduation_date.toLocaleDateString(),
+                academy: this.schoolAuthenticationForm.academy,
+                major: this.schoolAuthenticationForm.major,
+                education: this.schoolAuthenticationForm.education,
+                idImg: this.imageUrl
+              })
+              .then(successResponse => {
+                // 只要数据库有添加了（只加在了一个表，但其它表不成功也算）
+                // 就会返回 successResponse.status 状态码 200
+                this.student = successResponse.data
+                if (successResponse.data) {
+                  this.$message({
+                    message: '已发送认证信息',
+                    type: 'success'
+                  })
+                  // 一秒后刷新
+                  setTimeout(() => {
+                    window.open(
+                      this.$router.resolve({
+                        path: '/default/authentication/authenticationStudent'
+                      }).href, '_self'
+                      // 打开新窗口：_blank
+                      // 在本地窗口打开：_self
+                    )
+                  }, 1000)
+                } else {
+                  this.$message({
+                    message: '学号已被认证',
+                    type: 'error'
+                  })
+                }
+              })
+              .catch(failResponse => {
                 this.$message({
-                  message: '已发送认证信息',
-                  type: 'success'
-                })
-              } else {
-                this.$message({
-                  message: '学号已被认证',
+                  message: '手机号码已被认证',
                   type: 'error'
                 })
-              }
-            })
-            .catch(failResponse => {
-              this.$message({
-                message: '手机号码已被认证',
-                type: 'error'
               })
-            })
+          })
+        }
+      } else {
+        this.$message({
+          message: '请上传图片',
+          type: 'error'
         })
       }
     },
     resetForm () {
       this.$refs.individualAuthenticationForm.resetFields()
       this.$refs.schoolAuthenticationForm.resetFields()
+    },
+    handleAvatarSuccess (response, file) {
+      // console.log('测试上传的图片')
+      // console.log('这是获取回来的整个对象名')
+      // console.log(file)
+      // console.log('这是获取回来的图片url')
+      // console.log(response)
+      this.imageUrl = response
+      // 这是另一种获取图片url的方法
+      // this.imageUrl = URL.createObjectURL(file.raw)
+    },
+    beforeAvatarUpload (file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isLt2M
+    },
+    removeImageUrl () {
+      this.$axios
+        .post('/deleteImg', {
+          // 发送的请求数据为类似 http://localhost:8999/api/file/48h2yv.jpg
+          imagePath: this.imageUrl
+        })
+        .then(successResponse => {
+          this.imageUrl = ''
+        })
+        .catch(failResponse => {
+        })
     }
   }
 }
 </script>
 
 <style scoped>
-
+/*class用不了 所以用了 id*/
+  #avatar-uploader {
+    background: url('../../assets/student_id_card.jpg') no-repeat;
+    background-size: cover;
+    width: 220px; height: 150px
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #ffffff;
+    line-height: 50px;
+    text-align: center;
+  }
+  .avatar {
+    width: 220px;
+    height: 150px;
+    display: block;
+  }
 </style>

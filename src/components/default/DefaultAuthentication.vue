@@ -34,9 +34,6 @@ export default {
           // 只要数据库有添加了（只加在了一个表，但其它表不成功也算）
           // 就会返回 successResponse.status 状态码 200
           this.student = successResponse.data
-          console.log('测试添加学生后返回的数据')
-          console.log(successResponse.status)
-          console.log(successResponse.data)
           if (successResponse.data) {
             this.isAuthentication = true
           }
