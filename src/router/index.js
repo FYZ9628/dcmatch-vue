@@ -47,6 +47,11 @@ import AuthenticationIndex from '@/components/admin/authentication/Authenticatio
 import StudentAuthentic from '@/components/admin/authentication/StudentAuthentic'
 import TeacherAuthentic from '@/components/admin/authentication/TeacherAuthentic'
 import OrganizerAuthentic from '@/components/admin/authentication/OrganizerAuthentic'
+import UserIndex from '@/components/admin/user/UserIndex'
+import StudentUser from '@/components/admin/user/StudentUser'
+import TeacherUser from '@/components/admin/user/TeacherUser'
+import OrganizerUser from '@/components/admin/user/OrganizerUser'
+import AdminUser from '@/components/admin/user/AdminUser'
 
 Vue.use(Router)
 
@@ -288,6 +293,33 @@ export default new Router({
               path: 'organizerAuthentic',
               name: 'OrganizerAuthentic',
               component: OrganizerAuthentic
+            }
+          ]
+        },
+        {
+          path: 'user',
+          name: 'UserIndex',
+          component: UserIndex,
+          children: [
+            {
+              path: 'studentUser',
+              name: 'StudentUser',
+              component: StudentUser
+            },
+            {
+              path: 'teacherUser',
+              name: 'TeacherUser',
+              component: TeacherUser
+            },
+            {
+              path: 'organizerUser',
+              name: 'OrganizerUser',
+              component: OrganizerUser
+            },
+            {
+              path: 'adminUser',
+              name: 'AdminUser',
+              component: AdminUser
             }
           ]
         },

@@ -127,7 +127,7 @@
 
 <script>
 export default {
-  name: 'organizerAuthentic',
+  name: 'AdminUser',
   data () {
     return {
       studentList: [],

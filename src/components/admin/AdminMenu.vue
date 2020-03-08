@@ -27,7 +27,7 @@
       <el-menu-item-group>
         <el-menu-item index="/admin/authentication/studentAuthentic">学生认证</el-menu-item>
         <el-menu-item index="/admin/authentication/teacherAuthentic">教师认证</el-menu-item>
-        <el-menu-item index="/admin/authentication/OrganizerAuthentic">院校认证</el-menu-item>
+        <el-menu-item index="/admin/authentication/organizerAuthentic">院校认证</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
     <el-submenu index="/admin/user">
@@ -36,9 +36,10 @@
         <span>用户管理</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="/admin/user/test9">管理员信息</el-menu-item>
-        <el-menu-item index="/admin/user/test10">院校信息</el-menu-item>
-        <el-menu-item index="/admin/user/test11">学生信息</el-menu-item>
+        <el-menu-item index="/admin/user/studentUser">学生管理</el-menu-item>
+        <el-menu-item index="/admin/user/teacherUser">教师管理</el-menu-item>
+        <el-menu-item index="/admin/user/organizerUser">院校管理</el-menu-item>
+        <el-menu-item index="/admin/user/adminUser">管理员管理</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
     <el-menu-item index="/admin/setting">

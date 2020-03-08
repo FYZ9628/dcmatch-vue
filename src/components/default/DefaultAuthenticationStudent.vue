@@ -112,6 +112,10 @@
             </div>
             <img v-if="imageUrl" :src="imageUrl" class="avatar" @click="removeImageUrl">
           </el-upload>
+          <div v-if="!isImageUrl" style="display: block; float: left;
+            margin-left: 30px; font-size: 16px; color: red;">
+            请上传图片！
+          </div>
         </div>
         <div style="text-align: center;">
           <el-divider ></el-divider>
@@ -197,7 +201,8 @@ export default {
           name: '博士研究生'
         }
       ],
-      imageUrl: ''
+      imageUrl: '',
+      isImageUrl: true
     }
   },
   mounted: function () {
@@ -286,10 +291,7 @@ export default {
           })
         }
       } else {
-        this.$message({
-          message: '请上传图片',
-          type: 'error'
-        })
+        this.isImageUrl = false
       }
     },
     resetForm () {
@@ -305,6 +307,7 @@ export default {
       this.imageUrl = response
       // 这是另一种获取图片url的方法
       // this.imageUrl = URL.createObjectURL(file.raw)
+      this.isImageUrl = true
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -332,6 +335,8 @@ export default {
 <style scoped>
 /*class用不了 所以用了 id*/
   #avatar-uploader {
+    display: block;
+    float: left;
     background: url('../../assets/student_id_card.jpg') no-repeat;
     background-size: cover;
     width: 220px; height: 150px
