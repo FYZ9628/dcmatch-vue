@@ -232,26 +232,6 @@ export default {
         })
     },
     adopt (index, rows) {
-      // let tempStudent = {
-      //   id: rows[index].id,
-      //   user: {
-      //     id: rows[index].user.id,
-      //     account: rows[index].user.account,
-      //     phone: rows[index].user.phone,
-      //     password: rows[index].user.password,
-      //     name: rows[index].user.name,
-      //     type: rows[index].user.type
-      //   },
-      //   sex: rows[index].sex,
-      //   email: rows[index].email,
-      //   school: rows[index].school,
-      //   admissionDate: rows[index].admissionDate,
-      //   graduationDate: rows[index].graduationDate,
-      //   academy: rows[index].academy,
-      //   major: rows[index].major,
-      //   education: rows[index].education,
-      //   idImg: rows[index].idImg
-      // }
       this.$axios
         .post('/updateStudent', {
           id: rows[index].id,
@@ -278,11 +258,48 @@ export default {
             message: '通过了一名学生的认证请求',
             type: 'success'
           })
+          this.searchRegister(index, rows)
           rows.splice(index, 1)
         })
         .catch(failResponse => {
           this.$message({
             message: '审核失败',
+            type: 'error'
+          })
+        })
+    },
+    searchRegister (index, rows) {
+      this.$axios
+        .post('/searchRegister', {
+          keywords: rows[index].user.phone
+        })
+        .then(successResponse => {
+          let register = successResponse.data
+          this.deleteRegister(register)
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '查询register失败',
+            type: 'error'
+          })
+        })
+    },
+    deleteRegister (register) {
+      this.$axios
+        .post('/deleteRegister', {
+          id: register.id,
+          phone: register.phone,
+          password: register.password
+        })
+        .then(successResponse => {
+          // this.$message({
+          //   message: '删除register成功',
+          //   type: 'success'
+          // })
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '删除register失败',
             type: 'error'
           })
         })
@@ -368,6 +385,7 @@ export default {
               idImg: this.studentList[i].idImg
             })
             .then(successResponse => {
+              this.searchRegister(i, this.studentList)
             })
             .catch(failResponse => {
               this.$message({
