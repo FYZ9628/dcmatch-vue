@@ -28,7 +28,7 @@
         </el-form>
       </div>
     </div>
-    <div style="height: 850px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
+    <div style="height: 770px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
       <span style="font-size: 16px; font-weight: bolder">院校认证</span>
       <div style="margin-top: 30px">
         <el-form :model="schoolAuthenticationForm" ref="schoolAuthenticationForm" label-width="80px" :rules="schoolAuthenticationFormRules"
@@ -47,29 +47,18 @@
             </el-select>
           </el-form-item>
           <el-form-item
-            label="学  号"
-            prop="student_id">
+            label="工  号"
+            prop="teacher_id">
             <!--              v-model.number 只有输入数字才不会提示错误-->
-            <el-input type="age" v-model.number="schoolAuthenticationForm.student_id" placeholder="学号" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
+            <el-input v-model="schoolAuthenticationForm.teacher_id" placeholder="工号" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
           </el-form-item>
           <el-form-item
-            label="入学日期"
-            prop="admission_date">
+            label="入职日期"
+            prop="entry_date">
             <el-date-picker
-              v-model="schoolAuthenticationForm.admission_date"
+              v-model="schoolAuthenticationForm.entry_date"
               type="date"
-              placeholder="入学日期"
-              size="small"
-              style="margin-left: 20px; width: 420px">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item
-            label="毕业日期"
-            prop="graduation_date">
-            <el-date-picker
-              v-model="schoolAuthenticationForm.graduation_date"
-              type="date"
-              placeholder="毕业日期"
+              placeholder="入职日期"
               size="small"
               style="margin-left: 20px; width: 420px">
             </el-date-picker>
@@ -77,12 +66,20 @@
           <el-form-item
             label="所在院系"
             prop="academy">
-            <el-input type="age" v-model.number="schoolAuthenticationForm.academy" placeholder="所在院系" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
+            <el-input v-model="schoolAuthenticationForm.academy" placeholder="所在院系" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
           </el-form-item>
           <el-form-item
-            label="专  业"
-            prop="major">
-            <el-input type="age" v-model.number="schoolAuthenticationForm.major" placeholder="专业" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
+            label="职  称"
+            prop="professional_title">
+            <el-select v-model="schoolAuthenticationForm.professional_title" placeholder="请选择" size="small"
+                       style="margin-left: 20px; width: 420px">
+              <el-option
+                v-for="item in professionalTitleList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.name">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item
             label="学  历"
@@ -146,23 +143,21 @@ export default {
       },
       schoolAuthenticationForm: {
         school: '',
-        student_id: '',
-        admission_date: '',
-        graduation_date: '',
+        teacher_id: '',
+        entry_date: '',
         academy: '',
-        major: '',
+        professional_title: '',
         education: ''
       },
       schoolAuthenticationFormRules: {
         school: [{required: true, message: '请输入学校', trigger: 'blur'}],
-        student_id: [{required: true, message: '请输入学号', trigger: 'blur'}],
-        admission_date: [{required: true, message: '请输入入学日期', trigger: 'blur'}],
-        graduation_date: [{required: true, message: '请输入毕业日期', trigger: 'blur'}],
+        teacher_id: [{required: true, message: '请输入工号', trigger: 'blur'}],
+        entry_date: [{required: true, message: '请输入入职日期', trigger: 'blur'}],
         academy: [{required: true, message: '请输入所在院系', trigger: 'blur'}],
-        major: [{required: true, message: '请输入专业', trigger: 'blur'}],
+        professional_title: [{required: true, message: '请选择职称', trigger: 'blur'}],
         education: [{required: true, message: '请选择学历', trigger: 'blur'}]
       },
-      student: {
+      teacher: {
         id: '',
         user: {
           id: '',
@@ -175,14 +170,31 @@ export default {
         sex: '',
         email: '',
         school: '',
-        admissionDate: '',
-        graduationDate: '',
+        entryDate: '',
         academy: '',
-        major: '',
+        professionalTitle: '',
         education: '',
         idImg: ''
       },
       schoolList: [],
+      professionalTitleList: [
+        {
+          id: 1,
+          name: '助教'
+        },
+        {
+          id: 2,
+          name: '讲师'
+        },
+        {
+          id: 3,
+          name: '副教授'
+        },
+        {
+          id: 4,
+          name: '教授'
+        }
+      ],
       educationList: [
         {
           id: 1,
@@ -234,32 +246,31 @@ export default {
         if (i === 1 && k === 1) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
             this.$axios
-              .post('/addStudent', {
+              .post('/addTeacher', {
                 id: '',
                 user: {
                   id: '',
-                  account: this.schoolAuthenticationForm.student_id,
+                  account: this.schoolAuthenticationForm.teacher_id,
                   phone: this.$store.getters.account,
                   password: this.$store.getters.password,
                   name: this.individualAuthenticationForm.name,
                   // 认证为学生 30 ，认证为院校 20，认证为教师 40
-                  type: 30
+                  type: 40
                 },
                 sex: this.individualAuthenticationForm.sex,
                 email: this.individualAuthenticationForm.email,
                 school: this.schoolAuthenticationForm.school,
                 // 日期格式 2020/3/6
-                admissionDate: this.schoolAuthenticationForm.admission_date.toLocaleDateString(),
-                graduationDate: this.schoolAuthenticationForm.graduation_date.toLocaleDateString(),
+                entryDate: this.schoolAuthenticationForm.entry_date.toLocaleDateString(),
                 academy: this.schoolAuthenticationForm.academy,
-                major: this.schoolAuthenticationForm.major,
+                professionalTitle: this.schoolAuthenticationForm.professional_title,
                 education: this.schoolAuthenticationForm.education,
                 idImg: this.imageUrl
               })
               .then(successResponse => {
                 // 只要数据库有添加了（只加在了一个表，但其它表不成功也算）
                 // 就会返回 successResponse.status 状态码 200
-                this.student = successResponse.data
+                this.teacher = successResponse.data
                 if (successResponse.data) {
                   this.$message({
                     message: '已发送认证信息',

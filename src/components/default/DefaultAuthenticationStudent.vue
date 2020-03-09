@@ -50,7 +50,7 @@
             label="学  号"
             prop="student_id">
             <!--              v-model.number 只有输入数字才不会提示错误-->
-            <el-input type="age" v-model.number="schoolAuthenticationForm.student_id" placeholder="学号" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
+            <el-input v-model="schoolAuthenticationForm.student_id" placeholder="学号" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
           </el-form-item>
           <el-form-item
             label="入学日期"
@@ -77,12 +77,12 @@
           <el-form-item
             label="所在院系"
             prop="academy">
-            <el-input type="age" v-model.number="schoolAuthenticationForm.academy" placeholder="所在院系" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
+            <el-input v-model="schoolAuthenticationForm.academy" placeholder="所在院系" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
           </el-form-item>
           <el-form-item
             label="专  业"
             prop="major">
-            <el-input type="age" v-model.number="schoolAuthenticationForm.major" placeholder="专业" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
+            <el-input v-model="schoolAuthenticationForm.major" placeholder="专业" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
           </el-form-item>
           <el-form-item
             label="学  历"
