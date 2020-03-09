@@ -2,12 +2,12 @@
   <div style="height: 550px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
     <div style="padding: 20px 0 10px 10px; font-weight: bolder">学生认证申请列表</div>
     <el-table
-      :data="studentList"
+      :data="teacherList"
       style="width: 100%"
       max-height="430">
       <el-table-column
         fixed
-        label="学生证"
+        label="聘请书"
         width="120"
         align="center">
         <template slot-scope="scope">
@@ -27,7 +27,7 @@
       </el-table-column>
       <el-table-column
         prop="user.account"
-        label="学号"
+        label="工号"
         width="120"
         align="center">
       </el-table-column>
@@ -56,14 +56,20 @@
         align="center">
       </el-table-column>
       <el-table-column
+        prop="entryDate"
+        label="入职日期"
+        width="100"
+        align="center">
+      </el-table-column>
+      <el-table-column
         prop="academy"
         label="学院"
         width="100"
         align="center">
       </el-table-column>
       <el-table-column
-        prop="major"
-        label="专业"
+        prop="professionalTitle"
+        label="职称"
         width="100"
         align="center">
       </el-table-column>
@@ -74,31 +80,19 @@
         align="center">
       </el-table-column>
       <el-table-column
-        prop="admissionDate"
-        label="入学日期"
-        width="100"
-        align="center">
-      </el-table-column>
-      <el-table-column
-        prop="graduationDate"
-        label="毕业日期"
-        width="100"
-        align="center">
-      </el-table-column>
-      <el-table-column
         fixed="right"
         label="审核"
         width="160"
         align="center">
         <template slot-scope="scope">
           <el-button
-            @click.native.prevent="reject(scope.$index, studentList)"
+            @click.native.prevent="reject(scope.$index, teacherList)"
             type="danger"
             size="mini">
             驳回
           </el-button>
           <el-button
-            @click.native.prevent="adopt(scope.$index, studentList)"
+            @click.native.prevent="adopt(scope.$index, teacherList)"
             type="danger"
             size="mini">
             通过
@@ -130,8 +124,8 @@ export default {
   name: 'teacherAuthentic',
   data () {
     return {
-      studentList: [],
-      student: {
+      teacherList: [],
+      teacher: {
         id: '',
         user: {
           id: '',
@@ -144,10 +138,9 @@ export default {
         sex: '',
         email: '',
         school: '',
-        admissionDate: '',
-        graduationDate: '',
+        entryDate: '',
         academy: '',
-        major: '',
+        professionalTitle: '',
         education: '',
         idImg: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         bigIdImg: [
@@ -157,16 +150,16 @@ export default {
     }
   },
   mounted: function () {
-    this.loadStudent()
+    this.loadTeacher()
   },
   methods: {
-    loadStudent () {
-      this.$axios.get('/getAllStudent').then(resp => {
+    loadTeacher () {
+      this.$axios.get('/getAllTeacher').then(resp => {
         if (resp && resp.status === 200) {
-          this.studentList = []
+          this.teacherList = []
           for (let i = 0; i < resp.data.length; i++) {
-            if (resp.data[i].user.type === 30) {
-              let tempStudent = {
+            if (resp.data[i].user.type === 20) {
+              let tempTeacher = {
                 id: resp.data[i].id,
                 user: {
                   id: resp.data[i].user.id,
@@ -179,15 +172,14 @@ export default {
                 sex: resp.data[i].sex,
                 email: resp.data[i].email,
                 school: resp.data[i].school,
-                admissionDate: resp.data[i].admissionDate,
-                graduationDate: resp.data[i].graduationDate,
+                entryDate: resp.data[i].entryDate,
                 academy: resp.data[i].academy,
-                major: resp.data[i].major,
+                professionalTitle: resp.data[i].professionalTitle,
                 education: resp.data[i].education,
                 idImg: resp.data[i].idImg,
                 bigIdImg: [resp.data[i].idImg]
               }
-              this.studentList.push(tempStudent)
+              this.teacherList.push(tempTeacher)
             }
           }
         }
@@ -197,7 +189,7 @@ export default {
       console.log('测试表格每行数据')
       console.log(rows[index])
       this.$axios
-        .post('/deleteStudent', {
+        .post('/deleteTeacher', {
           id: rows[index].id,
           user: {
             id: rows[index].user.id,
@@ -210,16 +202,15 @@ export default {
           sex: rows[index].sex,
           email: rows[index].email,
           school: rows[index].school,
-          admissionDate: rows[index].admissionDate,
-          graduationDate: rows[index].graduationDate,
+          entryDate: rows[index].entryDate,
           academy: rows[index].academy,
-          major: rows[index].major,
+          professionalTitle: rows[index].professionalTitle,
           education: rows[index].education,
           idImg: rows[index].idImg
         })
         .then(successResponse => {
           this.$message({
-            message: '驳回了一名学生的认证请求',
+            message: '驳回了一名教师的认证请求',
             type: 'success'
           })
           rows.splice(index, 1)
@@ -233,7 +224,7 @@ export default {
     },
     adopt (index, rows) {
       this.$axios
-        .post('/updateStudent', {
+        .post('/updateTeacher', {
           id: rows[index].id,
           user: {
             id: rows[index].user.id,
@@ -241,21 +232,20 @@ export default {
             phone: rows[index].user.phone,
             password: rows[index].user.password,
             name: rows[index].user.name,
-            type: 3
+            type: 2
           },
           sex: rows[index].sex,
           email: rows[index].email,
           school: rows[index].school,
-          admissionDate: rows[index].admissionDate,
-          graduationDate: rows[index].graduationDate,
+          entryDate: rows[index].entryDate,
           academy: rows[index].academy,
-          major: rows[index].major,
+          professionalTitle: rows[index].professionalTitle,
           education: rows[index].education,
           idImg: rows[index].idImg
         })
         .then(successResponse => {
           this.$message({
-            message: '通过了一名学生的认证请求',
+            message: '通过了一名教师的认证请求',
             type: 'success'
           })
           this.searchRegister(index, rows)
@@ -305,29 +295,28 @@ export default {
         })
     },
     allReject () {
-      this.loadStudent()
-      if (this.studentList.length > 0) {
-        for (let i = 0; i < this.studentList.length; i++) {
+      this.loadTeacher()
+      if (this.teacherList.length > 0) {
+        for (let i = 0; i < this.teacherList.length; i++) {
           this.$axios
-            .post('/deleteStudent', {
-              id: this.studentList[i].id,
+            .post('/deleteTeacher', {
+              id: this.teacherList[i].id,
               user: {
-                id: this.studentList[i].user.id,
-                account: this.studentList[i].user.account,
-                phone: this.studentList[i].user.phone,
-                password: this.studentList[i].user.password,
-                name: this.studentList[i].user.name,
-                type: this.studentList[i].user.type
+                id: this.teacherList[i].user.id,
+                account: this.teacherList[i].user.account,
+                phone: this.teacherList[i].user.phone,
+                password: this.teacherList[i].user.password,
+                name: this.teacherList[i].user.name,
+                type: this.teacherList[i].user.type
               },
-              sex: this.studentList[i].sex,
-              email: this.studentList[i].email,
-              school: this.studentList[i].school,
-              admissionDate: this.studentList[i].admissionDate,
-              graduationDate: this.studentList[i].graduationDate,
-              academy: this.studentList[i].academy,
-              major: this.studentList[i].major,
-              education: this.studentList[i].education,
-              idImg: this.studentList[i].idImg
+              sex: this.teacherList[i].sex,
+              email: this.teacherList[i].email,
+              school: this.teacherList[i].school,
+              entryDate: this.teacherList[i].entryDate,
+              academy: this.teacherList[i].academy,
+              professionalTitle: this.teacherList[i].professionalTitle,
+              education: this.teacherList[i].education,
+              idImg: this.teacherList[i].idImg
             })
             .then(successResponse => {
             })
@@ -339,14 +328,14 @@ export default {
             })
         }
         this.$message({
-          message: '驳回了' + this.studentList.length + '名学生的认证请求',
+          message: '驳回了' + this.teacherList.length + '名教师的认证请求',
           type: 'success'
         })
         // 一秒后刷新
         setTimeout(() => {
           window.open(
             this.$router.resolve({
-              path: '/admin/authentication/studentAuthentic'
+              path: '/admin/authentication/teacherAuthentic'
             }).href, '_self'
             // 打开新窗口：_blank
             // 在本地窗口打开：_self
@@ -360,32 +349,31 @@ export default {
       }
     },
     allAdopt () {
-      this.loadStudent()
-      if (this.studentList.length > 0) {
-        for (let i = 0; i < this.studentList.length; i++) {
+      this.loadTeacher()
+      if (this.teacherList.length > 0) {
+        for (let i = 0; i < this.teacherList.length; i++) {
           this.$axios
-            .post('/updateStudent', {
-              id: this.studentList[i].id,
+            .post('/updateTeacher', {
+              id: this.teacherList[i].id,
               user: {
-                id: this.studentList[i].user.id,
-                account: this.studentList[i].user.account,
-                phone: this.studentList[i].user.phone,
-                password: this.studentList[i].user.password,
-                name: this.studentList[i].user.name,
-                type: 3
+                id: this.teacherList[i].user.id,
+                account: this.teacherList[i].user.account,
+                phone: this.teacherList[i].user.phone,
+                password: this.teacherList[i].user.password,
+                name: this.teacherList[i].user.name,
+                type: 2
               },
-              sex: this.studentList[i].sex,
-              email: this.studentList[i].email,
-              school: this.studentList[i].school,
-              admissionDate: this.studentList[i].admissionDate,
-              graduationDate: this.studentList[i].graduationDate,
-              academy: this.studentList[i].academy,
-              major: this.studentList[i].major,
-              education: this.studentList[i].education,
-              idImg: this.studentList[i].idImg
+              sex: this.teacherList[i].sex,
+              email: this.teacherList[i].email,
+              school: this.teacherList[i].school,
+              entryDate: this.teacherList[i].entryDate,
+              academy: this.teacherList[i].academy,
+              professionalTitle: this.teacherList[i].professionalTitle,
+              education: this.teacherList[i].education,
+              idImg: this.teacherList[i].idImg
             })
             .then(successResponse => {
-              this.searchRegister(i, this.studentList)
+              this.searchRegister(i, this.teacherList)
             })
             .catch(failResponse => {
               this.$message({
@@ -395,14 +383,14 @@ export default {
             })
         }
         this.$message({
-          message: '通过了' + this.studentList.length + '名学生的认证请求',
+          message: '通过了' + this.teacherList.length + '名教师的认证请求',
           type: 'success'
         })
         // 一秒后刷新
         setTimeout(() => {
           window.open(
             this.$router.resolve({
-              path: '/admin/authentication/studentAuthentic'
+              path: '/admin/authentication/teacherAuthentic'
             }).href, '_self'
             // 打开新窗口：_blank
             // 在本地窗口打开：_self

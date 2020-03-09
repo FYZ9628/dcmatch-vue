@@ -61,7 +61,8 @@ export default {
             .then(successResponse => {
               let path
               this.logining = false
-              // 返回码：100对应管理员，200对应教师，300对应学生，400是错误码，500是默认用户(即还没有认证的用户)
+              // 返回码：100对应管理员，200对应教师，300对应学生，400是错误码
+              // 500是默认用户(即还没有认证的用户)，600对应院校
               if (successResponse.data.code === 200) { // 跳转到教师
                 this.$store.commit('login', successResponse.data)
                 // _this.$store.commit('login', _this.loginForm)
@@ -75,6 +76,12 @@ export default {
 
                 this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
               } else if (successResponse.data.code === 500) { // 跳转到默认用户
+                this.$store.commit('login', successResponse.data)
+                // _this.$store.commit('login', _this.loginForm)
+                path = this.$route.query.redirect
+
+                this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
+              } else if (successResponse.data.code === 600) { // 跳转到院校（举办方）
                 this.$store.commit('login', successResponse.data)
                 // _this.$store.commit('login', _this.loginForm)
                 path = this.$route.query.redirect

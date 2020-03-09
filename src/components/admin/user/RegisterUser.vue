@@ -2,12 +2,12 @@
   <div style="height: 550px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
     <div style="padding: 20px 0 10px 10px; font-weight: bolder">学生认证申请列表</div>
     <el-table
-      :data="organizerList"
+      :data="studentList"
       style="width: 100%"
       max-height="430">
       <el-table-column
         fixed
-        label="法人证书"
+        label="学生证"
         width="120"
         align="center">
         <template slot-scope="scope">
@@ -21,13 +21,13 @@
       <el-table-column
         fixed
         prop="user.name"
-        label="组织名称"
+        label="姓名"
         width="80"
         align="center">
       </el-table-column>
       <el-table-column
         prop="user.account"
-        label="编号"
+        label="学号"
         width="120"
         align="center">
       </el-table-column>
@@ -35,6 +35,12 @@
         prop="user.phone"
         label="电话"
         width="120"
+        align="center">
+      </el-table-column>
+      <el-table-column
+        prop="sex"
+        label="性别"
+        width="50"
         align="center">
       </el-table-column>
       <el-table-column
@@ -50,15 +56,33 @@
         align="center">
       </el-table-column>
       <el-table-column
-        prop="schoolType"
-        label="学校类型"
+        prop="academy"
+        label="学院"
         width="100"
         align="center">
       </el-table-column>
       <el-table-column
-        prop="schoolRunningType"
-        label="办学类型"
-        width="200"
+        prop="major"
+        label="专业"
+        width="100"
+        align="center">
+      </el-table-column>
+      <el-table-column
+        prop="education"
+        label="学历"
+        width="100"
+        align="center">
+      </el-table-column>
+      <el-table-column
+        prop="admissionDate"
+        label="入学日期"
+        width="100"
+        align="center">
+      </el-table-column>
+      <el-table-column
+        prop="graduationDate"
+        label="毕业日期"
+        width="100"
         align="center">
       </el-table-column>
       <el-table-column
@@ -68,13 +92,13 @@
         align="center">
         <template slot-scope="scope">
           <el-button
-            @click.native.prevent="reject(scope.$index, organizerList)"
+            @click.native.prevent="reject(scope.$index, studentList)"
             type="danger"
             size="mini">
             驳回
           </el-button>
           <el-button
-            @click.native.prevent="adopt(scope.$index, organizerList)"
+            @click.native.prevent="adopt(scope.$index, studentList)"
             type="danger"
             size="mini">
             通过
@@ -103,11 +127,11 @@
 
 <script>
 export default {
-  name: 'organizerAuthentic',
+  name: 'RegisterUser',
   data () {
     return {
-      organizerList: [],
-      organizer: {
+      studentList: [],
+      student: {
         id: '',
         user: {
           id: '',
@@ -117,11 +141,14 @@ export default {
           name: '',
           type: ''
         },
+        sex: '',
         email: '',
         school: '',
-        establishDate: '',
-        schoolType: '',
-        schoolRunningType: '',
+        admissionDate: '',
+        graduationDate: '',
+        academy: '',
+        major: '',
+        education: '',
         idImg: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         bigIdImg: [
           'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
@@ -130,16 +157,16 @@ export default {
     }
   },
   mounted: function () {
-    this.loadOrganizer()
+    this.loadStudent()
   },
   methods: {
-    loadOrganizer () {
-      this.$axios.get('/getAllOrganizer').then(resp => {
+    loadStudent () {
+      this.$axios.get('/getAllStudent').then(resp => {
         if (resp && resp.status === 200) {
-          this.organizerList = []
+          this.studentList = []
           for (let i = 0; i < resp.data.length; i++) {
-            if (resp.data[i].user.type === 60) {
-              let tempOrganizer = {
+            if (resp.data[i].user.type === 30) {
+              let tempStudent = {
                 id: resp.data[i].id,
                 user: {
                   id: resp.data[i].user.id,
@@ -149,15 +176,18 @@ export default {
                   name: resp.data[i].user.name,
                   type: resp.data[i].user.type
                 },
+                sex: resp.data[i].sex,
                 email: resp.data[i].email,
                 school: resp.data[i].school,
-                establishDate: resp.data[i].establishDate,
-                schoolType: resp.data[i].schoolType,
-                schoolRunningType: resp.data[i].schoolRunningType,
+                admissionDate: resp.data[i].admissionDate,
+                graduationDate: resp.data[i].graduationDate,
+                academy: resp.data[i].academy,
+                major: resp.data[i].major,
+                education: resp.data[i].education,
                 idImg: resp.data[i].idImg,
                 bigIdImg: [resp.data[i].idImg]
               }
-              this.organizerList.push(tempOrganizer)
+              this.studentList.push(tempStudent)
             }
           }
         }
@@ -167,7 +197,7 @@ export default {
       console.log('测试表格每行数据')
       console.log(rows[index])
       this.$axios
-        .post('/deleteOrganizer', {
+        .post('/deleteStudent', {
           id: rows[index].id,
           user: {
             id: rows[index].user.id,
@@ -177,11 +207,14 @@ export default {
             name: rows[index].user.name,
             type: rows[index].user.type
           },
+          sex: rows[index].sex,
           email: rows[index].email,
           school: rows[index].school,
-          establishDate: rows[index].establishDate,
-          schoolType: rows[index].schoolType,
-          schoolRunningType: rows[index].schoolRunningType,
+          admissionDate: rows[index].admissionDate,
+          graduationDate: rows[index].graduationDate,
+          academy: rows[index].academy,
+          major: rows[index].major,
+          education: rows[index].education,
           idImg: rows[index].idImg
         })
         .then(successResponse => {
@@ -200,7 +233,7 @@ export default {
     },
     adopt (index, rows) {
       this.$axios
-        .post('/updateOrganizer', {
+        .post('/updateStudent', {
           id: rows[index].id,
           user: {
             id: rows[index].user.id,
@@ -208,13 +241,16 @@ export default {
             phone: rows[index].user.phone,
             password: rows[index].user.password,
             name: rows[index].user.name,
-            type: 6
+            type: 3
           },
+          sex: rows[index].sex,
           email: rows[index].email,
           school: rows[index].school,
-          establishDate: rows[index].establishDate,
-          schoolType: rows[index].schoolType,
-          schoolRunningType: rows[index].schoolRunningType,
+          admissionDate: rows[index].admissionDate,
+          graduationDate: rows[index].graduationDate,
+          academy: rows[index].academy,
+          major: rows[index].major,
+          education: rows[index].education,
           idImg: rows[index].idImg
         })
         .then(successResponse => {
@@ -269,26 +305,29 @@ export default {
         })
     },
     allReject () {
-      this.loadOrganizer()
-      if (this.organizerList.length > 0) {
-        for (let i = 0; i < this.organizerList.length; i++) {
+      this.loadStudent()
+      if (this.studentList.length > 0) {
+        for (let i = 0; i < this.studentList.length; i++) {
           this.$axios
-            .post('/deleteOrganizer', {
-              id: this.organizerList[i].id,
+            .post('/deleteStudent', {
+              id: this.studentList[i].id,
               user: {
-                id: this.organizerList[i].user.id,
-                account: this.organizerList[i].user.account,
-                phone: this.organizerList[i].user.phone,
-                password: this.organizerList[i].user.password,
-                name: this.organizerList[i].user.name,
-                type: this.organizerList[i].user.type
+                id: this.studentList[i].user.id,
+                account: this.studentList[i].user.account,
+                phone: this.studentList[i].user.phone,
+                password: this.studentList[i].user.password,
+                name: this.studentList[i].user.name,
+                type: this.studentList[i].user.type
               },
-              email: this.organizerList[i].email,
-              school: this.organizerList[i].school,
-              establishDate: this.organizerList[i].establishDate,
-              schoolType: this.organizerList[i].schoolType,
-              schoolRunningType: this.organizerList[i].schoolRunningType,
-              idImg: this.organizerList[i].idImg
+              sex: this.studentList[i].sex,
+              email: this.studentList[i].email,
+              school: this.studentList[i].school,
+              admissionDate: this.studentList[i].admissionDate,
+              graduationDate: this.studentList[i].graduationDate,
+              academy: this.studentList[i].academy,
+              major: this.studentList[i].major,
+              education: this.studentList[i].education,
+              idImg: this.studentList[i].idImg
             })
             .then(successResponse => {
             })
@@ -300,14 +339,14 @@ export default {
             })
         }
         this.$message({
-          message: '驳回了' + this.organizerList.length + '名学生的认证请求',
+          message: '驳回了' + this.studentList.length + '名学生的认证请求',
           type: 'success'
         })
         // 一秒后刷新
         setTimeout(() => {
           window.open(
             this.$router.resolve({
-              path: '/admin/authentication/organizerAuthentic'
+              path: '/admin/authentication/studentAuthentic'
             }).href, '_self'
             // 打开新窗口：_blank
             // 在本地窗口打开：_self
@@ -321,29 +360,32 @@ export default {
       }
     },
     allAdopt () {
-      this.loadOrganizer()
-      if (this.organizerList.length > 0) {
-        for (let i = 0; i < this.organizerList.length; i++) {
+      this.loadStudent()
+      if (this.studentList.length > 0) {
+        for (let i = 0; i < this.studentList.length; i++) {
           this.$axios
-            .post('/updateOrganizer', {
-              id: this.organizerList[i].id,
+            .post('/updateStudent', {
+              id: this.studentList[i].id,
               user: {
-                id: this.organizerList[i].user.id,
-                account: this.organizerList[i].user.account,
-                phone: this.organizerList[i].user.phone,
-                password: this.organizerList[i].user.password,
-                name: this.organizerList[i].user.name,
-                type: 6
+                id: this.studentList[i].user.id,
+                account: this.studentList[i].user.account,
+                phone: this.studentList[i].user.phone,
+                password: this.studentList[i].user.password,
+                name: this.studentList[i].user.name,
+                type: 3
               },
-              email: this.organizerList[i].email,
-              school: this.organizerList[i].school,
-              establishDate: this.organizerList[i].establishDate,
-              schoolType: this.organizerList[i].schoolType,
-              schoolRunningType: this.organizerList[i].schoolRunningType,
-              idImg: this.organizerList[i].idImg
+              sex: this.studentList[i].sex,
+              email: this.studentList[i].email,
+              school: this.studentList[i].school,
+              admissionDate: this.studentList[i].admissionDate,
+              graduationDate: this.studentList[i].graduationDate,
+              academy: this.studentList[i].academy,
+              major: this.studentList[i].major,
+              education: this.studentList[i].education,
+              idImg: this.studentList[i].idImg
             })
             .then(successResponse => {
-              this.searchRegister(i, this.organizerList)
+              this.searchRegister(i, this.studentList)
             })
             .catch(failResponse => {
               this.$message({
@@ -353,14 +395,14 @@ export default {
             })
         }
         this.$message({
-          message: '通过了' + this.organizerList.length + '名学生的认证请求',
+          message: '通过了' + this.studentList.length + '名学生的认证请求',
           type: 'success'
         })
         // 一秒后刷新
         setTimeout(() => {
           window.open(
             this.$router.resolve({
-              path: '/admin/authentication/organizerAuthentic'
+              path: '/admin/authentication/studentAuthentic'
             }).href, '_self'
             // 打开新窗口：_blank
             // 在本地窗口打开：_self

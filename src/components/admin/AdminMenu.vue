@@ -39,6 +39,7 @@
         <el-menu-item index="/admin/user/studentUser">学生管理</el-menu-item>
         <el-menu-item index="/admin/user/teacherUser">教师管理</el-menu-item>
         <el-menu-item index="/admin/user/organizerUser">院校管理</el-menu-item>
+        <el-menu-item index="/admin/user/registerUser">未认证用户管理</el-menu-item>
         <el-menu-item index="/admin/user/adminUser">管理员管理</el-menu-item>
       </el-menu-item-group>
     </el-submenu>

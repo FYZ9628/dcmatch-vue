@@ -254,8 +254,8 @@ export default {
                   phone: this.$store.getters.account,
                   password: this.$store.getters.password,
                   name: this.individualAuthenticationForm.name,
-                  // 认证为学生 30 ，认证为院校 20，认证为教师 40
-                  type: 40
+                  // 认证为教师 20，认证为学生 30 认证为院校 60
+                  type: 20
                 },
                 sex: this.individualAuthenticationForm.sex,
                 email: this.individualAuthenticationForm.email,

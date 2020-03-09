@@ -51,7 +51,16 @@ import UserIndex from '@/components/admin/user/UserIndex'
 import StudentUser from '@/components/admin/user/StudentUser'
 import TeacherUser from '@/components/admin/user/TeacherUser'
 import OrganizerUser from '@/components/admin/user/OrganizerUser'
+import RegisterUser from '@/components/admin/user/RegisterUser'
 import AdminUser from '@/components/admin/user/AdminUser'
+import OrganizerIndex from '@/components/organizer/OrganizerIndex'
+import OrganizerAuthentication from '@/components/organizer/OrganizerAuthentication'
+import OrganizerMyContest from '@/components/organizer/OrganizerMyContest'
+import OrganizerPrizeWinning from '@/components/organizer/OrganizerPrizeWinning'
+import OrganizerMyOrder from '@/components/organizer/OrganizerMyOrder'
+import OrganizerMyNews from '@/components/organizer/OrganizerMyNews'
+import OrganizerMyAddress from '@/components/organizer/OrganizerMyAddress'
+import OrganizerAccountSetting from '@/components/organizer/OrganizerAccountSetting'
 
 Vue.use(Router)
 
@@ -221,6 +230,49 @@ export default new Router({
       ]
     },
     {
+      path: '/organizer',
+      name: 'OrganizerIndex',
+      component: OrganizerIndex,
+      redirect: '/organizer/authentication',
+      children: [
+        {
+          path: 'authentication',
+          name: 'OrganizerAuthentication',
+          component: OrganizerAuthentication
+        },
+        {
+          path: 'myContest',
+          name: 'OrganizerMyContest',
+          component: OrganizerMyContest
+        },
+        {
+          path: 'prizeWinning',
+          name: 'OrganizerPrizeWinning',
+          component: OrganizerPrizeWinning
+        },
+        {
+          path: 'myOrder',
+          name: 'OrganizerMyOrder',
+          component: OrganizerMyOrder
+        },
+        {
+          path: 'myNews',
+          name: 'OrganizerMyNews',
+          component: OrganizerMyNews
+        },
+        {
+          path: 'myAddress',
+          name: 'OrganizerMyAddress',
+          component: OrganizerMyAddress
+        },
+        {
+          path: 'accountSetting',
+          name: 'OrganizerAccountSetting',
+          component: OrganizerAccountSetting
+        }
+      ]
+    },
+    {
       path: '/teacherIndex',
       name: 'TeacherIndex',
       component: TeacherIndex
@@ -315,6 +367,11 @@ export default new Router({
               path: 'organizerUser',
               name: 'OrganizerUser',
               component: OrganizerUser
+            },
+            {
+              path: 'registerUser',
+              name: 'RegisterUser',
+              component: RegisterUser
             },
             {
               path: 'adminUser',
