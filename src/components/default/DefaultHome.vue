@@ -25,7 +25,7 @@ import CommonFooter from '@/components/common/CommonFooter'
 import DefaultMenu from '@/components/default/DefaultMenu'
 import DefaultHeader from '@/components/default/DefaultHeader'
 export default {
-  name: 'DefaultIndex',
+  name: 'DefaultHome',
   components: {DefaultHeader, DefaultMenu, CommonFooter}
 }
 </script>
@@ -35,6 +35,7 @@ export default {
     /*background-color: #475669;*/
     margin: 0;
     padding: 0;
+    min-width: 1070px;
   }
   .el-aside{
     /*background-color: #1a1a1a;*/

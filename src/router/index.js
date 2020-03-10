@@ -53,7 +53,7 @@ import TeacherUser from '@/components/admin/user/TeacherUser'
 import OrganizerUser from '@/components/admin/user/OrganizerUser'
 import RegisterUser from '@/components/admin/user/RegisterUser'
 import AdminUser from '@/components/admin/user/AdminUser'
-import OrganizerIndex from '@/components/organizer/OrganizerIndex'
+import OrganizerHome from '@/components/organizer/OrganizerHome'
 import OrganizerAuthentication from '@/components/organizer/OrganizerAuthentication'
 import OrganizerMyContest from '@/components/organizer/OrganizerMyContest'
 import OrganizerPrizeWinning from '@/components/organizer/OrganizerPrizeWinning'
@@ -231,8 +231,8 @@ export default new Router({
     },
     {
       path: '/organizer',
-      name: 'OrganizerIndex',
-      component: OrganizerIndex,
+      name: 'OrganizerHome',
+      component: OrganizerHome,
       redirect: '/organizer/authentication',
       children: [
         {

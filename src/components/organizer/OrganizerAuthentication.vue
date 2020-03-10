@@ -8,62 +8,30 @@
          width: 680px;  height: 60px">恭喜，您的个人认证信息已经通过后台审核！</el-tag>
       </div>
     </div>
-    <div style="height: 300px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
+    <div style="height: 150px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
       <span style="font-size: 16px; font-weight: bolder">个人认证信息</span>
       <div style="text-align: center; margin-top: 30px">
         <div style="display: block; float: left">
           <el-row style="line-height: 24px; padding: 10px 0">
             <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
+              组织名称：
             </span>
             <span style="display: block; float: left; margin-left: 30px">
-              变量数据
+              {{organizerData.user.name}}
             </span>
           </el-row>
           <el-row style="line-height: 24px; padding: 10px 0">
             <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
+              邮&emsp;&emsp;箱：
             </span>
             <span style="display: block; float: left; margin-left: 30px">
-              变量数据
-            </span>
-          </el-row>
-          <el-row style="line-height: 24px; padding: 10px 0">
-            <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
-            </span>
-            <span style="display: block; float: left; margin-left: 30px">
-              变量数据
-            </span>
-          </el-row>
-          <el-row style="line-height: 24px; padding: 10px 0">
-            <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
-            </span>
-            <span style="display: block; float: left; margin-left: 30px">
-              变量数据
-            </span>
-          </el-row>
-          <el-row style="line-height: 24px; padding: 10px 0">
-            <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
-            </span>
-            <span style="display: block; float: left; margin-left: 30px">
-              变量数据
-            </span>
-          </el-row>
-          <el-row style="line-height: 24px; padding: 10px 0">
-            <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
-            </span>
-            <span style="display: block; float: left; margin-left: 30px">
-              变量数据
+              {{organizerData.email}}
             </span>
           </el-row>
         </div>
-        <div style="display: block; float: right">
-            图片
-        </div>
+        <!--        <div style="display: block; float: right">-->
+        <!--            图片-->
+        <!--        </div>-->
       </div>
     </div>
     <div style="height: 300px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
@@ -72,55 +40,47 @@
         <div style="display: block; float: left">
           <el-row style="line-height: 24px; padding: 10px 0">
             <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
+              学&emsp;&emsp;校：
             </span>
             <span style="display: block; float: left; margin-left: 30px">
-              变量数据
+              {{organizerData.school}}
             </span>
           </el-row>
           <el-row style="line-height: 24px; padding: 10px 0">
             <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
+              编&emsp;&emsp;号：
             </span>
             <span style="display: block; float: left; margin-left: 30px">
-              变量数据
+              {{organizerData.user.account}}
             </span>
           </el-row>
           <el-row style="line-height: 24px; padding: 10px 0">
             <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
+              创立日期：
             </span>
             <span style="display: block; float: left; margin-left: 30px">
-              变量数据
+              {{organizerData.establishDate}}
             </span>
           </el-row>
           <el-row style="line-height: 24px; padding: 10px 0">
             <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
+              学校类型：
             </span>
             <span style="display: block; float: left; margin-left: 30px">
-              变量数据
+              {{organizerData.schoolType}}
             </span>
           </el-row>
           <el-row style="line-height: 24px; padding: 10px 0">
             <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
+             办学类型：
             </span>
             <span style="display: block; float: left; margin-left: 30px">
-              变量数据
-            </span>
-          </el-row>
-          <el-row style="line-height: 24px; padding: 10px 0">
-            <span style="display: block; float: left; color: #778a99">
-              姓&emsp;&emsp;名：
-            </span>
-            <span style="display: block; float: left; margin-left: 30px">
-              变量数据
+             {{organizerData.schoolRunningType}}
             </span>
           </el-row>
         </div>
-        <div style="display: block; float: right">
-          图片
+        <div style="width: 300px; height: 200px; display: block; float: right">
+          <img :src="organizerData.idImg" style="width: 300px; height: 200px;"/>
         </div>
       </div>
     </div>
@@ -132,12 +92,45 @@ export default {
   name: 'OrganizerAuthentication',
   data: function () {
     return {
-      studentData: [
-        {id: '', user: {id: '', account: '', phone: '', password: '', name: '', type: ''}, sex: ''}
-      ]
+      organizerData: {
+        id: '',
+        user: {
+          id: '',
+          account: '',
+          phone: '',
+          password: '',
+          name: '',
+          type: ''
+        },
+        email: '',
+        school: '',
+        establishDate: '',
+        schoolType: '',
+        schoolRunningType: ''
+      }
     }
   },
+  mounted: function () {
+    this.loadStudent()
+  },
   methods: {
+    loadStudent () {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchOrganizerByAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            this.organizerData = successResponse.data
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询学生失败',
+              type: 'error'
+            })
+          })
+      }
+    }
   }
 }
 </script>

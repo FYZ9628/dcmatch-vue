@@ -41,10 +41,11 @@ export default {
   }
   .footer {
     /*height: 100px;*/
-    width: 100%;
-    margin-top: 0px;
+    /*width: 100%;*/
+    margin-top: 0;
     box-sizing: border-box;
     background: #fff;
+    min-width: 1070px;
   }
   .bg1 {
     background: #1a1a1a;
