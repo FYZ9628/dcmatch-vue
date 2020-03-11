@@ -9,8 +9,8 @@
         <IndexHeader></IndexHeader>
       </div>
     </el-header>
-    <el-main>
-      <el-container style="margin: 0 200px; text-align: left; min-height: 300px">
+    <el-main style="margin: 0 auto">
+      <el-container style="width: 800px; text-align: left; min-height: 300px">
         <el-header>
             <h3 style="float: left; font-size: 24px">{{noticeData.title}}</h3>
         </el-header>

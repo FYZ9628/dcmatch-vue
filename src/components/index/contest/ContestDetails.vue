@@ -9,8 +9,8 @@
         <IndexHeader></IndexHeader>
       </div>
     </el-header>
-    <el-main>
-      <el-container style="margin: 0 200px; text-align: left; min-height: 300px">
+    <el-main style="margin: 0 auto;">
+      <el-container style="width: 800px; text-align: left; min-height: 300px">
         <el-header>
           <h3 style="float: left; font-size: 24px">{{contestDetailData.contestTitle}}</h3>
         </el-header>
@@ -19,11 +19,11 @@
             <el-row style="line-height: 30px">
               <p style="width: 280px; font-size: 14px; color: #a0a0a0; display: block; float: left; padding: 0; margin: 0">发布时间：{{contestDetailData.publishTime}}</p>
               <i class="el-icon-s-custom"></i>
-              <p style="display: block; float: left; color: #000000; line-height: 28px; font-size: 14px; padding: 0; margin: 0">{{contestDetailData.organizer.user.name}}</p>
+              <p style="display: block; float: left; color: #000000; line-height: 28px; font-size: 14px; padding: 0; margin: 0">{{contestDetailData.organizer.school}}{{contestDetailData.organizer.user.name}}</p>
             </el-row>
             <el-row>
-              <p style="width: 280px; font-size: 14px; color: #5c5c5c; display: block; float: left; padding: 0; margin: 0">报名开始时间：{{contestDetailData.startTime}}</p>
-              <p style="font-size: 14px; color: #5c5c5c; display: block; float: left; margin: 0 0 0 50px; padding: 0;">报名截止时间：{{contestDetailData.endTime}}</p>
+              <p style="width: 280px; font-size: 14px; color: #5c5c5c; display: block; float: left; padding: 0; margin: 0">报名开始时间：{{contestDetailData.signUpStartTime}}</p>
+              <p style="font-size: 14px; color: #5c5c5c; display: block; float: left; margin: 0 0 0 50px; padding: 0;">报名截止时间：{{contestDetailData.signUpEndTime}}</p>
             </el-row>
           </div>
           <div  style="display: block; float: right">

@@ -22,7 +22,7 @@
             <!--            <el-link :underline="false" style="display: block; float: left; font-size: 18px" :href="item.link" target="_blank">{{currentPageData[index].contestTitle}}</el-link>-->
             <el-container style="line-height: 30px; font-size: 12px; display: block; float: right">
               <i class="el-icon-s-custom"></i>
-              <p style="line-height: 7px; font-size: 12px; display: block; float: right">{{currentPageData[index].organizer.user.name}}</p>
+              <p style="line-height: 7px; font-size: 12px; display: block; float: right">{{currentPageData[index].organizer.school}}{{currentPageData[index].organizer.user.name}}</p>
             </el-container>
           </el-header>
           <el-main style="text-align: left; padding: 0">
@@ -30,8 +30,8 @@
           </el-main>
           <el-footer style="padding: 0; margin: 0">
             <p style="font-size: 12px; color: #a0a0a0;; display: block; float: left">发布时间：{{currentPageData[index].publishTime}}</p>
-            <p style="font-size: 12px; color: #5c5c5c;; display: block; float: left; margin-left: 50px">报名开始时间：{{currentPageData[index].startTime}}</p>
-            <p style="font-size: 12px; color: #5c5c5c;; display: block; float: left; margin-left: 50px">报名截止时间：{{currentPageData[index].endTime}}</p>
+            <p style="font-size: 12px; color: #5c5c5c;; display: block; float: left; margin-left: 50px">报名开始时间：{{currentPageData[index].signUpStartTime}}</p>
+            <p style="font-size: 12px; color: #5c5c5c;; display: block; float: left; margin-left: 50px">报名截止时间：{{currentPageData[index].signUpEndTime}}</p>
             <el-button type="text" style="display: block; float: right; color: #409EFF; line-height: 30px; font-size: 12px;" v-on:click="gotoCompetitionDetail(item)">详 情</el-button>
           </el-footer>
           <el-divider></el-divider>
@@ -85,43 +85,31 @@ export default {
           for (let currentNum = 0; currentNum < endNum; currentNum++) {
             if (currentNum <= this.contestDetailData.length - 1) {
               let tempContestDetail = {
-                id: '',
-                contestTitle: '',
+                id: _this.contestDetailData[currentNum].id,
+                contestTitle: _this.contestDetailData[currentNum].contestTitle,
                 organizer: {
-                  id: '',
+                  id: _this.contestDetailData[currentNum].organizer.id,
                   user: {
-                    id: '',
-                    account: '',
-                    phone: '',
-                    password: '',
-                    name: '',
-                    type: ''
+                    id: _this.contestDetailData[currentNum].organizer.user.id,
+                    account: _this.contestDetailData[currentNum].organizer.user.account,
+                    phone: _this.contestDetailData[currentNum].organizer.user.phone,
+                    password: _this.contestDetailData[currentNum].organizer.user.password,
+                    name: _this.contestDetailData[currentNum].organizer.user.name,
+                    type: _this.contestDetailData[currentNum].organizer.user.type
                   },
-                  phone: '',
-                  name: ''
+                  email: _this.contestDetailData[currentNum].organizer.email,
+                  school: _this.contestDetailData[currentNum].organizer.school
                 },
-                contestContent: '',
-                startTime: '',
-                endTime: '',
-                publishTime: '',
-                link: ''
+                contestContent: _this.contestDetailData[currentNum].contestContent,
+                signUpStartTime: _this.contestDetailData[currentNum].signUpStartTime,
+                signUpEndTime: _this.contestDetailData[currentNum].signUpEndTime,
+                publishTime: _this.contestDetailData[currentNum].publishTime,
+                place: _this.contestDetailData[currentNum].publishTime,
+                holdDate: _this.contestDetailData[currentNum].holdDate,
+                holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
+                holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
+                type: _this.contestDetailData[currentNum].type
               }
-              tempContestDetail.id = _this.contestDetailData[currentNum].id
-              tempContestDetail.contestTitle = _this.contestDetailData[currentNum].contestTitle
-              tempContestDetail.organizer.id = _this.contestDetailData[currentNum].organizer.id
-              tempContestDetail.organizer.phone = _this.contestDetailData[currentNum].organizer.phone
-              tempContestDetail.organizer.name = _this.contestDetailData[currentNum].organizer.name
-              tempContestDetail.organizer.user.id = _this.contestDetailData[currentNum].organizer.user.id
-              tempContestDetail.organizer.user.account = _this.contestDetailData[currentNum].organizer.user.account
-              tempContestDetail.organizer.user.phone = _this.contestDetailData[currentNum].organizer.user.phone
-              tempContestDetail.organizer.user.password = _this.contestDetailData[currentNum].organizer.user.password
-              tempContestDetail.organizer.user.name = _this.contestDetailData[currentNum].organizer.user.name
-              tempContestDetail.organizer.user.type = _this.contestDetailData[currentNum].organizer.user.type
-              tempContestDetail.contestContent = _this.contestDetailData[currentNum].contestContent
-              tempContestDetail.startTime = _this.contestDetailData[currentNum].startTime
-              tempContestDetail.endTime = _this.contestDetailData[currentNum].endTime
-              tempContestDetail.publishTime = _this.contestDetailData[currentNum].publishTime
-              tempContestDetail.link = _this.contestDetailData[currentNum].link
               this.currentPageData.push(tempContestDetail)
             }
           }
@@ -138,43 +126,31 @@ export default {
       for (let currentNum = currentNum1; currentNum < endNum; currentNum++) {
         if (currentNum < this.contestDetailData.length) {
           let tempContestDetail = {
-            id: '',
-            contestTitle: '',
+            id: _this.contestDetailData[currentNum].id,
+            contestTitle: _this.contestDetailData[currentNum].contestTitle,
             organizer: {
-              id: '',
+              id: _this.contestDetailData[currentNum].organizer.id,
               user: {
-                id: '',
-                account: '',
-                phone: '',
-                password: '',
-                name: '',
-                type: ''
+                id: _this.contestDetailData[currentNum].organizer.user.id,
+                account: _this.contestDetailData[currentNum].organizer.user.account,
+                phone: _this.contestDetailData[currentNum].organizer.user.phone,
+                password: _this.contestDetailData[currentNum].organizer.user.password,
+                name: _this.contestDetailData[currentNum].organizer.user.name,
+                type: _this.contestDetailData[currentNum].organizer.user.type
               },
-              phone: '',
-              name: ''
+              email: _this.contestDetailData[currentNum].organizer.email,
+              school: _this.contestDetailData[currentNum].organizer.school
             },
-            contestContent: '',
-            startTime: '',
-            endTime: '',
-            publishTime: '',
-            link: ''
+            contestContent: _this.contestDetailData[currentNum].contestContent,
+            signUpStartTime: _this.contestDetailData[currentNum].signUpStartTime,
+            signUpEndTime: _this.contestDetailData[currentNum].signUpEndTime,
+            publishTime: _this.contestDetailData[currentNum].publishTime,
+            place: _this.contestDetailData[currentNum].publishTime,
+            holdDate: _this.contestDetailData[currentNum].holdDate,
+            holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
+            holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
+            type: _this.contestDetailData[currentNum].type
           }
-          tempContestDetail.id = _this.contestDetailData[currentNum].id
-          tempContestDetail.contestTitle = _this.contestDetailData[currentNum].contestTitle
-          tempContestDetail.organizer.id = _this.contestDetailData[currentNum].organizer.id
-          tempContestDetail.organizer.phone = _this.contestDetailData[currentNum].organizer.phone
-          tempContestDetail.organizer.name = _this.contestDetailData[currentNum].organizer.name
-          tempContestDetail.organizer.user.id = _this.contestDetailData[currentNum].organizer.user.id
-          tempContestDetail.organizer.user.account = _this.contestDetailData[currentNum].organizer.user.account
-          tempContestDetail.organizer.user.phone = _this.contestDetailData[currentNum].organizer.user.phone
-          tempContestDetail.organizer.user.password = _this.contestDetailData[currentNum].organizer.user.password
-          tempContestDetail.organizer.user.name = _this.contestDetailData[currentNum].organizer.user.name
-          tempContestDetail.organizer.user.type = _this.contestDetailData[currentNum].organizer.user.type
-          tempContestDetail.contestContent = _this.contestDetailData[currentNum].contestContent
-          tempContestDetail.startTime = _this.contestDetailData[currentNum].startTime
-          tempContestDetail.endTime = _this.contestDetailData[currentNum].endTime
-          tempContestDetail.publishTime = _this.contestDetailData[currentNum].publishTime
-          tempContestDetail.link = _this.contestDetailData[currentNum].link
           this.currentPageData.push(tempContestDetail)
         }
       }
@@ -189,43 +165,31 @@ export default {
       for (let currentNum = currentNum1; currentNum < endNum; currentNum++) {
         if (currentNum < this.contestDetailData.length) {
           let tempContestDetail = {
-            id: '',
-            contestTitle: '',
+            id: _this.contestDetailData[currentNum].id,
+            contestTitle: _this.contestDetailData[currentNum].contestTitle,
             organizer: {
-              id: '',
+              id: _this.contestDetailData[currentNum].organizer.id,
               user: {
-                id: '',
-                account: '',
-                phone: '',
-                password: '',
-                name: '',
-                type: ''
+                id: _this.contestDetailData[currentNum].organizer.user.id,
+                account: _this.contestDetailData[currentNum].organizer.user.account,
+                phone: _this.contestDetailData[currentNum].organizer.user.phone,
+                password: _this.contestDetailData[currentNum].organizer.user.password,
+                name: _this.contestDetailData[currentNum].organizer.user.name,
+                type: _this.contestDetailData[currentNum].organizer.user.type
               },
-              phone: '',
-              name: ''
+              email: _this.contestDetailData[currentNum].organizer.email,
+              school: _this.contestDetailData[currentNum].organizer.school
             },
-            contestContent: '',
-            startTime: '',
-            endTime: '',
-            publishTime: '',
-            link: ''
+            contestContent: _this.contestDetailData[currentNum].contestContent,
+            signUpStartTime: _this.contestDetailData[currentNum].signUpStartTime,
+            signUpEndTime: _this.contestDetailData[currentNum].signUpEndTime,
+            publishTime: _this.contestDetailData[currentNum].publishTime,
+            place: _this.contestDetailData[currentNum].publishTime,
+            holdDate: _this.contestDetailData[currentNum].holdDate,
+            holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
+            holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
+            type: _this.contestDetailData[currentNum].type
           }
-          tempContestDetail.id = _this.contestDetailData[currentNum].id
-          tempContestDetail.contestTitle = _this.contestDetailData[currentNum].contestTitle
-          tempContestDetail.organizer.id = _this.contestDetailData[currentNum].organizer.id
-          tempContestDetail.organizer.phone = _this.contestDetailData[currentNum].organizer.phone
-          tempContestDetail.organizer.name = _this.contestDetailData[currentNum].organizer.name
-          tempContestDetail.organizer.user.id = _this.contestDetailData[currentNum].organizer.user.id
-          tempContestDetail.organizer.user.account = _this.contestDetailData[currentNum].organizer.user.account
-          tempContestDetail.organizer.user.phone = _this.contestDetailData[currentNum].organizer.user.phone
-          tempContestDetail.organizer.user.password = _this.contestDetailData[currentNum].organizer.user.password
-          tempContestDetail.organizer.user.name = _this.contestDetailData[currentNum].organizer.user.name
-          tempContestDetail.organizer.user.type = _this.contestDetailData[currentNum].organizer.user.type
-          tempContestDetail.contestContent = _this.contestDetailData[currentNum].contestContent
-          tempContestDetail.startTime = _this.contestDetailData[currentNum].startTime
-          tempContestDetail.endTime = _this.contestDetailData[currentNum].endTime
-          tempContestDetail.publishTime = _this.contestDetailData[currentNum].publishTime
-          tempContestDetail.link = _this.contestDetailData[currentNum].link
           this.currentPageData.push(tempContestDetail)
         }
       }
