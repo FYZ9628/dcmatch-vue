@@ -293,7 +293,7 @@ export default {
         school: [{required: true, message: '请输入学校', trigger: 'blur'}],
         entryDate: [{required: true, message: '请输入入职日期', trigger: 'blur'}],
         academy: [{required: true, message: '请输入所在院系', trigger: 'blur'}],
-        professionalTitle: [{required: true, message: '选择职称', trigger: 'blur'}],
+        professionalTitle: [{required: true, message: '请选择职称', trigger: 'blur'}],
         education: [{required: true, message: '请选择学历', trigger: 'blur'}]
       },
       schoolList: [],

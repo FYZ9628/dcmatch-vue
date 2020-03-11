@@ -1,20 +1,20 @@
 <template>
   <div style="height: 550px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
-    <div style="padding: 20px 0 10px 10px; font-weight: bolder">院校管理</div>
+    <div style="padding: 20px 0 10px 10px; font-weight: bolder">教师管理</div>
     <!--  可通过用户姓名、账号、电话、邮箱、学校、学院、专业查询  -->
     <el-table
-      :data="studentList.filter(data => !search || data.user.name.toLowerCase().includes(search.toLowerCase())
+      :data="organizerList.filter(data => !search || data.user.name.toLowerCase().includes(search.toLowerCase())
           || data.user.account.toLowerCase().includes(search.toLowerCase())
           || data.user.phone.toLowerCase().includes(search.toLowerCase())
           || data.email.toLowerCase().includes(search.toLowerCase())
           || data.school.toLowerCase().includes(search.toLowerCase())
-          || data.academy.toLowerCase().includes(search.toLowerCase())
-          || data.major.toLowerCase().includes(search.toLowerCase()))"
+          || data.schoolType.toLowerCase().includes(search.toLowerCase())
+          || data.schoolRunningType.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%"
       max-height="430">
       <el-table-column
         fixed
-        label="学生证"
+        label="证  书"
         width="120"
         align="center">
         <template slot-scope="scope">
@@ -34,20 +34,14 @@
       </el-table-column>
       <el-table-column
         prop="user.account"
-        label="学号"
-        width="120"
+        label="编号"
+        width="125"
         align="center">
       </el-table-column>
       <el-table-column
         prop="user.phone"
         label="电话"
         width="120"
-        align="center">
-      </el-table-column>
-      <el-table-column
-        prop="sex"
-        label="性别"
-        width="50"
         align="center">
       </el-table-column>
       <el-table-column
@@ -63,32 +57,20 @@
         align="center">
       </el-table-column>
       <el-table-column
-        prop="academy"
-        label="学院"
+        prop="schoolType"
+        label="学校类型"
         width="100"
         align="center">
       </el-table-column>
       <el-table-column
-        prop="major"
-        label="专业"
+        prop="schoolRunningType"
+        label="办学类型"
         width="100"
         align="center">
       </el-table-column>
       <el-table-column
-        prop="education"
-        label="学历"
-        width="100"
-        align="center">
-      </el-table-column>
-      <el-table-column
-        prop="admissionDate"
-        label="入学日期"
-        width="100"
-        align="center">
-      </el-table-column>
-      <el-table-column
-        prop="graduationDate"
-        label="毕业日期"
+        prop="establishDate"
+        label="创立日期"
         width="100"
         align="center">
       </el-table-column>
@@ -105,13 +87,13 @@
         </template>
         <template slot-scope="scope">
           <el-button
-            @click.native.prevent="editUser(scope.$index, studentList)"
+            @click.native.prevent="editUser(scope.$index, organizerList)"
             type="primary"
             size="mini">
             编辑
           </el-button>
           <el-button
-            @click.native.prevent="deleteUser(scope.$index, studentList)"
+            @click.native.prevent="deleteUser(scope.$index, organizerList)"
             type="danger"
             size="mini">
             删除
@@ -130,27 +112,19 @@
     </div>
     <!--  -------------------------------------------- 分界线 -------------------------------------------------------  -->
     <!--编辑界面-->
-    <el-dialog title="编辑学生信息"
+    <el-dialog title="编辑教师信息"
                :visible.sync="editUserFormVisible"
                :before-close="editUserFormHandleClose">
-      <div style="height: 800px; background-color: #ffffff; padding: 0 50px;">
+      <div style="height: 680px; background-color: #ffffff; padding: 0 50px;">
         <el-form :model="editUserForm" ref="editUserForm"
                  label-width="80px"
                  :rules="editUserFormRules"
                  style="width: 500px;">
           <el-form-item
-            label="姓  名"
+            label="组织名称"
             prop="user.name">
             <!--              v-model.number 只有输入数字才不会提示错误-->
             <el-input type="age" v-model="editUserForm.user.name" placeholder="姓名" autocomplete="off" size="small" style="margin-left: 20px"></el-input>
-          </el-form-item>
-          <el-form-item
-            label="性  别"
-            prop="sex">
-            <el-radio-group v-model="editUserForm.sex" style="margin-left: 20px">
-              <el-radio label="男"></el-radio>
-              <el-radio label="女"></el-radio>
-            </el-radio-group>
           </el-form-item>
           <el-form-item
             label="邮  箱"
@@ -159,7 +133,7 @@
           </el-form-item>
           <el-form-item
             label="电  话"
-            prop="user.account">
+            prop="user.phone">
             <!--              v-model.number 只有输入数字才不会提示错误-->
             <el-input v-model="editUserForm.user.phone" placeholder="电话" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
           </el-form-item>
@@ -177,50 +151,42 @@
             </el-select>
           </el-form-item>
           <el-form-item
-            label="学  号"
+            label="编  号"
             prop="user.account">
             <!--              v-model.number 只有输入数字才不会提示错误-->
-            <el-input v-model="editUserForm.user.account" placeholder="学号" :disabled="true" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
+            <el-input v-model="editUserForm.user.account" placeholder="编号" :disabled="true" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
           </el-form-item>
           <el-form-item
-            label="入学日期"
-            prop="admissionDate">
+            label="创立日期"
+            prop="establishDate">
             <el-date-picker
-              v-model="editUserForm.admissionDate"
+              v-model="editUserForm.establishDate"
               type="date"
-              placeholder="入学日期"
+              placeholder="创立日期"
               size="small"
               style="margin-left: 20px; width: 420px">
             </el-date-picker>
           </el-form-item>
           <el-form-item
-            label="毕业日期"
-            prop="graduationDate">
-            <el-date-picker
-              v-model="editUserForm.graduationDate"
-              type="date"
-              placeholder="毕业日期"
-              size="small"
-              style="margin-left: 20px; width: 420px">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item
-            label="所在院系"
-            prop="academy">
-            <el-input v-model="editUserForm.academy" placeholder="所在院系" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="专  业"
-            prop="major">
-            <el-input v-model="editUserForm.major" placeholder="专业" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="学  历"
-            prop="education">
-            <el-select v-model="editUserForm.education" placeholder="请选择" size="small"
+            label="学校类型"
+            prop="schoolType">
+            <el-select v-model="editUserForm.schoolType" placeholder="请选择" size="small"
                        style="margin-left: 20px; width: 420px">
               <el-option
-                v-for="item in educationList"
+                v-for="item in schoolTypeList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.name">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="办学类型"
+            prop="schoolRunningType">
+            <el-select v-model="editUserForm.schoolRunningType" placeholder="请选择" size="small"
+                       style="margin-left: 20px; width: 420px">
+              <el-option
+                v-for="item in schoolRunningTypeList"
                 :key="item.id"
                 :label="item.name"
                 :value="item.name">
@@ -229,7 +195,7 @@
           </el-form-item>
         </el-form>
         <div style="height: 200px; padding-left: 26px">
-          <p style="display: block; float: left">学生证</p>
+          <p style="display: block; float: left">认证书</p>
           <img :src="editUserForm.idImg" style="height: 150px; width: 250px;
                display: block; float: left; margin: 10px 0 0 30px">
         </div>
@@ -247,8 +213,8 @@ export default {
   name: 'OrganizerUser',
   data () {
     return {
-      studentList: [],
-      student: {
+      organizerList: [],
+      organizer: {
         id: '',
         user: {
           id: '',
@@ -258,14 +224,11 @@ export default {
           name: '',
           type: ''
         },
-        sex: '',
         email: '',
         school: '',
-        admissionDate: '',
-        graduationDate: '',
-        academy: '',
-        major: '',
-        education: '',
+        establishDate: '',
+        schoolType: '',
+        schoolRunningType: '',
         idImg: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         bigIdImg: [
           'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
@@ -283,14 +246,11 @@ export default {
           name: '',
           type: ''
         },
-        sex: '',
         email: '',
         school: '',
-        admissionDate: '',
-        graduationDate: '',
-        academy: '',
-        major: '',
-        education: '',
+        establishDate: '',
+        schoolType: '',
+        schoolRunningType: '',
         idImg: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
       },
       editUserFormRules: {
@@ -299,41 +259,91 @@ export default {
           phone: [{required: true, message: '请输入电话', trigger: 'blur'}],
           name: [{required: true, message: '请输入姓名', trigger: 'blur'}]
         },
-        sex: [{required: true, message: '请选择性别', trigger: 'blur'}],
         email: [{required: true, message: '请输入邮箱', trigger: 'blur'}],
         school: [{required: true, message: '请输入学校', trigger: 'blur'}],
-        admissionDate: [{required: true, message: '请输入入学日期', trigger: 'blur'}],
-        graduationDate: [{required: true, message: '请输入毕业日期', trigger: 'blur'}],
-        academy: [{required: true, message: '请输入所在院系', trigger: 'blur'}],
-        major: [{required: true, message: '请输入专业', trigger: 'blur'}],
-        education: [{required: true, message: '请选择学历', trigger: 'blur'}]
+        establishDate: [{required: true, message: '请输入创立日期', trigger: 'blur'}],
+        schoolType: [{required: true, message: '请选择学校类型', trigger: 'blur'}],
+        schoolRunningType: [{required: true, message: '请选择办学类型', trigger: 'blur'}]
       },
       schoolList: [],
-      educationList: [
+      schoolTypeList: [
         {
           id: 1,
-          name: '本科'
+          name: '综合类'
         },
         {
           id: 2,
-          name: '专科'
+          name: '民族类'
         },
         {
           id: 3,
-          name: '硕士研究生'
+          name: '理工类'
         },
         {
           id: 4,
-          name: '博士研究生'
+          name: '师范类'
+        },
+        {
+          id: 5,
+          name: '农林类'
+        },
+        {
+          id: 6,
+          name: '政法类'
+        },
+        {
+          id: 7,
+          name: '医药类'
+        },
+        {
+          id: 8,
+          name: '财经类'
+        },
+        {
+          id: 9,
+          name: '语言类'
+        },
+        {
+          id: 10,
+          name: '艺术类'
+        },
+        {
+          id: 11,
+          name: '体育类'
+        },
+        {
+          id: 12,
+          name: '军事类'
+        },
+        {
+          id: 11,
+          name: '旅游类'
         }
       ],
-      tempAdmissionDate: '',
-      tempGraduationDate: '',
+      schoolRunningTypeList: [
+        {
+          id: 1,
+          name: '普通本科'
+        },
+        {
+          id: 2,
+          name: '211高校'
+        },
+        {
+          id: 3,
+          name: '985高校'
+        },
+        {
+          id: 4,
+          name: '高职（高专）高校'
+        }
+      ],
+      tempEstablishDate: '',
       search: ''
     }
   },
   mounted: function () {
-    this.loadStudent()
+    this.loadOrganizer()
     this.loadSchool()
   },
   methods: {
@@ -345,13 +355,13 @@ export default {
         }
       })
     },
-    loadStudent () {
-      this.$axios.get('/getAllStudent').then(resp => {
+    loadOrganizer () {
+      this.$axios.get('/getAllOrganizer').then(resp => {
         if (resp && resp.status === 200) {
-          this.studentList = []
+          this.organizerList = []
           for (let i = 0; i < resp.data.length; i++) {
-            if (resp.data[i].user.type === 3) {
-              let tempStudent = {
+            if (resp.data[i].user.type === 6) {
+              let tempOrganizer = {
                 id: resp.data[i].id,
                 user: {
                   id: resp.data[i].user.id,
@@ -361,18 +371,15 @@ export default {
                   name: resp.data[i].user.name,
                   type: resp.data[i].user.type
                 },
-                sex: resp.data[i].sex,
                 email: resp.data[i].email,
                 school: resp.data[i].school,
-                admissionDate: resp.data[i].admissionDate,
-                graduationDate: resp.data[i].graduationDate,
-                academy: resp.data[i].academy,
-                major: resp.data[i].major,
-                education: resp.data[i].education,
+                establishDate: resp.data[i].establishDate,
+                schoolType: resp.data[i].schoolType,
+                schoolRunningType: resp.data[i].schoolRunningType,
                 idImg: resp.data[i].idImg,
                 bigIdImg: [resp.data[i].idImg]
               }
-              this.studentList.push(tempStudent)
+              this.organizerList.push(tempOrganizer)
             }
           }
         }
@@ -380,7 +387,7 @@ export default {
     },
     deleteUser (index, rows) {
       this.$axios
-        .post('/deleteStudent', {
+        .post('/deleteOrganizer', {
           id: rows[index].id,
           user: {
             id: rows[index].user.id,
@@ -390,19 +397,16 @@ export default {
             name: rows[index].user.name,
             type: rows[index].user.type
           },
-          sex: rows[index].sex,
           email: rows[index].email,
           school: rows[index].school,
-          admissionDate: rows[index].admissionDate,
-          graduationDate: rows[index].graduationDate,
-          academy: rows[index].academy,
-          major: rows[index].major,
-          education: rows[index].education,
+          establishDate: rows[index].establishDate,
+          schoolType: rows[index].schoolType,
+          schoolRunningType: rows[index].schoolRunningType,
           idImg: rows[index].idImg
         })
         .then(successResponse => {
           this.$message({
-            message: '删除了一名学生',
+            message: '删除了一个院校账号',
             type: 'success'
           })
           rows.splice(index, 1)
@@ -424,31 +428,24 @@ export default {
           phone: rows[index].user.phone,
           password: rows[index].user.password,
           name: rows[index].user.name,
-          type: 3
+          type: rows[index].user.type
         },
-        sex: rows[index].sex,
         email: rows[index].email,
         school: rows[index].school,
-        admissionDate: rows[index].admissionDate,
-        graduationDate: rows[index].graduationDate,
-        academy: rows[index].academy,
-        major: rows[index].major,
-        education: rows[index].education,
+        establishDate: rows[index].establishDate,
+        schoolType: rows[index].schoolType,
+        schoolRunningType: rows[index].schoolRunningType,
         idImg: rows[index].idImg
       }
-      this.tempAdmissionDate = rows[index].admissionDate
-      this.tempGraduationDate = rows[index].graduationDate
+      this.tempEstablishDate = rows[index].establishDate
     },
     editUserSubmit () {
       this.listenLoading = true
-      if (this.tempAdmissionDate !== this.editUserForm.admissionDate) {
-        this.tempAdmissionDate = this.editUserForm.admissionDate.toLocaleDateString()
-      }
-      if (this.tempGraduationDate !== this.editUserForm.graduationDate) {
-        this.tempGraduationDate = this.editUserForm.graduationDate.toLocaleDateString()
+      if (this.tempEstablishDate !== this.editUserForm.establishDate) {
+        this.tempEstablishDate = this.editUserForm.establishDate.toLocaleDateString()
       }
       this.$axios
-        .post('/updateStudent', {
+        .post('/updateOrganizer', {
           id: this.editUserForm.id,
           user: {
             id: this.editUserForm.user.id,
@@ -456,16 +453,13 @@ export default {
             phone: this.editUserForm.user.phone,
             password: this.editUserForm.user.password,
             name: this.editUserForm.user.name,
-            type: 3
+            type: 6
           },
-          sex: this.editUserForm.sex,
           email: this.editUserForm.email,
           school: this.editUserForm.school,
-          admissionDate: this.tempAdmissionDate,
-          graduationDate: this.tempGraduationDate,
-          academy: this.editUserForm.academy,
-          major: this.editUserForm.major,
-          education: this.editUserForm.education,
+          establishDate: this.tempEstablishDate,
+          schoolType: this.editUserForm.schoolType,
+          schoolRunningType: this.editUserForm.schoolRunningType,
           idImg: this.editUserForm.idImg
         })
         .then(successResponse => {
@@ -499,35 +493,33 @@ export default {
         .catch(_ => {})
     },
     allDelete () {
-      this.$confirm('确认全部删除？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true })
-        .then(_ => {
-          this.loadStudent()
-          if (this.studentList.length > 0) {
-            for (let i = 0; i < this.studentList.length; i++) {
+      this.loadOrganizer()
+      if (this.organizerList.length > 0) {
+        this.$confirm('确认全部删除？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        })
+          .then(_ => {
+            for (let i = 0; i < this.organizerList.length; i++) {
               this.$axios
-                .post('/deleteStudent', {
-                  id: this.studentList[i].id,
+                .post('/deleteOrganizer', {
+                  id: this.organizerList[i].id,
                   user: {
-                    id: this.studentList[i].user.id,
-                    account: this.studentList[i].user.account,
-                    phone: this.studentList[i].user.phone,
-                    password: this.studentList[i].user.password,
-                    name: this.studentList[i].user.name,
-                    type: this.studentList[i].user.type
+                    id: this.organizerList[i].user.id,
+                    account: this.organizerList[i].user.account,
+                    phone: this.organizerList[i].user.phone,
+                    password: this.organizerList[i].user.password,
+                    name: this.organizerList[i].user.name,
+                    type: this.organizerList[i].user.type
                   },
-                  sex: this.studentList[i].sex,
-                  email: this.studentList[i].email,
-                  school: this.studentList[i].school,
-                  admissionDate: this.studentList[i].admissionDate,
-                  graduationDate: this.studentList[i].graduationDate,
-                  academy: this.studentList[i].academy,
-                  major: this.studentList[i].major,
-                  education: this.studentList[i].education,
-                  idImg: this.studentList[i].idImg
+                  email: this.organizerList[i].email,
+                  school: this.organizerList[i].school,
+                  establishDate: this.organizerList[i].establishDate,
+                  schoolType: this.organizerList[i].schoolType,
+                  schoolRunningType: this.organizerList[i].schoolRunningType,
+                  idImg: this.organizerList[i].idImg
                 })
                 .then(successResponse => {
                 })
@@ -539,32 +531,32 @@ export default {
                 })
             }
             this.$message({
-              message: '成功删除了' + this.studentList.length + '名学生',
+              message: '成功删除了' + this.organizerList.length + '个院校账号',
               type: 'success'
             })
             // 一秒后刷新
             setTimeout(() => {
               window.open(
                 this.$router.resolve({
-                  path: '/admin/user/studentUser'
+                  path: '/admin/user/organizerUser'
                 }).href, '_self'
                 // 打开新窗口：_blank
                 // 在本地窗口打开：_self
               )
             }, 1000)
-          } else {
-            this.$message({
-              message: '当前无数据',
-              type: 'warning'
-            })
-          }
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
           })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
+      } else {
+        this.$message({
+          message: '当前无数据',
+          type: 'warning'
         })
+      }
     }
   }
 }
