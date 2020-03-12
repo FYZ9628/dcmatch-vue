@@ -96,13 +96,17 @@ export default {
                     type: _this.allContestDetailData[i].organizer.user.type
                   },
                   email: _this.allContestDetailData[i].organizer.email,
-                  school: _this.allContestDetailData[i].organizer.school
+                  school: _this.allContestDetailData[i].organizer.school,
+                  establishDate: _this.allContestDetailData[i].organizer.establishDate,
+                  schoolType: _this.allContestDetailData[i].organizer.schoolType,
+                  schoolRunningType: _this.allContestDetailData[i].organizer.schoolRunningType,
+                  idImg: _this.allContestDetailData[i].organizer.idImg
                 },
                 contestContent: _this.allContestDetailData[i].contestContent,
                 signUpStartTime: _this.allContestDetailData[i].signUpStartTime,
                 signUpEndTime: _this.allContestDetailData[i].signUpEndTime,
                 publishTime: _this.allContestDetailData[i].publishTime,
-                place: _this.allContestDetailData[i].publishTime,
+                place: _this.allContestDetailData[i].place,
                 holdDate: _this.allContestDetailData[i].holdDate,
                 holdStartTime: _this.allContestDetailData[i].holdStartTime,
                 holdEndTime: _this.allContestDetailData[i].holdEndTime,
@@ -130,13 +134,17 @@ export default {
                     type: _this.contestDetailData[currentNum].organizer.user.type
                   },
                   email: _this.contestDetailData[currentNum].organizer.email,
-                  school: _this.contestDetailData[currentNum].organizer.school
+                  school: _this.contestDetailData[currentNum].organizer.school,
+                  establishDate: _this.contestDetailData[currentNum].organizer.establishDate,
+                  schoolType: _this.contestDetailData[currentNum].organizer.schoolType,
+                  schoolRunningType: _this.contestDetailData[currentNum].organizer.schoolRunningType,
+                  idImg: _this.contestDetailData[currentNum].organizer.idImg
                 },
                 contestContent: _this.contestDetailData[currentNum].contestContent,
                 signUpStartTime: _this.contestDetailData[currentNum].signUpStartTime,
                 signUpEndTime: _this.contestDetailData[currentNum].signUpEndTime,
                 publishTime: _this.contestDetailData[currentNum].publishTime,
-                place: _this.contestDetailData[currentNum].publishTime,
+                place: _this.contestDetailData[currentNum].place,
                 holdDate: _this.contestDetailData[currentNum].holdDate,
                 holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
                 holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
@@ -171,13 +179,17 @@ export default {
                 type: _this.contestDetailData[currentNum].organizer.user.type
               },
               email: _this.contestDetailData[currentNum].organizer.email,
-              school: _this.contestDetailData[currentNum].organizer.school
+              school: _this.contestDetailData[currentNum].organizer.school,
+              establishDate: _this.contestDetailData[currentNum].organizer.establishDate,
+              schoolType: _this.contestDetailData[currentNum].organizer.schoolType,
+              schoolRunningType: _this.contestDetailData[currentNum].organizer.schoolRunningType,
+              idImg: _this.contestDetailData[currentNum].organizer.idImg
             },
             contestContent: _this.contestDetailData[currentNum].contestContent,
             signUpStartTime: _this.contestDetailData[currentNum].signUpStartTime,
             signUpEndTime: _this.contestDetailData[currentNum].signUpEndTime,
             publishTime: _this.contestDetailData[currentNum].publishTime,
-            place: _this.contestDetailData[currentNum].publishTime,
+            place: _this.contestDetailData[currentNum].place,
             holdDate: _this.contestDetailData[currentNum].holdDate,
             holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
             holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
@@ -210,13 +222,17 @@ export default {
                 type: _this.contestDetailData[currentNum].organizer.user.type
               },
               email: _this.contestDetailData[currentNum].organizer.email,
-              school: _this.contestDetailData[currentNum].organizer.school
+              school: _this.contestDetailData[currentNum].organizer.school,
+              establishDate: _this.contestDetailData[currentNum].organizer.establishDate,
+              schoolType: _this.contestDetailData[currentNum].organizer.schoolType,
+              schoolRunningType: _this.contestDetailData[currentNum].organizer.schoolRunningType,
+              idImg: _this.contestDetailData[currentNum].organizer.idImg
             },
             contestContent: _this.contestDetailData[currentNum].contestContent,
             signUpStartTime: _this.contestDetailData[currentNum].signUpStartTime,
             signUpEndTime: _this.contestDetailData[currentNum].signUpEndTime,
             publishTime: _this.contestDetailData[currentNum].publishTime,
-            place: _this.contestDetailData[currentNum].publishTime,
+            place: _this.contestDetailData[currentNum].place,
             holdDate: _this.contestDetailData[currentNum].holdDate,
             holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
             holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
@@ -267,13 +283,17 @@ export default {
                       type: _this.searchResult[i].organizer.user.type
                     },
                     email: _this.searchResult[i].organizer.email,
-                    school: _this.searchResult[i].organizer.school
+                    school: _this.searchResult[i].organizer.school,
+                    establishDate: _this.searchResult[i].organizer.establishDate,
+                    schoolType: _this.searchResult[i].organizer.schoolType,
+                    schoolRunningType: _this.searchResult[i].organizer.schoolRunningType,
+                    idImg: _this.searchResult[i].organizer.idImg
                   },
                   contestContent: _this.searchResult[i].contestContent,
                   signUpStartTime: _this.searchResult[i].signUpStartTime,
                   signUpEndTime: _this.searchResult[i].signUpEndTime,
                   publishTime: _this.searchResult[i].publishTime,
-                  place: _this.searchResult[i].publishTime,
+                  place: _this.searchResult[i].place,
                   holdDate: _this.searchResult[i].holdDate,
                   holdStartTime: _this.searchResult[i].holdStartTime,
                   holdEndTime: _this.searchResult[i].holdEndTime,

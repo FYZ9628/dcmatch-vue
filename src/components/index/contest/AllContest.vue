@@ -98,13 +98,17 @@ export default {
                     type: _this.contestDetailData[currentNum].organizer.user.type
                   },
                   email: _this.contestDetailData[currentNum].organizer.email,
-                  school: _this.contestDetailData[currentNum].organizer.school
+                  school: _this.contestDetailData[currentNum].organizer.school,
+                  establishDate: _this.contestDetailData[currentNum].organizer.establishDate,
+                  schoolType: _this.contestDetailData[currentNum].organizer.schoolType,
+                  schoolRunningType: _this.contestDetailData[currentNum].organizer.schoolRunningType,
+                  idImg: _this.contestDetailData[currentNum].organizer.idImg
                 },
                 contestContent: _this.contestDetailData[currentNum].contestContent,
                 signUpStartTime: _this.contestDetailData[currentNum].signUpStartTime,
                 signUpEndTime: _this.contestDetailData[currentNum].signUpEndTime,
                 publishTime: _this.contestDetailData[currentNum].publishTime,
-                place: _this.contestDetailData[currentNum].publishTime,
+                place: _this.contestDetailData[currentNum].place,
                 holdDate: _this.contestDetailData[currentNum].holdDate,
                 holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
                 holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
@@ -139,13 +143,17 @@ export default {
                 type: _this.contestDetailData[currentNum].organizer.user.type
               },
               email: _this.contestDetailData[currentNum].organizer.email,
-              school: _this.contestDetailData[currentNum].organizer.school
+              school: _this.contestDetailData[currentNum].organizer.school,
+              establishDate: _this.contestDetailData[currentNum].organizer.establishDate,
+              schoolType: _this.contestDetailData[currentNum].organizer.schoolType,
+              schoolRunningType: _this.contestDetailData[currentNum].organizer.schoolRunningType,
+              idImg: _this.contestDetailData[currentNum].organizer.idImg
             },
             contestContent: _this.contestDetailData[currentNum].contestContent,
             signUpStartTime: _this.contestDetailData[currentNum].signUpStartTime,
             signUpEndTime: _this.contestDetailData[currentNum].signUpEndTime,
             publishTime: _this.contestDetailData[currentNum].publishTime,
-            place: _this.contestDetailData[currentNum].publishTime,
+            place: _this.contestDetailData[currentNum].place,
             holdDate: _this.contestDetailData[currentNum].holdDate,
             holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
             holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
@@ -178,13 +186,17 @@ export default {
                 type: _this.contestDetailData[currentNum].organizer.user.type
               },
               email: _this.contestDetailData[currentNum].organizer.email,
-              school: _this.contestDetailData[currentNum].organizer.school
+              school: _this.contestDetailData[currentNum].organizer.school,
+              establishDate: _this.contestDetailData[currentNum].organizer.establishDate,
+              schoolType: _this.contestDetailData[currentNum].organizer.schoolType,
+              schoolRunningType: _this.contestDetailData[currentNum].organizer.schoolRunningType,
+              idImg: _this.contestDetailData[currentNum].organizer.idImg
             },
             contestContent: _this.contestDetailData[currentNum].contestContent,
             signUpStartTime: _this.contestDetailData[currentNum].signUpStartTime,
             signUpEndTime: _this.contestDetailData[currentNum].signUpEndTime,
             publishTime: _this.contestDetailData[currentNum].publishTime,
-            place: _this.contestDetailData[currentNum].publishTime,
+            place: _this.contestDetailData[currentNum].place,
             holdDate: _this.contestDetailData[currentNum].holdDate,
             holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
             holdEndTime: _this.contestDetailData[currentNum].holdEndTime,

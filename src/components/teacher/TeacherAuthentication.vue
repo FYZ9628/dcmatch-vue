@@ -130,10 +130,10 @@ export default {
     }
   },
   mounted: function () {
-    this.loadStudent()
+    this.loadTeacher()
   },
   methods: {
-    loadStudent () {
+    loadTeacher () {
       if (this.$store.getters.account) {
         this.$axios
           .post('/searchTeacherByAccount', {
@@ -144,7 +144,7 @@ export default {
           })
           .catch(failResponse => {
             this.$message({
-              message: '查询学生失败',
+              message: '查询教师失败',
               type: 'error'
             })
           })
