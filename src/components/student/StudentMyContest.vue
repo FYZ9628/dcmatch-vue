@@ -166,12 +166,7 @@ export default {
         state: '',
         ticketNumber: '',
         score: ''
-      },
-      NowSignUpData: [
-        {name: '数学竞赛'},
-        {name: '英语竞赛'},
-        {name: '程序设计竞赛发送到发斯蒂芬'}
-      ]
+      }
     }
   },
   mounted: function () {
@@ -213,7 +208,11 @@ export default {
             keywords: this.$store.getters.account
           })
           .then(successResponse => {
-            this.contestList = successResponse.data
+            for (let i = 0; i < successResponse.data.length; i++) {
+              if (successResponse.data[i].state !== 3) {
+                this.contestList.push(successResponse.data[i])
+              }
+            }
           })
           .catch(failResponse => {
             this.$message({

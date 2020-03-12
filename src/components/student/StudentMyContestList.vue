@@ -7,7 +7,7 @@
 <!--    </div>-->
     <div style="height: 460px; background-color: #ffffff; padding: 10px 0 0 30px">
       <span style="font-weight: bolder; background-color: #ffffff;">已报名比赛科目列表</span>
-      <div style="overflow-y: scroll; height: 400px; background-color: #ffffff; margin-top: 20px">
+      <div style="overflow-y: scroll; height: 400px; background-color: #ffffff; margin-bottom: 20px">
         <div v-for="(item, index) in contestList"
              :key="item.value"
              style="text-align: left; margin: 30px 30px 0 0">
@@ -89,9 +89,7 @@ export default {
         state: '',
         ticketNumber: '',
         score: ''
-      },
-      count: 100,
-      loading: false
+      }
     }
   },
   mounted: function () {
@@ -107,7 +105,11 @@ export default {
             keywords: this.$store.getters.account
           })
           .then(successResponse => {
-            this.contestList = successResponse.data
+            for (let i = 0; i < successResponse.data.length; i++) {
+              if (successResponse.data[i].state !== 3) {
+                this.contestList.push(successResponse.data[i])
+              }
+            }
           })
           .catch(failResponse => {
             this.$message({
