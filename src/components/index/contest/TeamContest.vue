@@ -81,7 +81,7 @@ export default {
         if (resp && resp.status === 200) {
           _this.allContestDetailData = resp.data
           for (let i = 0; i <= _this.allContestDetailData.length - 1; i++) {
-            if (_this.allContestDetailData[i].type === 2) {
+            if (_this.allContestDetailData[i].type === '团队赛') {
               let tempContestDetail = {
                 id: _this.allContestDetailData[i].id,
                 contestTitle: _this.allContestDetailData[i].contestTitle,
