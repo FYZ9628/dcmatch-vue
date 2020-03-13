@@ -7,7 +7,7 @@
 <!--    </div>-->
     <div style="height: 550px; background-color: #ffffff; padding: 10px 30px">
       <div>
-        <span style="font-weight: bolder;">{{contestDate.contestDetail.contestTitle}}</span>
+        <span style="font-weight: bolder;">{{contestDetail.contestTitle}}</span>
         <div style="display: block; float: right">
           <el-button type="primary">修改比赛</el-button>
           <el-button type="primary" @click="gotoContestSignUp">查看报名名单</el-button>
@@ -15,26 +15,26 @@
       </div>
       <el-row style="line-height: 24px; padding: 10px 0; margin-top: 20px">
         <span style="display: block; float: left; color: #778a99">发布时间：</span>
-        <span style="display: block; float: left; margin-left: 30px">{{contestDate.contestDetail.publishTime}}</span>
+        <span style="display: block; float: left; margin-left: 30px">{{contestDetail.publishTime}}</span>
       </el-row>
       <el-row style="line-height: 24px; padding: 10px 0">
         <span style="display: block; float: left; color: #778a99">报名时间：</span>
-        <span style="display: block; float: left; margin-left: 30px">{{contestDate.contestDetail.signUpStartTime}}——{{contestDate.contestDetail.signUpEndTime}}</span>
+        <span style="display: block; float: left; margin-left: 30px">{{contestDetail.signUpStartTime}}——{{contestDetail.signUpEndTime}}</span>
       </el-row>
       <el-row style="line-height: 24px; padding: 10px 0">
         <span style="display: block; float: left; color: #778a99">比赛时间：</span>
-        <span style="display: block; float: left; margin-left: 30px">{{contestDate.contestDetail.holdDate}} {{contestDate.contestDetail.holdStartTime}}-{{contestDate.contestDetail.holdEndTime}}</span>
+        <span style="display: block; float: left; margin-left: 30px">{{contestDetail.holdDate}} {{contestDetail.holdStartTime}}-{{contestDate.contestDetail.holdEndTime}}</span>
       </el-row>
       <el-row style="line-height: 24px; padding: 10px 0">
         <span style="display: block; float: left; color: #778a99">举办地点：</span>
-        <span style="display: block; float: left; margin-left: 30px">{{contestDate.contestDetail.place}}</span>
+        <span style="display: block; float: left; margin-left: 30px">{{contestDetail.place}}</span>
       </el-row>
       <el-row style="line-height: 24px; padding: 10px 0">
         <span style="display: block; float: left; color: #778a99">详细内容：</span>
       </el-row>
       <div style="overflow-y: scroll; height: 250px; background-color: #ffffff; margin-bottom: 20px">
         <p>
-          {{contestDate.contestDetail.contestContent}}
+          {{contestDetail.contestContent}}
         </p>
       </div>
     </div>
@@ -46,6 +46,36 @@ export default {
   name: 'OrganizerMyContestDetails',
   data: function () {
     return {
+      contestDetail: {
+        id: '',
+        contestTitle: '',
+        organizer: {
+          id: '',
+          user: {
+            id: '',
+            account: '',
+            phone: '',
+            password: '',
+            name: '',
+            type: ''
+          },
+          email: '',
+          school: '',
+          establishDate: '',
+          schoolType: '',
+          schoolRunningType: '',
+          idImg: ''
+        },
+        contestContent: '',
+        signUpStartTime: '',
+        signUpEndTime: '',
+        publishTime: '',
+        place: '',
+        holdDate: '',
+        holdStartTime: '',
+        holdEndTime: '',
+        type: ''
+      },
       contestDate: {
         id: '',
         contestDetail: {
@@ -105,10 +135,10 @@ export default {
     }
   },
   mounted: function () {
-    // 接收contest数据
-    let contestJson = sessionStorage.getItem('contestJson')
-    this.contestDate = JSON.parse(contestJson)
-    this.loadContest()
+    // 接收contestDetail数据
+    let contestDetailJson = sessionStorage.getItem('contestDetailJson')
+    this.contestDetail = JSON.parse(contestDetailJson)
+    // this.loadContest()
   },
   methods: {
     loadContest () {

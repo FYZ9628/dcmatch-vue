@@ -135,6 +135,36 @@ export default {
   data () {
     return {
       contestList: [],
+      contestDetail: {
+        id: '',
+        contestTitle: '',
+        organizer: {
+          id: '',
+          user: {
+            id: '',
+            account: '',
+            phone: '',
+            password: '',
+            name: '',
+            type: ''
+          },
+          email: '',
+          school: '',
+          establishDate: '',
+          schoolType: '',
+          schoolRunningType: '',
+          idImg: ''
+        },
+        contestContent: '',
+        signUpStartTime: '',
+        signUpEndTime: '',
+        publishTime: '',
+        place: '',
+        holdDate: '',
+        holdStartTime: '',
+        holdEndTime: '',
+        type: ''
+      },
       contestDate: {
         id: '',
         contestDetail: {
@@ -195,9 +225,9 @@ export default {
     }
   },
   mounted: function () {
-    // 接收contest数据
-    let contestJson = sessionStorage.getItem('contestJson')
-    this.contestDate = JSON.parse(contestJson)
+    // 接收contestDetail数据
+    let contestDetailJson = sessionStorage.getItem('contestDetailJson')
+    this.contestDetail = JSON.parse(contestDetailJson)
     this.loadContest()
   },
   methods: {
@@ -205,7 +235,7 @@ export default {
       if (this.$store.getters.account) {
         this.$axios
           .post('/searchContestByContestDetailId', {
-            keywords: this.contestDate.contestDetail.id
+            keywords: this.contestDetail.id
           })
           .then(successResponse => {
             this.contestList = successResponse.data
@@ -369,14 +399,14 @@ export default {
                 })
             }
             this.$message({
-              message: '成功删除了' + this.studentList.length + '名学生',
+              message: '成功删除了' + this.contestList.length + '条报名信息',
               type: 'success'
             })
             // 一秒后刷新
             setTimeout(() => {
               window.open(
                 this.$router.resolve({
-                  path: '/admin/user/studentUser'
+                  path: '/organizer/contestSignUp'
                 }).href, '_self'
                 // 打开新窗口：_blank
                 // 在本地窗口打开：_self

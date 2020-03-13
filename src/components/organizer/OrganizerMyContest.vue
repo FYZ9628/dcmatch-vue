@@ -9,7 +9,7 @@
       <div style="height: 160px; margin: 10px 0 0 20px">
         <span style="margin-top: 10px; font-weight: bolder">进行中的比赛科目列表如下：</span>
         <div style="overflow-y: scroll; height: 400px; background-color: #ffffff; margin-bottom: 20px">
-          <div v-for="(item, index) in contestList"
+          <div v-for="(item, index) in contestDetailList"
                :key="item.value"
                style="text-align: left; margin: 30px 30px 0 0">
             <div style="height: 40px; border: 1px solid #559ae2; border-radius: 5px;
@@ -17,16 +17,16 @@
               <div style="width: 500px; font-size: 18px; font-weight: bolder;
              line-height: 40px;  display: block; float: left;
               overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">
-                {{item.contestDetail.contestTitle}}
+                {{item.contestTitle}}
               </div>
-              <el-button type="primary" @click="gotoContestDetails(index, contestList)" plain style="height: 40px; display: block; float: right">
+              <el-button type="primary" @click="gotoContestDetails(index, contestDetailList)" plain style="height: 40px; display: block; float: right">
                 查看详情
               </el-button>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="contestList.length === 0" style="text-align: center; margin-top: 60px">
+      <div v-if="contestDetailList.length === 0" style="text-align: center; margin-top: 60px">
         <el-tag type="success" style="width: 680px; font-weight: bolder; color: #33ba9b; font-size: 16px; line-height:60px;
           height: 60px">暂无可查询的比赛结果</el-tag>
       </div>
@@ -177,7 +177,38 @@ export default {
         schoolType: '',
         schoolRunningType: ''
       },
-      contestList: [],
+      contestDetailList: [],
+      contestDetail: {
+        id: '',
+        contestTitle: '',
+        organizer: {
+          id: '',
+          user: {
+            id: '',
+            account: '',
+            phone: '',
+            password: '',
+            name: '',
+            type: ''
+          },
+          email: '',
+          school: '',
+          establishDate: '',
+          schoolType: '',
+          schoolRunningType: '',
+          idImg: ''
+        },
+        contestContent: '',
+        signUpStartTime: '',
+        signUpEndTime: '',
+        publishTime: '',
+        place: '',
+        holdDate: '',
+        holdStartTime: '',
+        holdEndTime: '',
+        type: '',
+        state: ''
+      },
       publishContestDetailFormVisible: false, // 编辑界面是否显示
       listenLoading: false,
       publishContestDetailForm: {
@@ -209,7 +240,8 @@ export default {
         holdStartTime: '',
         holdEndTime: '',
         type: '',
-        upperLimit: ''
+        upperLimit: '',
+        state: ''
       },
       publishContestDetailFormRules: {
         contestTitle: [{required: true, message: '请输入标题', trigger: 'blur'}],
@@ -257,9 +289,6 @@ export default {
   mounted: function () {
     this.loadOrganizer()
     this.loadContest()
-    let nowDate = new Date()
-    console.log(nowDate)
-    console.log(new Date())
   },
   methods: {
     loadOrganizer () {
@@ -282,13 +311,13 @@ export default {
     loadContest () {
       if (this.$store.getters.account) {
         this.$axios
-          .post('/searchContestByOrganizerAccount', {
+          .post('/searchContestDetailByOrganizerAccount', {
             keywords: this.$store.getters.account
           })
           .then(successResponse => {
             for (let i = 0; i < successResponse.data.length; i++) {
-              if (successResponse.data[i].state !== 3) {
-                this.contestList.push(successResponse.data[i])
+              if (successResponse.data[i].state !== '查看成绩阶段') {
+                this.contestDetailList.push(successResponse.data[i])
               }
             }
           })
@@ -315,6 +344,7 @@ export default {
           console.log(this.publishContestDetailForm.holdDate)
           console.log(this.publishContestDetailForm.holdStartTime)
           console.log(this.publishContestDetailForm.holdEndTime)
+          console.log(this.$moment().format('YYYY-MM-DD HH:mm:ss'))
           this.$axios
             .post('/addContestDetail', {
               id: '',
@@ -323,13 +353,14 @@ export default {
               contestContent: this.publishContestDetailForm.contestContent,
               signUpStartTime: this.publishContestDetailForm.signUpStartTime,
               signUpEndTime: this.publishContestDetailForm.signUpEndTime,
-              publishTime: this.publishContestDetailForm.signUpEndTime,
+              publishTime: this.$moment().format('YYYY-MM-DD HH:mm:ss'),
               place: this.publishContestDetailForm.place,
               holdDate: this.publishContestDetailForm.holdDate,
               holdStartTime: this.publishContestDetailForm.holdStartTime,
               holdEndTime: this.publishContestDetailForm.holdEndTime,
               type: this.publishContestDetailForm.type,
-              upperLimit: this.publishContestDetailForm.upperLimit
+              upperLimit: this.publishContestDetailForm.upperLimit,
+              state: '报名阶段'
             })
             .then(successResponse => {
               this.listenLoading = false
@@ -363,11 +394,11 @@ export default {
         })
         .catch(_ => {})
     },
-    gotoContestDetails: function (index, contestList) {
-      let contestJson = JSON.stringify(contestList[index])
+    gotoContestDetails: function (index, contestDetailList) {
+      let contestDetailJson = JSON.stringify(contestDetailList[index])
       // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
       // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
-      sessionStorage.setItem('contestJson', contestJson)
+      sessionStorage.setItem('contestDetailJson', contestDetailJson)
       this.$router.push({
         path: '/organizer/contestDetails'
         // name: 'noticeDetails/'
