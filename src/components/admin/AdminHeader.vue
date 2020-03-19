@@ -3,7 +3,7 @@
     <a >
       <img src="../../assets/logoIcon.png" alt="" width="55px" style="float: left;margin-top: -5px;">
     </a>
-    <span style="font-size: 32px;font-weight: bold;position:absolute;left: 100px">科竞赛赛程管理信息系统</span>
+    <span style="font-size: 32px;font-weight: bold;position:absolute;left: 100px">学科竞赛赛程管理信息系统</span>
     <i class="el-icon-switch-button" v-on:click="logout" style="font-size: 40px;float: right"></i>
   </el-card>
 </template>

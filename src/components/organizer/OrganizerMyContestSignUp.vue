@@ -1,6 +1,6 @@
 <template>
   <div style="width: 800px; height: 550px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
-    <el-page-header @back="goBack" content="比赛报名名单管理" style="padding: 20px 20px; background-color: #ffffff">
+    <el-page-header @back="goBack" content="竞赛报名名单管理" style="padding: 20px 20px; background-color: #ffffff">
     </el-page-header>
 <!--    <div style="padding: 20px 0 10px 10px; font-weight: bolder">学生管理</div>-->
     <!--  可通过用户姓名、账号、电话、邮箱、学校、学院、专业查询  -->

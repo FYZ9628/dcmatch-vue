@@ -27,14 +27,17 @@ export default {
   methods: {
     searchUser (phone) {
       this.$axios
-        .post('/searchUser', {
+        .post('/searchUserByPhone', {
           keywords: phone
         })
         .then(successResponse => {
           // 只要数据库有添加了（只加在了一个表，但其它表不成功也算）
           // 就会返回 successResponse.status 状态码 200
-          this.student = successResponse.data
+          // this.student = successResponse.data
+          console.log(successResponse.data)
+          console.log(this.$store.getters.phone)
           if (successResponse.data) {
+            console.log(successResponse.data)
             this.isAuthentication = true
           }
         })

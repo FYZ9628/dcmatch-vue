@@ -14,11 +14,14 @@
                style="text-align: left; margin: 30px 30px 0 0">
             <div style="height: 40px; border: 1px solid #559ae2; border-radius: 5px;
            padding: 20px 15px;">
-              <div style="width: 500px; font-size: 18px; font-weight: bolder;
+              <div style="width: 450px; font-size: 18px; font-weight: bolder;
              line-height: 40px;  display: block; float: left;
               overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">
                 {{item.contestTitle}}
               </div>
+              <el-button type="danger" @click="deleteContestDetails(index, contestDetailList)" style="height: 40px; display: block; float: left; margin-left: 10px">
+                删除
+              </el-button>
               <el-button type="primary" @click="gotoContestDetails(index, contestDetailList)" plain style="height: 40px; display: block; float: right">
                 查看详情
               </el-button>
@@ -134,6 +137,21 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item
+            v-if="publishContestDetailForm.type === '个人赛'"
+            label="人数上限"
+            prop="upperLimit">
+            <el-select v-model="singleSelect" disabled placeholder="1" size="small"
+                       style="margin-left: 20px; width: 420px">
+              <el-option
+                v-for="item in upperLimitList"
+                :key="item.id"
+                :label="item.id"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            v-if="publishContestDetailForm.type === '团队赛'"
             label="人数上限"
             prop="upperLimit">
             <el-select v-model="publishContestDetailForm.upperLimit" placeholder="请选择" size="small"
@@ -239,9 +257,9 @@ export default {
         holdDate: '',
         holdStartTime: '',
         holdEndTime: '',
-        type: '',
+        type: '个人赛',
         upperLimit: '',
-        state: ''
+        state: '报名阶段'
       },
       publishContestDetailFormRules: {
         contestTitle: [{required: true, message: '请输入标题', trigger: 'blur'}],
@@ -283,7 +301,8 @@ export default {
         {
           id: 10
         }
-      ]
+      ],
+      singleSelect: 1
     }
   },
   mounted: function () {
@@ -315,6 +334,7 @@ export default {
             keywords: this.$store.getters.account
           })
           .then(successResponse => {
+            this.contestDetailList = []
             for (let i = 0; i < successResponse.data.length; i++) {
               if (successResponse.data[i].state !== '查看成绩阶段') {
                 this.contestDetailList.push(successResponse.data[i])
@@ -333,18 +353,12 @@ export default {
       this.publishContestDetailFormVisible = true
     },
     publishContestDetailSubmit () {
+      if (this.publishContestDetailForm.type === '个人赛') {
+        this.publishContestDetailForm.upperLimit = 1
+      }
       this.$refs.publishContestDetailForm.validate((valid) => {
         if (valid) {
           this.listenLoading = true
-          console.log('测试写入的数据')
-          console.log('测试写入的数据')
-          console.log(this.publishContestDetailForm)
-          console.log(this.publishContestDetailForm.signUpStartTime)
-          console.log(this.publishContestDetailForm.signUpEndTime)
-          console.log(this.publishContestDetailForm.holdDate)
-          console.log(this.publishContestDetailForm.holdStartTime)
-          console.log(this.publishContestDetailForm.holdEndTime)
-          console.log(this.$moment().format('YYYY-MM-DD HH:mm:ss'))
           this.$axios
             .post('/addContestDetail', {
               id: '',
@@ -353,6 +367,7 @@ export default {
               contestContent: this.publishContestDetailForm.contestContent,
               signUpStartTime: this.publishContestDetailForm.signUpStartTime,
               signUpEndTime: this.publishContestDetailForm.signUpEndTime,
+              // 获取当前时间
               publishTime: this.$moment().format('YYYY-MM-DD HH:mm:ss'),
               place: this.publishContestDetailForm.place,
               holdDate: this.publishContestDetailForm.holdDate,
@@ -408,6 +423,46 @@ export default {
         // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
         // }
       })
+    },
+    deleteContestDetails: function (index, contestDetailList) {
+      this.$axios
+        .post('/deleteContestDetail', {
+          id: contestDetailList[index].id,
+          contestTitle: contestDetailList[index].contestTitle,
+          organizer: this.organizerData,
+          contestContent: contestDetailList[index].contestContent,
+          signUpStartTime: contestDetailList[index].signUpStartTime,
+          signUpEndTime: contestDetailList[index].signUpEndTime,
+          // 获取当前时间
+          publishTime: contestDetailList[index].publishTime,
+          place: contestDetailList[index].place,
+          holdDate: contestDetailList[index].holdDate,
+          holdStartTime: contestDetailList[index].holdStartTime,
+          holdEndTime: contestDetailList[index].holdEndTime,
+          type: contestDetailList[index].type,
+          upperLimit: contestDetailList[index].upperLimit,
+          state: contestDetailList[index].state
+        })
+        .then(successResponse => {
+          this.loadContest()
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          // window.open(
+          //   this.$router.resolve({
+          //     path: '/organizer/myContest'
+          //   }).href, '_self'
+          //   // 打开新窗口：_blank
+          //   // 在本地窗口打开：_self
+          // )
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '删除失败',
+            type: 'error'
+          })
+        })
     }
   }
 }
