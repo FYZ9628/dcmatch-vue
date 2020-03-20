@@ -1,7 +1,10 @@
 <template>
   <div style="width: 800px; background-color: #f6f6f6">
     <div style="height: 250px; background-color: #ffffff; margin-bottom: 10px; padding: 20px 30px;">
-      <span style="font-size: 16px; font-weight: bolder">我的大赛</span>
+      <div>
+        <span style="font-size: 16px; font-weight: bolder">我的大赛</span>
+        <el-link type="primary" href="http://localhost:8081/index/contestList/allContest" target="_blank" style="display: block; float: right">去参加竞赛</el-link>
+      </div>
       <div style="height: 160px; margin: 30px 0 0 20px">
         <h4 style="margin-top: 30px">已报名比赛科目列表如下：</h4>
         <div v-for="(item, index) in contestList"
@@ -17,6 +20,10 @@
             更多
             <i class="el-icon-d-arrow-right el-icon--right" ></i>
           </el-button>
+        </div>
+        <div v-if="contestList.length === 0" style="text-align: center; margin-top: 60px">
+          <el-tag type="success" style="width: 680px; font-weight: bolder; color: #33ba9b; font-size: 16px; line-height:60px;
+          height: 60px">暂无报名的竞赛</el-tag>
         </div>
       </div>
     </div>
