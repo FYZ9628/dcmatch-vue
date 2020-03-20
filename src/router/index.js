@@ -68,6 +68,8 @@ import OrganizerMyContestDetails from '@/components/organizer/OrganizerMyContest
 import OrganizerMyContestSignUp from '@/components/organizer/OrganizerMyContestSignUp'
 import OrganizerPrizeWinningDetails from '@/components/organizer/OrganizerPrizeWinningDetails'
 import OrganizerPrizeWinningList from '@/components/organizer/OrganizerPrizeWinningList'
+import OrganizerMyNotice from '@/components/organizer/OrganizerMyNotice'
+import OrganizerMyNoticeDetails from '@/components/organizer/OrganizerMyNoticeDetails'
 
 Vue.use(Router)
 
@@ -263,6 +265,11 @@ export default new Router({
           component: OrganizerAuthentication
         },
         {
+          path: 'myNotice',
+          name: 'OrganizerMyNotice',
+          component: OrganizerMyNotice
+        },
+        {
           path: 'myContest',
           name: 'OrganizerMyContest',
           component: OrganizerMyContest
@@ -291,6 +298,11 @@ export default new Router({
           path: 'accountSetting',
           name: 'OrganizerAccountSetting',
           component: OrganizerAccountSetting
+        },
+        {
+          path: 'noticeDetails',
+          name: 'OrganizerMyNoticeDetails',
+          component: OrganizerMyNoticeDetails
         },
         {
           path: 'contestDetails',
