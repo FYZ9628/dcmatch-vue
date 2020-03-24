@@ -14,9 +14,9 @@
         <span>首页</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="/admin/home/test9">访客数据</el-menu-item>
-        <el-menu-item index="/admin/home/test10">院校数据</el-menu-item>
-        <el-menu-item index="/admin/home/test11">学生数据</el-menu-item>
+        <el-menu-item index="/admin/home/userData">用户数据</el-menu-item>
+        <el-menu-item index="/admin/home/contestData">竞赛数据</el-menu-item>
+        <el-menu-item index="/admin/home/signUpData">报名数据</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
     <el-submenu index="/admin/authentication">

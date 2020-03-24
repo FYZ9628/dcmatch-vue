@@ -30,9 +30,6 @@ import TeacherMyNews from '@/components/teacher/TeacherMyNews'
 import TeacherMyAddress from '@/components/teacher/TeacherMyAddress'
 import TeacherAccountSetting from '@/components/teacher/TeacherAccountSetting'
 import AdminIndex from '@/components/admin/AdminIndex'
-import test9 from '@/components/admin/home/test9'
-import test10 from '@/components/admin/home/test10'
-import test11 from '@/components/admin/home/test11'
 import AdminSetting from '@/components/admin/setting/AdminSetting'
 import NoticeList from '@/components/index/notice/NoticeList'
 import NoticeDetails from '@/components/index/notice/NoticeDetails'
@@ -70,6 +67,10 @@ import OrganizerPrizeWinningDetails from '@/components/organizer/OrganizerPrizeW
 import OrganizerPrizeWinningList from '@/components/organizer/OrganizerPrizeWinningList'
 import OrganizerMyNotice from '@/components/organizer/OrganizerMyNotice'
 import OrganizerMyNoticeDetails from '@/components/organizer/OrganizerMyNoticeDetails'
+import UserData from '@/components/admin/home/UserData'
+import AdminHomeIndex from '@/components/admin/home/AdminHomeIndex'
+import ContestData from '@/components/admin/home/ContestData'
+import SignUpData from '@/components/admin/home/SignUpData'
 
 Vue.use(Router)
 
@@ -377,7 +378,7 @@ export default new Router({
     {
       path: '/admin',
       name: 'AdminIndex',
-      redirect: '/admin/home/test9',
+      redirect: '/admin/home/userData',
       component: AdminIndex,
       children: [
         {
@@ -435,34 +436,26 @@ export default new Router({
           ]
         },
         {
-          path: '/admin/home/test9',
-          name: 'test9',
-          component: test9
-        },
-        {
-          path: '/admin/home/test10',
-          name: 'test10',
-          component: test10
-        },
-        {
-          path: '/admin/home/test11',
-          name: 'test11',
-          component: test11
-        },
-        {
-          path: '/admin/user/test9',
-          name: 'test9',
-          component: test9
-        },
-        {
-          path: '/admin/user/test10',
-          name: 'test10',
-          component: test10
-        },
-        {
-          path: '/admin/user/test11',
-          name: 'test11',
-          component: test11
+          path: 'home',
+          name: 'UserData',
+          component: AdminHomeIndex,
+          children: [
+            {
+              path: 'userData',
+              name: 'UserData',
+              component: UserData
+            },
+            {
+              path: 'contestData',
+              name: 'ContestData',
+              component: ContestData
+            },
+            {
+              path: 'signUpData',
+              name: 'SignUpData',
+              component: SignUpData
+            }
+          ]
         },
         {
           path: '/admin/setting',
