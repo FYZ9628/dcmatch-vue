@@ -39,7 +39,7 @@ export default {
   name: 'SignUpData',
   data () {
     return {
-      contestDetailList: [],
+      contestDetailList: [], // 获取所有的竞赛
       contestDetail: {
         id: '',
         contestTitle: '',
@@ -71,12 +71,12 @@ export default {
         type: '',
         state: ''
       },
-      contestDetailOptions: [],
-      contestDetailOptionsValue: '',
-      contestList: [],
+      contestDetailOptions: [], // 下拉选择
+      contestDetailOptionsValue: '', // 选中后显示的值
+      contestList: [], // 获取该竞赛的所有报名名单，再进一步获取名单中的男女人数
       studentManNum: 0,
       studentWomanNum: 0,
-      signUpDataOptions: {}
+      signUpDataOptions: {} // 图表的数据
     }
   },
   mounted () {
