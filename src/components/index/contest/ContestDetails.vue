@@ -95,15 +95,28 @@ export default {
           // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
           // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
           sessionStorage.setItem('signUpContestDetailJson', signUpContestDetailJson)
-          this.$router.push({
-            path: '/index/signUp'
-            // name: 'noticeDetails/'
-            // query: {
-            //   data: contestDetailJson
-            // // 以加问号接续的方式显示内容
-            // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
-            // }
-          })
+          if (this.contestDetailData.type === '个人赛') {
+            this.$router.push({
+              path: '/index/signUp'
+              // name: 'noticeDetails/'
+              // query: {
+              //   data: contestDetailJson
+              // // 以加问号接续的方式显示内容
+              // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+              // }
+            })
+          }
+          if (this.contestDetailData.type === '团队赛') {
+            this.$router.push({
+              path: '/index/teamSignUp'
+              // name: 'noticeDetails/'
+              // query: {
+              //   data: contestDetailJson
+              // // 以加问号接续的方式显示内容
+              // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+              // }
+            })
+          }
         } else if (this.isLoginState === 500) {
           this.$message({
             message: '请先认证',

@@ -71,6 +71,7 @@ import UserData from '@/components/admin/home/UserData'
 import AdminHomeIndex from '@/components/admin/home/AdminHomeIndex'
 import ContestData from '@/components/admin/home/ContestData'
 import SignUpData from '@/components/admin/home/SignUpData'
+import TeamSignUp from '@/components/index/contest/TeamSignUp'
 
 Vue.use(Router)
 
@@ -120,17 +121,17 @@ export default new Router({
       redirect: '/index/contestList/allContest',
       children: [
         {
-          path: '/index/contestList/allContest',
+          path: 'allContest',
           name: 'AllContest',
           component: AllContest
         },
         {
-          path: '/index/contestList/individualContest',
+          path: 'individualContest',
           name: 'IndividualContest',
           component: IndividualContest
         },
         {
-          path: '/index/contestList/teamContest',
+          path: 'teamContest',
           name: 'TeamContest',
           component: TeamContest
         }
@@ -145,6 +146,11 @@ export default new Router({
       path: '/index/signUp',
       name: 'SignUp',
       component: SignUp
+    },
+    {
+      path: '/index/teamSignUp',
+      name: 'TeamSignUp',
+      component: TeamSignUp
     },
     {
       path: '/defaultIndex',

@@ -112,7 +112,9 @@ export default {
                 holdDate: _this.contestDetailData[currentNum].holdDate,
                 holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
                 holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
-                type: _this.contestDetailData[currentNum].type
+                type: _this.contestDetailData[currentNum].type,
+                upperLimit: _this.contestDetailData[currentNum].upperLimit,
+                state: _this.contestDetailData[currentNum].state
               }
               this.currentPageData.push(tempContestDetail)
             }
@@ -157,7 +159,9 @@ export default {
             holdDate: _this.contestDetailData[currentNum].holdDate,
             holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
             holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
-            type: _this.contestDetailData[currentNum].type
+            type: _this.contestDetailData[currentNum].type,
+            upperLimit: _this.contestDetailData[currentNum].upperLimit,
+            state: _this.contestDetailData[currentNum].state
           }
           this.currentPageData.push(tempContestDetail)
         }
@@ -200,7 +204,9 @@ export default {
             holdDate: _this.contestDetailData[currentNum].holdDate,
             holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
             holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
-            type: _this.contestDetailData[currentNum].type
+            type: _this.contestDetailData[currentNum].type,
+            upperLimit: _this.contestDetailData[currentNum].upperLimit,
+            state: _this.contestDetailData[currentNum].state
           }
           this.currentPageData.push(tempContestDetail)
         }

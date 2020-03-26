@@ -110,7 +110,9 @@ export default {
                 holdDate: _this.allContestDetailData[i].holdDate,
                 holdStartTime: _this.allContestDetailData[i].holdStartTime,
                 holdEndTime: _this.allContestDetailData[i].holdEndTime,
-                type: _this.allContestDetailData[i].type
+                type: _this.allContestDetailData[i].type,
+                upperLimit: _this.allContestDetailData[i].upperLimit,
+                state: _this.allContestDetailData[i].state
               }
               _this.contestDetailData.push(tempContestDetail)
             }
@@ -148,7 +150,9 @@ export default {
                 holdDate: _this.contestDetailData[currentNum].holdDate,
                 holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
                 holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
-                type: _this.contestDetailData[currentNum].type
+                type: _this.contestDetailData[currentNum].type,
+                upperLimit: _this.contestDetailData[currentNum].upperLimit,
+                state: _this.contestDetailData[currentNum].state
               }
               _this.currentPageData.push(tempContestDetail)
             }
@@ -193,7 +197,9 @@ export default {
             holdDate: _this.contestDetailData[currentNum].holdDate,
             holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
             holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
-            type: _this.contestDetailData[currentNum].type
+            type: _this.contestDetailData[currentNum].type,
+            upperLimit: _this.contestDetailData[currentNum].upperLimit,
+            state: _this.contestDetailData[currentNum].state
           }
           this.currentPageData.push(tempContestDetail)
         }
@@ -236,7 +242,9 @@ export default {
             holdDate: _this.contestDetailData[currentNum].holdDate,
             holdStartTime: _this.contestDetailData[currentNum].holdStartTime,
             holdEndTime: _this.contestDetailData[currentNum].holdEndTime,
-            type: _this.contestDetailData[currentNum].type
+            type: _this.contestDetailData[currentNum].type,
+            upperLimit: _this.contestDetailData[currentNum].upperLimit,
+            state: _this.contestDetailData[currentNum].state
           }
           this.currentPageData.push(tempContestDetail)
         }
@@ -297,7 +305,9 @@ export default {
                   holdDate: _this.searchResult[i].holdDate,
                   holdStartTime: _this.searchResult[i].holdStartTime,
                   holdEndTime: _this.searchResult[i].holdEndTime,
-                  type: _this.searchResult[i].type
+                  type: _this.searchResult[i].type,
+                  upperLimit: _this.searchResult[i].upperLimit,
+                  state: _this.searchResult[i].state
                 }
                 tempContestDetailData.push(tempContestDetail)
               }
