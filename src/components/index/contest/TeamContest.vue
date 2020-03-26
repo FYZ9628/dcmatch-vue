@@ -268,7 +268,7 @@ export default {
             let tempContestDetailData = []
             _this.searchResult = resp.data
             for (let i = 0; i <= _this.searchResult.length - 1; i++) {
-              if (_this.searchResult[i].type === 2) {
+              if (_this.searchResult[i].type === '团队赛') {
                 let tempContestDetail = {
                   id: _this.searchResult[i].id,
                   contestTitle: _this.searchResult[i].contestTitle,

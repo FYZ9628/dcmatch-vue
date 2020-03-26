@@ -229,9 +229,6 @@ export default {
           keywords: this.keywords
         }).then(resp => {
           if (resp && resp.status === 200) {
-            console.log('测试')
-            console.log('测试')
-            console.log('测试')
             _this.searchResult = resp.data
             _this.contestDetailData = _this.searchResult
             console.log(resp.data)

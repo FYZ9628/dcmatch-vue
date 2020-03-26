@@ -414,7 +414,7 @@ export default {
           this.$axios
             .post('/addContestDetail', {
               id: '',
-              contestTitle: this.publishContestDetailForm.contestTitle,
+              contestTitle: this.publishContestDetailForm.contestTitle + '【' + this.publishContestDetailForm.type + '】',
               organizer: this.organizerData,
               contestContent: this.publishContestDetailForm.contestContent,
               signUpStartTime: this.publishContestDetailForm.signUpStartTime,
