@@ -602,7 +602,7 @@ export default {
       }
     },
     addTeacher () {
-      if (this.teacherList.length < 2) {
+      if (this.teacherList.length < 1) {
         this.$refs.addTeacherForm.validate((valid) => {
           if (valid) {
             this.$axios
@@ -662,13 +662,17 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$axios
-          .post('/addContest', {
+          .post('/addTeamContest', {
             id: '',
             contestDetail: this.signUpContestDetailData,
             student: this.studentData,
-            state: 1,
+            teacherAccount: this.addTeacherForm.account,
+            teacherName: this.addTeacherForm.name,
+            state: '已报名',
             ticketNumber: this.ticketNumber,
-            score: null
+            score: null,
+            teamName: this.teamContestForm.teamName,
+            remarks: '队长'
           })
           .then(successResponse => {
             this.$message({
