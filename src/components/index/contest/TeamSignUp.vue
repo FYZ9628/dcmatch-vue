@@ -131,11 +131,11 @@
         <el-row>
           <div style="display: block; float: left">
             <el-form :inline="true" :model="addStudentForm" :rules="addStudentFormRules" ref="addStudentForm">
-              <el-form-item label="账号" prop="account">
+              <el-form-item label="账  号" prop="account">
                 <el-input v-model="addStudentForm.account" placeholder="学号或电话" size="small" style="width: 250px">
                 </el-input>
               </el-form-item>
-              <el-form-item label="密码" prop="password">
+              <el-form-item label="密  码" prop="password">
                 <el-input v-model="addStudentForm.password" placeholder="密码" size="small" style="width: 250px">
                 </el-input>
               </el-form-item>
@@ -148,6 +148,119 @@
             style="display: block; float: right; margin: 5px 20px 0 0">
             添加队员
           </el-button>
+        </el-row>
+        <el-row>
+          <div style="display: block; float: left">
+            <el-form :inline="true" :model="teamContestForm" :rules="teamContestFormRules" ref="teamContestForm"
+            style="height: 40px">
+              <el-form-item label="团队名称" prop="teamName">
+                <el-input v-model="teamContestForm.teamName" placeholder="团队名称" size="small" style="width: 250px">
+                </el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <el-switch
+            v-model="isHasTeacher"
+            style="display: block; float: right; margin: 5px 20px 0 0"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="有指导老师"
+            inactive-text="无指导老师">
+          </el-switch>
+        </el-row>
+        <el-row v-if="isHasTeacher === true">
+          <el-divider>指导老师</el-divider>
+          <el-table
+            :data="teacherList"
+            style="width: 100%"
+            max-height="430">
+            <el-table-column
+              fixed
+              label="证件照"
+              width="120"
+              align="center">
+              <template slot-scope="scope">
+                <img
+                  style="width: 120px; height: 80px"
+                  :src="scope.row.idImg" />
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed
+              prop="user.name"
+              label="姓名"
+              width="80"
+              align="center">
+            </el-table-column>
+            <el-table-column
+              prop="sex"
+              label="性别"
+              width="50"
+              align="center">
+            </el-table-column>
+            <el-table-column
+              prop="user.account"
+              label="工号"
+              width="120"
+              align="center">
+            </el-table-column>
+            <el-table-column
+              prop="school"
+              label="学校"
+              width="120"
+              align="center">
+            </el-table-column>
+            <el-table-column
+              prop="academy"
+              label="院系"
+              width="100"
+              align="center">
+            </el-table-column>
+            <el-table-column
+              prop="professionalTitle"
+              label="职称"
+              width="100"
+              align="center">
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              width="200"
+              align="center">
+              <template slot-scope="scope">
+                <el-button
+                  @click.native.prevent="deleteTeacher(scope.$index, teacherList)"
+                  type="danger"
+                  size="mini">
+                  删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-row style="margin: 20px 0">
+            添加指导老师，只能添加一人
+          </el-row>
+          <el-row>
+            <div style="display: block; float: left">
+              <el-form :inline="true" :model="addTeacherForm" :rules="addTeacherFormRules" ref="addTeacherForm">
+                <el-form-item label="账  号" prop="account">
+                  <el-input v-model="addTeacherForm.account" placeholder="工号或电话" size="small" style="width: 250px">
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="姓  名" prop="name">
+                  <el-input v-model="addTeacherForm.name" placeholder="姓名" size="small" style="width: 250px">
+                  </el-input>
+                </el-form-item>
+              </el-form>
+            </div>
+            <el-button
+              @click="addTeacher"
+              type="primary"
+              size="small"
+              style="display: block; float: right; margin: 5px 20px 0 0">
+              添加导师
+            </el-button>
+          </el-row>
         </el-row>
         <el-divider>比赛信息</el-divider>
         <el-row style="margin-top: 30px">
@@ -227,6 +340,7 @@ export default {
         idImg: ''
       },
       studentList: [],
+      teacherList: [],
       teacherData: {
         id: '',
         user: {
@@ -259,6 +373,21 @@ export default {
       captainState: {
         index: 0,
         state: '队长'
+      },
+      teamContestForm: {
+        teamName: ''
+      },
+      teamContestFormRules: {
+        teamName: [{required: true, message: '请输入团队名称', trigger: 'blur'}]
+      },
+      isHasTeacher: false,
+      addTeacherForm: {
+        account: '',
+        name: ''
+      },
+      addTeacherFormRules: {
+        account: [{required: true, message: '请输入账号', trigger: 'blur'}],
+        name: [{required: true, message: '请输入导师名称', trigger: 'blur'}]
       }
       // contest: {
       //   id: '',
@@ -471,6 +600,60 @@ export default {
           type: 'error'
         })
       }
+    },
+    addTeacher () {
+      if (this.teacherList.length < 2) {
+        this.$refs.addTeacherForm.validate((valid) => {
+          if (valid) {
+            this.$axios
+              .post('/teamSignUpAddTeacher', {
+                account: this.addTeacherForm.account,
+                name: this.addTeacherForm.name
+              })
+              .then(successResponse => {
+                if (successResponse.data !== '') {
+                  if (successResponse.data.user.type === 2) {
+                    this.teacherList.push(successResponse.data)
+                    this.$message({
+                      message: '添加成功',
+                      type: 'success'
+                    })
+                    this.addTeacherForm.account = ''
+                    this.addTeacherForm.name = ''
+                  } else {
+                    this.$message({
+                      message: '该老师未通过认证',
+                      type: 'error'
+                    })
+                  }
+                } else {
+                  this.$message({
+                    message: '该老师不存在',
+                    type: 'error'
+                  })
+                }
+              })
+              .catch(failResponse => {
+                this.$message({
+                  message: '该老师不存在或未认证',
+                  type: 'error'
+                })
+              })
+          }
+        })
+      } else {
+        this.$message({
+          message: '只能添加一名指导老师',
+          type: 'error'
+        })
+      }
+    },
+    deleteTeacher (index, rows) {
+      rows.splice(index, 1)
+      this.$message({
+        message: '删除成功',
+        type: 'success'
+      })
     },
     confirmSignUp: function () {
       this.$confirm('确认报名', '提示', {
