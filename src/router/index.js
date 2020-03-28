@@ -72,6 +72,7 @@ import AdminHomeIndex from '@/components/admin/home/AdminHomeIndex'
 import ContestData from '@/components/admin/home/ContestData'
 import SignUpData from '@/components/admin/home/SignUpData'
 import TeamSignUp from '@/components/index/contest/TeamSignUp'
+import OrganizerMyContestTeamSignUp from '@/components/organizer/OrganizerMyContestTeamSignUp'
 
 Vue.use(Router)
 
@@ -320,6 +321,11 @@ export default new Router({
           path: 'contestSignUp',
           name: 'OrganizerMyContestSignUp',
           component: OrganizerMyContestSignUp
+        },
+        {
+          path: 'contestTeamSignUp',
+          name: 'OrganizerMyContestTeamSignUp',
+          component: OrganizerMyContestTeamSignUp
         },
         {
           path: 'prizeWinningDetails',

@@ -417,15 +417,28 @@ export default {
       })
     },
     gotoContestSignUp () {
-      this.$router.push({
-        path: '/organizer/contestSignUp'
-        // name: 'noticeDetails/'
-        // query: {
-        //   data: contestDetailJson
-        // // 以加问号接续的方式显示内容
-        // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
-        // }
-      })
+      if (this.contestDetail.type === '个人赛') {
+        this.$router.push({
+          path: '/organizer/contestSignUp'
+          // name: 'noticeDetails/'
+          // query: {
+          //   data: contestDetailJson
+          // // 以加问号接续的方式显示内容
+          // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+          // }
+        })
+      }
+      if (this.contestDetail.type === '团队赛') {
+        this.$router.push({
+          path: '/organizer/contestTeamSignUp'
+          // name: 'noticeDetails/'
+          // query: {
+          //   data: contestDetailJson
+          // // 以加问号接续的方式显示内容
+          // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+          // }
+        })
+      }
     }
   }
 }

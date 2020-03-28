@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 800px; height: 550px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
+  <div style="width: 800px; height: 570px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
     <el-page-header @back="goBack" content="竞赛报名名单管理" style="padding: 20px 20px; background-color: #ffffff">
     </el-page-header>
 <!--    <div style="padding: 20px 0 10px 10px; font-weight: bolder">学生管理</div>-->
@@ -109,7 +109,7 @@
         </template>
         <template slot-scope="scope">
           <el-button
-            @click.native.prevent="deleteContest(scope.$index, contestList)"
+            @click.native.prevent="deleteContest(scope.$index, scope.row)"
             type="danger"
             size="mini">
             删除
@@ -120,7 +120,7 @@
     <div>
       <el-button
         @click="allDelete"
-        type="primary"
+        type="danger"
         size="small"
         style="display: block; float: right; margin: 20px 20px 0 0">
         全部删除
@@ -248,11 +248,11 @@ export default {
           })
       }
     },
-    deleteContest (index, rows) {
+    deleteContest (index, row) {
       this.$axios
         .post('/deleteContest', {
           // 主要是 id ，传 id 过去就行了
-          id: rows[index].id,
+          id: row.id,
           contestDetail: {
             id: '',
             contestTitle: '',
@@ -312,7 +312,11 @@ export default {
             message: '成功删除了一名学生',
             type: 'success'
           })
-          rows.splice(index, 1)
+          for (let i = 0; i < this.contestList.length; i++) {
+            if (row.id === this.contestList[i].id) {
+              this.contestList.splice(i, 1)
+            }
+          }
         })
         .catch(failResponse => {
           this.$message({

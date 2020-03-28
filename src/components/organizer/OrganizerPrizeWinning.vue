@@ -45,7 +45,7 @@
         <div>
           <el-button
             @click="allDelete"
-            type="primary"
+            type="danger"
             size="small"
             style="display: block; float: right; margin: 20px 20px 0 0">
             全部删除
