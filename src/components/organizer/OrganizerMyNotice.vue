@@ -32,7 +32,7 @@
             </template>
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="deleteNotice(scope.$index, noticeList)"
+                @click.native.prevent="deleteNotice(scope.$index, scope.row)"
                 type="danger"
                 size="small">
                 删除
@@ -280,14 +280,14 @@ export default {
         // }
       })
     },
-    deleteNotice: function (index, noticeList) {
+    deleteNotice: function (index, row) {
       this.$axios
         .post('/deleteNotice', {
-          id: noticeList[index].id,
-          title: noticeList[index].title,
-          time: noticeList[index].time,
+          id: row.id,
+          title: row.title,
+          time: row.time,
           organizer: this.organizerData,
-          content: noticeList[index].content
+          content: row.content
         })
         .then(successResponse => {
           this.loadNotice()
@@ -295,7 +295,11 @@ export default {
             message: '删除了一个通知',
             type: 'success'
           })
-          noticeList.splice(index, 1)
+          for (let i = 0; i < this.noticeList.length; i++) {
+            if (row.id === this.noticeList[i].id) {
+              this.noticeList.splice(i, 1)
+            }
+          }
         })
         .catch(failResponse => {
           this.$message({

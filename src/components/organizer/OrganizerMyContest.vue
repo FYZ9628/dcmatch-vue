@@ -32,7 +32,7 @@
             </template>
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="deleteContestDetails(scope.$index, contestDetailList)"
+                @click.native.prevent="deleteContestDetails(scope.$index, scope.row)"
                 type="danger"
                 size="small">
                 删除
@@ -476,24 +476,24 @@ export default {
         // }
       })
     },
-    deleteContestDetails: function (index, contestDetailList) {
+    deleteContestDetails: function (index, row) {
       this.$axios
         .post('/deleteContestDetail', {
-          id: contestDetailList[index].id,
-          contestTitle: contestDetailList[index].contestTitle,
+          id: row.id,
+          contestTitle: row.contestTitle,
           organizer: this.organizerData,
-          contestContent: contestDetailList[index].contestContent,
-          signUpStartTime: contestDetailList[index].signUpStartTime,
-          signUpEndTime: contestDetailList[index].signUpEndTime,
+          contestContent: row.contestContent,
+          signUpStartTime: row.signUpStartTime,
+          signUpEndTime: row.signUpEndTime,
           // 获取当前时间
-          publishTime: contestDetailList[index].publishTime,
-          place: contestDetailList[index].place,
-          holdDate: contestDetailList[index].holdDate,
-          holdStartTime: contestDetailList[index].holdStartTime,
-          holdEndTime: contestDetailList[index].holdEndTime,
-          type: contestDetailList[index].type,
-          upperLimit: contestDetailList[index].upperLimit,
-          state: contestDetailList[index].state
+          publishTime: row.publishTime,
+          place: row.place,
+          holdDate: row.holdDate,
+          holdStartTime: row.holdStartTime,
+          holdEndTime: row.holdEndTime,
+          type: row.type,
+          upperLimit: row.upperLimit,
+          state: row.state
         })
         .then(successResponse => {
           this.loadContest()
@@ -501,7 +501,11 @@ export default {
             message: '删除了一个竞赛',
             type: 'success'
           })
-          contestDetailList.splice(index, 1)
+          for (let i = 0; i < this.contestDetailList.length; i++) {
+            if (row.id === this.contestDetailList[i].id) {
+              this.contestDetailList.splice(i, 1)
+            }
+          }
         })
         .catch(failResponse => {
           this.$message({

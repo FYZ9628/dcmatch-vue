@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 800px; height: 630px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
+  <div style="width: 800px; height: 600px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
     <el-page-header @back="goBack" content="竞赛获奖名单管理" style="padding: 20px 20px; background-color: #ffffff">
     </el-page-header>
     <div style="padding: 0 0 10px 10px; font-weight: bolder">{{contestDetail.contestTitle}}</div>
