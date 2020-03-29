@@ -73,6 +73,7 @@ import ContestData from '@/components/admin/home/ContestData'
 import SignUpData from '@/components/admin/home/SignUpData'
 import TeamSignUp from '@/components/index/contest/TeamSignUp'
 import OrganizerMyContestTeamSignUp from '@/components/organizer/OrganizerMyContestTeamSignUp'
+import OrganizerPrizeWinningTeamList from '@/components/organizer/OrganizerPrizeWinningTeamList'
 
 Vue.use(Router)
 
@@ -336,6 +337,11 @@ export default new Router({
           path: 'prizeWinningList',
           name: 'OrganizerPrizeWinningList',
           component: OrganizerPrizeWinningList
+        },
+        {
+          path: 'prizeWinningTeamList',
+          name: 'OrganizerPrizeWinningTeamList',
+          component: OrganizerPrizeWinningTeamList
         }
       ]
     },

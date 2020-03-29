@@ -1,7 +1,7 @@
 <template>
   <div style="width: 800px; background-color: #f6f6f6">
     <div style="height: 520px; background-color: #ffffff; margin-bottom: 10px; padding: 20px 30px;">
-      <span style="font-size: 16px; font-weight: bolder">我的大赛</span>
+      <span style="font-size: 16px; font-weight: bolder">获奖查询</span>
       <div style="padding: 20px 0 10px 10px; font-weight: bolder">已结束的竞赛科目列表如下：</div>
       <div v-if="contestDetailList.length !== 0">
         <!--  可通过竞赛标题查询  -->

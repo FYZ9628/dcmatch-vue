@@ -1,8 +1,8 @@
 <template>
-  <div style="width: 800px; height: 550px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
+  <div style="width: 800px; height: 630px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
     <el-page-header @back="goBack" content="竞赛获奖名单管理" style="padding: 20px 20px; background-color: #ffffff">
     </el-page-header>
-    <!--    <div style="padding: 20px 0 10px 10px; font-weight: bolder">学生管理</div>-->
+    <div style="padding: 0 0 10px 10px; font-weight: bolder">{{contestDetail.contestTitle}}</div>
     <!--  可通过用户姓名、账号、电话、邮箱、学校、学院、专业查询  -->
     <el-table
       :data="contestList.filter(data => !search || data.student.user.name.toLowerCase().includes(search.toLowerCase())
@@ -96,9 +96,9 @@
         width="100"
         align="center">
         <template slot-scope="scope">
-<!--          <span v-if="scope.row.state === 1">已报名</span>-->
-<!--          <span v-if="scope.row.state === 2">已下载准考证</span>-->
-<!--          <span v-if="scope.row.state === 3">已结束比赛</span>-->
+          <!--          <span v-if="scope.row.state === 1">已报名</span>-->
+          <!--          <span v-if="scope.row.state === 2">已下载准考证</span>-->
+          <!--          <span v-if="scope.row.state === 3">已结束比赛</span>-->
           <span>已结束比赛</span>
         </template>
       </el-table-column>
@@ -123,10 +123,10 @@
         </template>
       </el-table-column>
     </el-table>
-    <div>
+    <div style="height: 80px">
       <el-button
         @click="allDelete"
-        type="primary"
+        type="danger"
         size="small"
         style="display: block; float: right; margin: 20px 20px 0 0">
         全部删除

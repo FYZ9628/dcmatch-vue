@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="width: 800px; max-height: 630px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
-      <el-page-header @back="goBack" content="竞赛报名名单管理" style="padding: 20px 20px; background-color: #ffffff">
+      <el-page-header @back="goBack" content="竞赛获奖名单管理" style="padding: 20px 20px; background-color: #ffffff">
       </el-page-header>
       <div style="padding: 0 0 10px 10px; font-weight: bolder">{{contestDetail.contestTitle}}</div>
       <div style="padding: 0 0 10px 10px; font-weight: bolder">所有名单</div>
@@ -21,12 +21,24 @@
         max-height="430">
         <el-table-column
           fixed
-          label="学生证"
+          prop="score"
+          label="获奖"
           width="120"
           align="center">
           <template slot-scope="scope">
-            <img style="width: 120px; height: 80px" :src="scope.row.student.idImg"/>
+            <span v-if="scope.row.score >= 95">特等奖</span>
+            <span v-else-if="scope.row.score >= 90">一等奖</span>
+            <span v-else-if="scope.row.score >= 80">二等奖</span>
+            <span v-else-if="scope.row.score >= 70">三等奖</span>
+            <span v-else>优秀奖</span>
           </template>
+        </el-table-column>
+        <el-table-column
+          fixed
+          prop="score"
+          label="分数"
+          width="50"
+          align="center">
         </el-table-column>
         <el-table-column
           fixed
@@ -112,11 +124,12 @@
           label="状态"
           width="100"
           align="center">
-          <!--        <template slot-scope="scope">-->
-          <!--          <span v-if="scope.row.state === 1">已报名</span>-->
-          <!--          <span v-if="scope.row.state === 2">已下载准考证</span>-->
-          <!--          <span v-if="scope.row.state === 3">已结束比赛</span>-->
-          <!--        </template>-->
+          <template slot-scope="scope">
+            <!--          <span v-if="scope.row.state === 1">已报名</span>-->
+            <!--          <span v-if="scope.row.state === 2">已下载准考证</span>-->
+            <!--          <span v-if="scope.row.state === 3">已结束比赛</span>-->
+            <span>已结束比赛</span>
+          </template>
         </el-table-column>
         <el-table-column
           fixed="right"
@@ -154,9 +167,24 @@
       <!--  可通过用户姓名、账号、电话、邮箱、学校、学院、专业查询  -->
       <el-table
         :data="teamDataList.filter(data => !searchTeam || data.name.toLowerCase().includes(searchTeam.toLowerCase())
-        || data.teacher.toLowerCase().includes(searchTeam.toLowerCase()))"
+        || data.teacher.toLowerCase().includes(searchTeam.toLowerCase())
+        || data.prize.toLowerCase().includes(searchTeam.toLowerCase()))"
         style="width: 100%"
         max-height="430">
+        <el-table-column
+          fixed
+          prop="prize"
+          label="获奖"
+          width="120"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          fixed
+          prop="score"
+          label="分数"
+          width="50"
+          align="center">
+        </el-table-column>
         <el-table-column
           fixed
           prop="name"
@@ -230,7 +258,7 @@
 
 <script>
 export default {
-  name: 'OrganizerMyContestTeamSignUp',
+  name: 'OrganizerPrizeWinningTeamList',
   data () {
     return {
       teamContestList: [],
@@ -360,7 +388,9 @@ export default {
                 upperLimit: this.contestDetail.upperLimit,
                 state: this.contestDetail.state,
                 ticketNumber: '',
-                teacher: ''
+                teacher: '',
+                score: 0,
+                prize: ''
               })
             }
             for (let i = 0; i < this.teamDataList.length; i++) {
@@ -368,6 +398,18 @@ export default {
                 if (this.teamDataList[i].name === this.teamContestList[j].teamName) {
                   this.teamDataList[i].ticketNumber = this.teamContestList[j].ticketNumber
                   this.teamDataList[i].teacher = this.teamContestList[j].teacherName
+                  this.teamDataList[i].score = this.teamContestList[j].score
+                  if (this.teamContestList[j].score >= 95) {
+                    this.teamDataList[i].prize = '特等奖'
+                  } else if (this.teamContestList[j].score >= 90) {
+                    this.teamDataList[i].prize = '一等奖'
+                  } else if (this.teamContestList[j].score >= 80) {
+                    this.teamDataList[i].prize = '二等奖'
+                  } else if (this.teamContestList[j].score >= 70) {
+                    this.teamDataList[i].prize = '三等奖'
+                  } else {
+                    this.teamDataList[i].prize = '优秀奖'
+                  }
                 }
               }
             }
@@ -663,7 +705,7 @@ export default {
     },
     goBack () {
       this.$router.push({
-        path: '/organizer/contestDetails'
+        path: '/organizer/prizeWinningDetails'
         // name: 'noticeDetails/'
         // query: {
         //   data: contestDetailJson
