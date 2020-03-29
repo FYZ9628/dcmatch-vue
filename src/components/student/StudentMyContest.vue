@@ -1,15 +1,16 @@
 <template>
   <div style="width: 800px; background-color: #f6f6f6">
-    <div style="height: 250px; background-color: #ffffff; margin-bottom: 10px; padding: 20px 30px;">
+    <div style="height: 330px; background-color: #ffffff; margin-bottom: 10px; padding: 20px 30px;">
       <div>
         <span style="font-size: 16px; font-weight: bolder">我的大赛</span>
         <el-link type="primary" href="http://localhost:8081/index/contestList/allContest" target="_blank" style="display: block; float: right">去参加竞赛</el-link>
       </div>
-      <div style="height: 160px; margin: 30px 0 0 20px">
+      <div style="height: 145px; margin: 30px 0 0 20px">
         <h4 style="margin-top: 30px">已报名比赛科目列表如下：</h4>
+        <h4 style="margin-top: 20px">个人赛：</h4>
         <div v-for="(item, index) in contestList"
              :key="item.value"
-             style="text-align: left; margin: 30px 30px 0 0; display: block; float: left">
+             style="text-align: left; margin: 0 30px 0 0; display: block; float: left">
           <el-button v-if="index <= 2 " @click="gotoContestDetails(index, contestList)" type="primary" plain style="height: 60px; width: 150px;
           overflow: hidden; text-overflow:ellipsis; white-space: nowrap;
            font-weight: bolder; font-size: 14px; text-align: center">
@@ -21,7 +22,28 @@
             <i class="el-icon-d-arrow-right el-icon--right" ></i>
           </el-button>
         </div>
-        <div v-if="contestList.length === 0" style="text-align: center; margin-top: 60px">
+        <div v-if="contestList.length === 0" style="text-align: center; margin-top: 10px">
+          <el-tag type="success" style="width: 680px; font-weight: bolder; color: #33ba9b; font-size: 16px; line-height:60px;
+          height: 60px">暂无报名的竞赛</el-tag>
+        </div>
+      </div>
+      <div style="height: 145px; margin: 0 0 0 20px">
+        <h4 style="margin-top: 20px">团队赛：</h4>
+        <div v-for="(item, index) in teamContestList"
+             :key="item.value"
+             style="text-align: left; margin: 0 30px 0 0; display: block; float: left">
+          <el-button v-if="index <= 2 " @click="gotoTeamContestDetails(index, teamContestList)" type="primary" plain style="height: 60px; width: 150px;
+          overflow: hidden; text-overflow:ellipsis; white-space: nowrap;
+           font-weight: bolder; font-size: 14px; text-align: center">
+            <i class="el-icon-search el-icon--right" ></i>
+            {{item.contestDetail.contestTitle}}
+          </el-button>
+          <el-button v-if="index === 2" @click="gotoTeamContestList" type="primary" plain style="height: 60px; margin-left: 80px">
+            更多
+            <i class="el-icon-d-arrow-right el-icon--right" ></i>
+          </el-button>
+        </div>
+        <div v-if="teamContestList.length === 0" style="text-align: center; margin-top: 10px">
           <el-tag type="success" style="width: 680px; font-weight: bolder; color: #33ba9b; font-size: 16px; line-height:60px;
           height: 60px">暂无报名的竞赛</el-tag>
         </div>
@@ -118,6 +140,7 @@ export default {
         idImg: ''
       },
       contestList: [],
+      teamContestList: [],
       contest: {
         id: '',
         contestDetail: {
@@ -187,6 +210,7 @@ export default {
       if (code == '300') {
         this.loadStudent()
         this.loadContest()
+        this.loadTeamContest()
       }
     }
   },
@@ -215,9 +239,32 @@ export default {
             keywords: this.$store.getters.account
           })
           .then(successResponse => {
+            this.contestList = []
             for (let i = 0; i < successResponse.data.length; i++) {
               if (successResponse.data[i].state !== 3) {
                 this.contestList.push(successResponse.data[i])
+              }
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    },
+    loadTeamContest () {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchTeamContestByStudentAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            this.teamContestList = []
+            for (let i = 0; i < successResponse.data.length; i++) {
+              if (successResponse.data[i].state !== '查看成绩') {
+                this.teamContestList.push(successResponse.data[i])
               }
             }
           })
@@ -250,9 +297,41 @@ export default {
         // }
       })
     },
+    gotoTeamContestDetails: function (index, teamContestList) {
+      // 用于返回时的判断用
+      let gotoContestDetailState = {
+        state: 1
+      }
+      let gotoContestDetailStateJson = JSON.stringify(gotoContestDetailState)
+      sessionStorage.setItem('gotoContestDetailStateJson', gotoContestDetailStateJson)
+      let teamContestJson = JSON.stringify(teamContestList[index])
+      // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
+      // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
+      sessionStorage.setItem('teamContestJson', teamContestJson)
+      this.$router.push({
+        path: '/student/teamContestDetails'
+        // name: 'noticeDetails/'
+        // query: {
+        //   data: contestDetailJson
+        // // 以加问号接续的方式显示内容
+        // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+        // }
+      })
+    },
     gotoContestList () {
       this.$router.push({
         path: '/student/contestList'
+        // name: 'noticeDetails/'
+        // query: {
+        //   data: contestDetailJson
+        // // 以加问号接续的方式显示内容
+        // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+        // }
+      })
+    },
+    gotoTeamContestList () {
+      this.$router.push({
+        path: '/student/teamContestList'
         // name: 'noticeDetails/'
         // query: {
         //   data: contestDetailJson

@@ -74,6 +74,8 @@ import SignUpData from '@/components/admin/home/SignUpData'
 import TeamSignUp from '@/components/index/contest/TeamSignUp'
 import OrganizerMyContestTeamSignUp from '@/components/organizer/OrganizerMyContestTeamSignUp'
 import OrganizerPrizeWinningTeamList from '@/components/organizer/OrganizerPrizeWinningTeamList'
+import StudentMyTeamContestDetails from '@/components/student/StudentMyTeamContestDetails'
+import StudentMyTeamContestList from '@/components/student/StudentMyTeamContestList'
 
 Vue.use(Router)
 
@@ -254,6 +256,16 @@ export default new Router({
           path: 'contestList',
           name: 'StudentMyContestList',
           component: StudentMyContestList
+        },
+        {
+          path: 'teamContestDetails',
+          name: 'StudentMyTeamContestDetails',
+          component: StudentMyTeamContestDetails
+        },
+        {
+          path: 'teamContestList',
+          name: 'StudentMyTeamContestList',
+          component: StudentMyTeamContestList
         },
         {
           path: 'prizeWinningDetails',

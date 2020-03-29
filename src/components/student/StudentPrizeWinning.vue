@@ -1,6 +1,6 @@
 <template>
   <div style="width: 800px; background-color: #f6f6f6">
-    <div style="height: 520px; background-color: #ffffff; margin-bottom: 10px; padding: 20px 30px;">
+    <div style="max-height: 900px; background-color: #ffffff; margin-bottom: 10px; padding: 20px 30px;">
       <span style="font-size: 16px; font-weight: bolder">获奖查询</span>
       <div style="padding: 20px 0 10px 10px; font-weight: bolder">已参加的竞赛科目列表如下：</div>
 <!--      <div style="height: 160px; margin: 20px 0 0 20px">-->
@@ -23,58 +23,128 @@
 <!--          </div>-->
 <!--        </div>-->
 <!--      </div>-->
-      <div v-if="contestList.length !== 0">
-        <!--  可通过竞赛标题查询  -->
-        <el-table
-          :data="contestList.filter(data => !search || data.contestDetail.contestTitle.toLowerCase().includes(search.toLowerCase()))"
-          style="width: 100%"
-          max-height="350">
-          <el-table-column
-            fixed
-            prop="contestDetail.contestTitle"
-            width="500"
-            align="left">
-          </el-table-column>
-          <el-table-column
-            fixed="right"
-            label="操作"
-            min-width="160"
-            align="right">
-            <template slot="header" slot-scope="scope">
-              <el-input
-                v-model="search"
-                size="small"
-                placeholder="输入关键字搜索"/>
-            </template>
-            <template slot-scope="scope">
-              <el-button
-                @click.native.prevent="deleteContest(scope.$index, contestList)"
-                type="danger"
-                size="small">
-                删除
-              </el-button>
-              <el-button
-                @click.native.prevent="gotoPrizeWinningDetails(scope.$index, contestList)"
-                type="primary"
-                size="small">
-                获奖查询
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div>
-          <el-button
-            @click="allDelete"
-            type="primary"
-            size="small"
-            style="display: block; float: right; margin: 20px 20px 0 0">
-            全部删除
-          </el-button>
+      <div>
+        <span style="font-size: 16px; font-weight: bolder; padding-left: 10px">个人赛：</span>
+        <div v-if="contestList.length !== 0">
+          <!--  可通过竞赛标题查询  -->
+          <el-table
+            :data="contestList.filter(data => !search || data.contestDetail.contestTitle.toLowerCase().includes(search.toLowerCase()))"
+            style="width: 100%"
+            max-height="300">
+            <el-table-column
+              fixed
+              type="index"
+              width="50">
+            </el-table-column>
+            <el-table-column
+              fixed
+              prop="contestDetail.contestTitle"
+              width="500"
+              align="left">
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              min-width="160"
+              align="right">
+              <template slot="header" slot-scope="scope">
+                <el-input
+                  v-model="search"
+                  size="small"
+                  placeholder="输入关键字搜索"/>
+              </template>
+              <template slot-scope="scope">
+                <el-button
+                  @click.native.prevent="deleteContest(scope.$index, contestList)"
+                  type="danger"
+                  size="small">
+                  删除
+                </el-button>
+                <el-button
+                  @click.native.prevent="gotoPrizeWinningDetails(scope.$index, contestList)"
+                  type="primary"
+                  size="small">
+                  获奖查询
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="height: 70px">
+            <el-button
+              @click="allDelete"
+              type="danger"
+              size="small"
+              style="display: block; float: right; margin: 20px 20px 0 0">
+              全部删除
+            </el-button>
+          </div>
+        </div>
+        <div v-if="contestList.length === 0" style="text-align: center; margin-top: 20px">
+          <el-tag type="success" style="width: 680px; font-weight: bolder; color: #33ba9b; font-size: 16px; line-height:60px;
+          height: 60px">暂无可查询的竞赛结果</el-tag>
         </div>
       </div>
-      <div v-if="contestList.length === 0" style="text-align: center; margin-top: 60px">
-        <el-tag type="success" style="width: 680px; font-weight: bolder; color: #33ba9b; font-size: 16px; line-height:60px;
+      <el-divider></el-divider>
+      <div>
+        <span style="font-size: 16px; font-weight: bolder; padding-left: 10px">团队赛：</span>
+        <div v-if="contestList.length !== 0">
+          <!--  可通过竞赛标题查询  -->
+          <el-table
+            :data="contestList.filter(data => !teamSearch || data.contestDetail.contestTitle.toLowerCase().includes(teamSearch.toLowerCase()))"
+            style="width: 100%"
+            max-height="300">
+            <el-table-column
+              fixed
+              type="index"
+              width="50">
+            </el-table-column>
+            <el-table-column
+              fixed
+              prop="contestDetail.contestTitle"
+              width="500"
+              align="left">
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              min-width="160"
+              align="right">
+              <template slot="header" slot-scope="scope">
+                <el-input
+                  v-model="teamSearch"
+                  size="small"
+                  placeholder="输入关键字搜索"/>
+              </template>
+              <template slot-scope="scope">
+                <el-button
+                  @click.native.prevent="deleteContest(scope.$index, contestList)"
+                  type="danger"
+                  size="small">
+                  删除
+                </el-button>
+                <el-button
+                  @click.native.prevent="gotoPrizeWinningDetails(scope.$index, contestList)"
+                  type="primary"
+                  size="small">
+                  获奖查询
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="height: 70px">
+            <el-button
+              @click="allDelete"
+              type="danger"
+              size="small"
+              style="display: block; float: right; margin: 20px 20px 0 0">
+              全部删除
+            </el-button>
+          </div>
+        </div>
+        <div v-if="contestList.length === 0" style="text-align: center; margin-top: 20px">
+          <el-tag type="success" style="width: 680px; font-weight: bolder; color: #33ba9b; font-size: 16px; line-height:60px;
           height: 60px">暂无可查询的竞赛结果</el-tag>
+        </div>
       </div>
     </div>
   </div>
@@ -86,7 +156,8 @@ export default {
   data: function () {
     return {
       contestList: [],
-      search: ''
+      search: '',
+      teamSearch: ''
     }
   },
   mounted: function () {
