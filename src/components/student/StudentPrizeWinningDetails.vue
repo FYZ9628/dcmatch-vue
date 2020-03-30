@@ -14,7 +14,7 @@
       <el-row>
         <span style="font-weight: bolder">比赛结果</span>
         <el-button
-          @click="deleteTeamContest"
+          @click="deleteContest"
           type="danger"
           style="display: block; float: right;">
           删  除
@@ -140,7 +140,7 @@ export default {
         // }
       })
     },
-    deleteTeamContest: function () {
+    deleteContest: function () {
       this.$confirm('确认删除？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

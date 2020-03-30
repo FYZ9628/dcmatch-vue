@@ -1,42 +1,67 @@
 <template>
-  <div style="width: 800px; background-color: #f6f6f6">
+  <div style="width: 800px; background-color: #ffffff">
+    <div style="font-size: 16px; font-weight: bolder; padding: 20px 0 20px 30px">获奖查询</div>
     <div style="height: 600px; background-color: #ffffff; margin-bottom: 10px; padding: 20px 30px;">
-      <span style="font-size: 16px; font-weight: bolder">获奖查询</span>
-      <div style="height: 160px; margin: 50px 0 0 20px">
-        <h4 style="margin-top: 30px">已参加的比赛科目列表如下：</h4>
-        <div v-for="(item, index) in NowSignUpData"
-             :key="item.value"
-             style="text-align: left; margin: 30px 30px 0 0">
-          <div style="height: 40px; border: 1px solid #559ae2; border-radius: 5px;
-           padding: 20px 15px;">
-            <div style="width: 500px; font-size: 18px; font-weight: bolder;
-             line-height: 40px;  display: block; float: left;
-              overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">
-              {{item.name}}
-            </div>
-            <el-button type="primary" plain style="height: 40px; display: block; float: right">
+    <div style="font-weight: bolder">已参加的竞赛科目列表如下：</div>
+    <div v-if="teamContestList.length !== 0">
+      <!--  可通过竞赛标题查询  -->
+      <el-table
+        :data="teamContestList.filter(data => !search || data.contestDetail.contestTitle.toLowerCase().includes(search.toLowerCase()))"
+        style="width: 100%"
+        max-height="400">
+        <el-table-column
+          fixed
+          type="index"
+          width="50">
+        </el-table-column>
+        <el-table-column
+          fixed
+          prop="contestDetail.contestTitle"
+          width="500"
+          align="left">
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          min-width="160"
+          align="right">
+          <template slot="header" slot-scope="scope">
+            <el-input
+              v-model="search"
+              size="small"
+              placeholder="输入关键字搜索"/>
+          </template>
+          <template slot-scope="scope">
+<!--            <el-button-->
+<!--              @click.native.prevent="deleteTeamContest(scope.$index, teamContestList)"-->
+<!--              type="danger"-->
+<!--              size="small">-->
+<!--              删除-->
+<!--            </el-button>-->
+            <el-button
+              @click.native.prevent="gotoPrizeWinningDetails(scope.$index, teamContestList)"
+              type="primary"
+              size="small">
               获奖查询
             </el-button>
-          </div>
-          <el-button v-if="index == 2" type="primary" plain
-                     style="display: block; float: right; height: 60px;
-                      margin-top: 20px; ">
-            更多
-            <i class="el-icon-d-arrow-right el-icon--right" ></i>
-          </el-button>
-          <el-button v-if="NowSignUpData.length === 0" type="primary" plain
-                     style="display: block; float: right; height: 60px;
-                      margin-top: 20px; ">
-            没有
-            <i class="el-icon-d-arrow-right el-icon--right" ></i>
-          </el-button>
-        </div>
-      </div>
-      <div v-if="NowSignUpData.length === 0" style="text-align: center; margin-top: 60px">
-        <el-tag type="success" style="width: 680px; font-weight: bolder; color: #33ba9b; font-size: 16px; line-height:60px;
-          height: 60px">暂无可查询的比赛结果</el-tag>
-      </div>
+          </template>
+        </el-table-column>
+      </el-table>
+<!--      <div style="height: 70px">-->
+<!--        <el-button-->
+<!--          @click="allDelete"-->
+<!--          type="danger"-->
+<!--          size="small"-->
+<!--          style="display: block; float: right; margin: 20px 20px 0 0">-->
+<!--          全部删除-->
+<!--        </el-button>-->
+<!--      </div>-->
     </div>
+    <div v-if="teamContestList.length === 0" style="text-align: center; margin-top: 60px">
+      <el-tag type="success" style="width: 680px; font-weight: bolder; color: #33ba9b; font-size: 16px; line-height:60px;
+                height: 60px">暂无可查询的竞赛结果</el-tag>
+    </div>
+  </div>
   </div>
 </template>
 
@@ -45,17 +70,135 @@ export default {
   name: 'TeacherPrizeWinning',
   data: function () {
     return {
-      studentData: [
-        {id: '', user: {id: '', account: '', phone: '', password: '', name: '', type: ''}, sex: ''}
-      ],
-      NowSignUpData: [
-        {name: '数学竞赛'},
-        {name: '英语竞赛'},
-        {name: '程序设计竞赛给对方感发送到发送发送到发斯蒂芬水电费费到发给对方广东省法规申达股份送到发送到发斯蒂芬'}
-      ]
+      teamContestList: [],
+      search: ''
     }
   },
+  mounted: function () {
+    this.loadTeamContest()
+  },
   methods: {
+    loadTeamContest () {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchTeamContestByTeacherAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            this.teamContestList = []
+            for (let i = 0; i < successResponse.data.length; i++) {
+              if (successResponse.data[i].state === '查看成绩') {
+                // 去重
+                let isExistTeacher = false
+                for (let j = 0; j < this.teamContestList.length; j++) {
+                  if (this.teamContestList[j].teamName === successResponse.data[i].teamName) {
+                    isExistTeacher = true
+                  }
+                }
+                if (isExistTeacher === false) {
+                  this.teamContestList.push(successResponse.data[i])
+                }
+              }
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    },
+    gotoPrizeWinningDetails: function (index, teamContestList) {
+      let teamContestJson = JSON.stringify(teamContestList[index])
+      // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
+      // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
+      sessionStorage.setItem('teamContestJson', teamContestJson)
+      this.$router.push({
+        path: '/teacher/prizeWinningDetails'
+        // name: 'noticeDetails/'
+        // query: {
+        //   data: contestDetailJson
+        // // 以加问号接续的方式显示内容
+        // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+        // }
+      })
+    },
+    deleteTeamContest: function (index, teamContestList) {
+      this.$axios
+        .post('/deleteTeamContest', {
+          // 后端接收的是整个 contest 对象，但是其实只用到了 id
+          // 所以只要传 id 到后端就行了
+          id: teamContestList[index].id
+        })
+        .then(successResponse => {
+          this.loadTeamContest()
+          this.$message({
+            message: '删除了一个竞赛',
+            type: 'success'
+          })
+          teamContestList.splice(index, 1)
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '删除失败',
+            type: 'error'
+          })
+        })
+    },
+    allDelete () {
+      this.loadTeamContest()
+      if (this.teamContestList.length > 0) {
+        this.$confirm('确认全部删除？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true })
+          .then(_ => {
+            for (let i = 0; i < this.teamContestList.length; i++) {
+              this.$axios
+                .post('/deleteTeamContest', {
+                  // 后端接收的是整个 contest 对象，但是其实只用到了 id
+                  // 所以只要传 id 到后端就行了
+                  id: this.teamContestList[i].id
+                })
+                .then(successResponse => {
+                })
+                .catch(failResponse => {
+                  this.$message({
+                    message: '删除失败',
+                    type: 'error'
+                  })
+                })
+            }
+            this.$message({
+              message: '成功删除了' + this.teamContestList.length + '个竞赛',
+              type: 'success'
+            })
+            // 一秒后刷新
+            setTimeout(() => {
+              window.open(
+                this.$router.resolve({
+                  path: '/student/prizeWinning/teamContestList'
+                }).href, '_self'
+                // 打开新窗口：_blank
+                // 在本地窗口打开：_self
+              )
+            }, 1000)
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
+      } else {
+        this.$message({
+          message: '当前无数据',
+          type: 'warning'
+        })
+      }
+    }
   }
 }
 </script>
