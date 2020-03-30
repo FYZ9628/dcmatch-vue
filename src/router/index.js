@@ -76,6 +76,9 @@ import OrganizerMyContestTeamSignUp from '@/components/organizer/OrganizerMyCont
 import OrganizerPrizeWinningTeamList from '@/components/organizer/OrganizerPrizeWinningTeamList'
 import StudentMyTeamContestDetails from '@/components/student/StudentMyTeamContestDetails'
 import StudentMyTeamContestList from '@/components/student/StudentMyTeamContestList'
+import StudentPrizeWinningContestList from '@/components/student/StudentPrizeWinningContestList'
+import StudentPrizeWinningTeamContestList from '@/components/student/StudentPrizeWinningTeamContestList'
+import StudentPrizeWinningTeamDetails from '@/components/student/StudentPrizeWinningTeamDetails'
 
 Vue.use(Router)
 
@@ -225,7 +228,20 @@ export default new Router({
         {
           path: 'prizeWinning',
           name: 'StudentPrizeWinning',
-          component: StudentPrizeWinning
+          component: StudentPrizeWinning,
+          redirect: '/student/prizeWinning/contestList',
+          children: [
+            {
+              path: '/student/prizeWinning/contestList',
+              name: 'StudentPrizeWinningContestList',
+              component: StudentPrizeWinningContestList
+            },
+            {
+              path: '/student/prizeWinning/teamContestList',
+              name: 'StudentPrizeWinningTeamContestList',
+              component: StudentPrizeWinningTeamContestList
+            }
+          ]
         },
         {
           path: 'myOrder',
@@ -271,6 +287,11 @@ export default new Router({
           path: 'prizeWinningDetails',
           name: 'StudentPrizeWinningDetails',
           component: StudentPrizeWinningDetails
+        },
+        {
+          path: 'prizeWinningTeamDetails',
+          name: 'StudentPrizeWinningTeamDetails',
+          component: StudentPrizeWinningTeamDetails
         }
       ]
     },

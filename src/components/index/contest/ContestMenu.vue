@@ -1,14 +1,14 @@
 <template>
 <!--  router :default-active="$route.path"-->
-  <el-menu class="nav-menu"
-           router :default-active="$route.path"
-           mode="horizontal"
+  <el-menu
+    class="nav-menu"
+    router :default-active="$route.path"
+    mode="horizontal"
 
-           background-color="#545c64"
-           text-color="#fff"
-           active-text-color="#ffd04b"
-           style="min-width: 100%;max-height: 120px"
-  >
+    background-color="#545c64"
+    text-color="#fff"
+    active-text-color="#ffd04b"
+    style="min-width: 100%;max-height: 120px">
     <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name" style="padding: 0 50px">
       {{ item.navItem }}
     </el-menu-item>
