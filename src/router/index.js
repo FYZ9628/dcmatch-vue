@@ -82,6 +82,12 @@ import StudentPrizeWinningTeamDetails from '@/components/student/StudentPrizeWin
 import TeacherMyContestDetails from '@/components/teacher/TeacherMyContestDetails'
 import TeacherMyContestList from '@/components/teacher/TeacherMyContestList'
 import TeacherPrizeWinningDetails from '@/components/teacher/TeacherPrizeWinningDetails'
+import AdminContestIndex from '@/components/admin/contest/AdminContestIndex'
+import AdminIndividualContest from '@/components/admin/contest/AdminIndividualContest'
+import AdminTeamContest from '@/components/admin/contest/AdminTeamContest'
+import AdminSignUpIndex from '@/components/admin/signUp/AdminSignUpIndex'
+import AdminIndividualSignUp from '@/components/admin/signUp/AdminIndividualSignUp'
+import AdminTeamSignUp from '@/components/admin/signUp/AdminTeamSignUp'
 
 Vue.use(Router)
 
@@ -506,7 +512,7 @@ export default new Router({
         },
         {
           path: 'home',
-          name: 'UserData',
+          name: 'AdminHomeIndex',
           component: AdminHomeIndex,
           children: [
             {
@@ -530,6 +536,41 @@ export default new Router({
           path: '/admin/setting',
           name: 'AdminSetting',
           component: AdminSetting
+        },
+        {
+          path: 'contest',
+          name: 'AdminContestIndex',
+          component: AdminContestIndex,
+          children: [
+            {
+              path: 'individualContest',
+              name: 'AdminIndividualContest',
+              component: AdminIndividualContest
+            },
+            {
+              path: 'teamContest',
+              name: 'AdminTeamContest',
+              component: AdminTeamContest
+            }
+          ]
+        },
+        ,
+        {
+          path: 'signUp',
+          name: 'AdminSignUpIndex',
+          component: AdminSignUpIndex,
+          children: [
+            {
+              path: 'individualSignUp',
+              name: 'AdminIndividualSignUp',
+              component: AdminIndividualSignUp
+            },
+            {
+              path: 'teamSignUp',
+              name: 'AdminTeamSignUp',
+              component: AdminTeamSignUp
+            }
+          ]
         }
       ]
     }

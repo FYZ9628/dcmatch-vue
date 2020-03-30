@@ -43,6 +43,26 @@
         <el-menu-item index="/admin/user/adminUser">管理员管理</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
+    <el-submenu index="/admin/contest">
+      <template slot="title">
+        <i class="el-icon-s-flag"></i>
+        <span>竞赛管理</span>
+      </template>
+      <el-menu-item-group>
+        <el-menu-item index="/admin/contest/individualContest">个人竞赛</el-menu-item>
+        <el-menu-item index="/admin/contest/teamContest">团队竞赛</el-menu-item>
+      </el-menu-item-group>
+    </el-submenu>
+    <el-submenu index="/admin/signUp">
+      <template slot="title">
+        <i class="el-icon-s-management"></i>
+        <span>报名管理</span>
+      </template>
+      <el-menu-item-group>
+        <el-menu-item index="/admin/signUp/individualSignUp">个人竞赛</el-menu-item>
+        <el-menu-item index="/admin/signUp/teamSignUp">团队竞赛</el-menu-item>
+      </el-menu-item-group>
+    </el-submenu>
     <el-menu-item index="/admin/setting">
       <i class="el-icon-setting"></i>
       <span slot="title">设 置</span>
