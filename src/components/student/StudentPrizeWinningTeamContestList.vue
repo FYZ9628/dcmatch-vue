@@ -31,7 +31,7 @@
           </template>
           <template slot-scope="scope">
             <el-button
-              @click.native.prevent="deleteContest(scope.$index, teamContestList)"
+              @click.native.prevent="deleteTeamContest(scope.$index, teamContestList)"
               type="danger"
               size="small">
               删除
@@ -112,7 +112,7 @@ export default {
         // }
       })
     },
-    deleteContest: function (index, teamContestList) {
+    deleteTeamContest: function (index, teamContestList) {
       this.$axios
         .post('/deleteTeamContest', {
           // 后端接收的是整个 contest 对象，但是其实只用到了 id

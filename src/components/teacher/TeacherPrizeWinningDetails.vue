@@ -11,15 +11,7 @@
       </el-steps>
     </div>
     <div style="height: 270px; background-color: #ffffff; padding: 30px 30px">
-      <el-row>
-        <span style="font-weight: bolder">比赛结果</span>
-        <el-button
-          @click="deleteTeamContest"
-          type="danger"
-          style="display: block; float: right;">
-          删  除
-        </el-button>
-      </el-row>
+      <span style="font-weight: bolder">比赛结果</span>
       <el-row style="line-height: 24px; padding: 10px 0; margin-top: 30px">
         <span style="display: block; float: left; color: #778a99">姓&emsp;&emsp;名：</span>
         <span style="display: block; float: left; margin-left: 30px">{{contestDate.student.user.name}}</span>
@@ -139,49 +131,6 @@ export default {
         // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
         // }
       })
-    },
-    deleteTeamContest: function () {
-      this.$confirm('确认删除？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true })
-        .then(_ => {
-          this.$axios
-            .post('/deleteContest', {
-              // 后端接收的是整个 contest 对象，但是其实只用到了 id
-              // 所以只要传 id 到后端就行了
-              id: this.contestDate.id
-            })
-            .then(successResponse => {
-              this.$message({
-                message: '删除成功',
-                type: 'success'
-              })
-              // 一秒后刷新
-              setTimeout(() => {
-                window.open(
-                  this.$router.resolve({
-                    path: '/student/prizeWinning/contestList'
-                  }).href, '_self'
-                  // 打开新窗口：_blank
-                  // 在本地窗口打开：_self
-                )
-              }, 1000)
-            })
-            .catch(failResponse => {
-              this.$message({
-                message: '删除失败',
-                type: 'error'
-              })
-            })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消操作'
-          })
-        })
     }
   }
 }

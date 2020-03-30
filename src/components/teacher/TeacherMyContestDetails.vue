@@ -169,7 +169,7 @@
 
 <script>
 export default {
-  name: 'StudentMyTeamContestDetails',
+  name: 'TeacherMyContestDetails',
   data: function () {
     return {
       teamContestDate: {
@@ -261,6 +261,7 @@ export default {
       }
     }
     this.loadMyTeamContest()
+    console.log(this.$store.getters.code)
   },
   methods: {
     loadMyTeamContest () {
@@ -288,7 +289,7 @@ export default {
     goBack () {
       if (this.gotoContestDetailState.state === 1) {
         this.$router.push({
-          path: '/student/myContest'
+          path: '/teacher/myContest'
           // name: 'noticeDetails/'
           // query: {
           //   data: contestDetailJson
@@ -299,7 +300,7 @@ export default {
       }
       if (this.gotoContestDetailState.state === 2) {
         this.$router.push({
-          path: '/student/teamContestList'
+          path: '/teacher/contestList'
           // name: 'noticeDetails/'
           // query: {
           //   data: contestDetailJson
@@ -310,7 +311,7 @@ export default {
       }
     },
     deleteTeamContest: function () {
-      if (this.teamContestDate.remarks === '队长') {
+      if (this.$store.getters.account === this.teamContestDate.teacherAccount) {
         this.$confirm('确认取消报名？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -333,7 +334,7 @@ export default {
                   setTimeout(() => {
                     window.open(
                       this.$router.resolve({
-                        path: '/student/myContest'
+                        path: '/teacher/myContest'
                       }).href, '_self'
                       // 打开新窗口：_blank
                       // 在本地窗口打开：_self
@@ -345,7 +346,7 @@ export default {
                   setTimeout(() => {
                     window.open(
                       this.$router.resolve({
-                        path: '/student/teamContestList'
+                        path: '/teacher/contestList'
                       }).href, '_self'
                       // 打开新窗口：_blank
                       // 在本地窗口打开：_self

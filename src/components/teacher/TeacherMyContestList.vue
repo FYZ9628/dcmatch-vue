@@ -72,7 +72,7 @@
 
 <script>
 export default {
-  name: 'StudentMyTeamContestList',
+  name: 'TeacherMyContestList',
   data: function () {
     return {
       teamContestList: [],
@@ -142,14 +142,23 @@ export default {
     loadTeamContest () {
       if (this.$store.getters.account) {
         this.$axios
-          .post('/searchTeamContestByStudentAccount', {
+          .post('/searchTeamContestByTeacherAccount', {
             keywords: this.$store.getters.account
           })
           .then(successResponse => {
             this.teamContestList = []
             for (let i = 0; i < successResponse.data.length; i++) {
               if (successResponse.data[i].state !== '查看成绩') {
-                this.teamContestList.push(successResponse.data[i])
+                // 去重
+                let isExistTeacher = false
+                for (let j = 0; j < this.teamContestList.length; j++) {
+                  if (this.teamContestList[j].teamName === successResponse.data[i].teamName) {
+                    isExistTeacher = true
+                  }
+                }
+                if (isExistTeacher === false) {
+                  this.teamContestList.push(successResponse.data[i])
+                }
               }
             }
           })
@@ -163,7 +172,7 @@ export default {
     },
     goBack () {
       this.$router.push({
-        path: '/student/myContest'
+        path: '/teacher/myContest'
         // name: 'noticeDetails/'
         // query: {
         //   data: contestDetailJson
@@ -173,12 +182,13 @@ export default {
       })
     },
     deleteTeamContest: function (index, teamContestList) {
-      if (teamContestList[index].remarks === '队长') {
+      if (this.$store.getters.account === teamContestList[index].teacherAccount) {
         this.$confirm('确认取消报名？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
-          center: true })
+          center: true
+        })
           .then(_ => {
             this.$axios
               .post('/deleteTeam', {
@@ -226,7 +236,7 @@ export default {
       // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
       sessionStorage.setItem('teamContestJson', teamContestJson)
       this.$router.push({
-        path: '/student/teamContestDetails'
+        path: '/teacher/contestDetails'
         // name: 'noticeDetails/'
         // query: {
         //   data: contestDetailJson

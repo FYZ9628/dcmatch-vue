@@ -79,6 +79,9 @@ import StudentMyTeamContestList from '@/components/student/StudentMyTeamContestL
 import StudentPrizeWinningContestList from '@/components/student/StudentPrizeWinningContestList'
 import StudentPrizeWinningTeamContestList from '@/components/student/StudentPrizeWinningTeamContestList'
 import StudentPrizeWinningTeamDetails from '@/components/student/StudentPrizeWinningTeamDetails'
+import TeacherMyContestDetails from '@/components/teacher/TeacherMyContestDetails'
+import TeacherMyContestList from '@/components/teacher/TeacherMyContestList'
+import TeacherPrizeWinningDetails from '@/components/teacher/TeacherPrizeWinningDetails'
 
 Vue.use(Router)
 
@@ -423,6 +426,21 @@ export default new Router({
           path: 'accountSetting',
           name: 'TeacherAccountSetting',
           component: TeacherAccountSetting
+        },
+        {
+          path: 'contestDetails',
+          name: 'TeacherMyContestDetails',
+          component: TeacherMyContestDetails
+        },
+        {
+          path: 'contestList',
+          name: 'TeacherMyContestList',
+          component: TeacherMyContestList
+        },
+        {
+          path: 'prizeWinningDetails',
+          name: 'TeacherPrizeWinningDetails',
+          component: TeacherPrizeWinningDetails
         }
       ]
     },

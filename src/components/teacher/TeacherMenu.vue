@@ -8,7 +8,7 @@
     </div>
     <el-menu
       default-active="this.$route.path"
-      router=true>
+      router>
       <el-menu-item index="/teacher/authentication">
         <i class="el-icon-s-custom"></i>
         <span slot="title">个人认证</span>
@@ -18,7 +18,7 @@
         <span slot="title">我的大赛</span>
       </el-menu-item>
       <el-menu-item index="/teacher/prizeWinning">
-        <i class="el-icon-star-off"></i>
+        <i class="el-icon-trophy"></i>
         <span slot="title">获奖查询</span>
       </el-menu-item>
       <el-menu-item index="/teacher/myOrder">
