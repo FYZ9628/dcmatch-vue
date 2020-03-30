@@ -238,7 +238,11 @@
             </el-table-column>
           </el-table>
           <el-row style="margin: 20px 0">
-            添加指导老师，只能添加一人
+            <span style="display: block; float: left; line-height: 30px">添加指导老师，只能添加一人</span>
+            <el-button type="primary" size="small" @click="addMySelfAsTeacher"
+                       style="display: block; float: right; margin-right: 20px">
+              添加自己作为指导老师
+            </el-button>
           </el-row>
           <el-row>
             <div style="display: block; float: left">
@@ -601,6 +605,47 @@ export default {
         })
       }
     },
+    addMySelfAsTeacher () {
+      if (this.teacherList.length < 1) {
+        this.$axios
+          .post('/teamSignUpAddTeacher', {
+            account: this.teacherData.user.account,
+            name: this.teacherData.user.name
+          })
+          .then(successResponse => {
+            if (successResponse.data !== '') {
+              if (successResponse.data.user.type === 2) {
+                this.teacherList.push(successResponse.data)
+                this.$message({
+                  message: '添加成功',
+                  type: 'success'
+                })
+              } else {
+                this.$message({
+                  message: '该老师未通过认证',
+                  type: 'error'
+                })
+              }
+            } else {
+              this.$message({
+                message: '该老师不存在',
+                type: 'error'
+              })
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '该老师不存在或未认证',
+              type: 'error'
+            })
+          })
+      } else {
+        this.$message({
+          message: '只能添加一名指导老师',
+          type: 'error'
+        })
+      }
+    },
     addTeacher () {
       if (this.teacherList.length < 1) {
         this.$refs.addTeacherForm.validate((valid) => {
@@ -656,98 +701,105 @@ export default {
       })
     },
     confirmSignUp: function () {
-      this.$refs.teamContestForm.validate((valid) => {
-        if (valid) {
-          this.$axios
-            .post('/searchTeamContestByTeamName', {
-              keywords: this.teamContestForm.teamName
-            })
-            .then(successResponse => {
-              if (successResponse.data.length === 0) {
-                let tempTeacher = {
-                  account: '',
-                  name: ''
-                }
-                if (this.isHasTeacher === true && this.teacherList.length !== 0) {
-                  tempTeacher = {
-                    account: this.teacherList[0].user.account,
-                    name: this.teacherList[0].user.name
+      if (this.studentList.length >= 1) {
+        this.$refs.teamContestForm.validate((valid) => {
+          if (valid) {
+            this.$axios
+              .post('/searchTeamContestByTeamName', {
+                keywords: this.teamContestForm.teamName
+              })
+              .then(successResponse => {
+                if (successResponse.data.length === 0) {
+                  let tempTeacher = {
+                    account: '',
+                    name: ''
                   }
-                }
-                if (this.isHasTeacher === true && this.teacherList.length === 0) {
+                  if (this.isHasTeacher === true && this.teacherList.length !== 0) {
+                    tempTeacher = {
+                      account: this.teacherList[0].user.account,
+                      name: this.teacherList[0].user.name
+                    }
+                  }
+                  if (this.isHasTeacher === true && this.teacherList.length === 0) {
+                    this.$message({
+                      message: '请添加指导老师信息',
+                      type: 'error'
+                    })
+                  } else {
+                    this.$confirm('确认报名', '提示', {
+                      confirmButtonText: '确定',
+                      cancelButtonText: '取消',
+                      type: 'warning'
+                    }).then(() => {
+                      this.$axios
+                        .post('/addTeamContest', {
+                          id: '',
+                          contestDetail: this.signUpContestDetailData,
+                          // student: this.studentData,
+                          studentList: this.studentList,
+                          teacherAccount: tempTeacher.account,
+                          teacherName: tempTeacher.name,
+                          state: '已报名',
+                          ticketNumber: this.ticketNumber,
+                          score: null,
+                          teamName: this.teamContestForm.teamName,
+                          remarksIndex: this.captainState.index
+                        })
+                        .then(successResponse => {
+                          this.$message({
+                            message: '报名成功',
+                            type: 'success'
+                          })
+                          // 一秒后刷新
+                          setTimeout(() => {
+                            window.open(
+                              this.$router.resolve({
+                                path: '/index/teamSignUp'
+                              }).href, '_self'
+                              // 打开新窗口：_blank
+                              // 在本地窗口打开：_self
+                            )
+                          }, 1000)
+                        })
+                        .catch(failResponse => {
+                          this.$message({
+                            message: '报名失败',
+                            type: 'error'
+                          })
+                        })
+                    }).catch(() => {
+                      this.$message({
+                        type: 'info',
+                        message: '已取消报名'
+                      })
+                    })
+                  }
+                } else {
                   this.$message({
-                    message: '请添加指导老师信息',
+                    message: '该团队名称已被使用，请重新填写',
                     type: 'error'
                   })
-                } else {
-                  this.$confirm('确认报名', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                  }).then(() => {
-                    this.$axios
-                      .post('/addTeamContest', {
-                        id: '',
-                        contestDetail: this.signUpContestDetailData,
-                        // student: this.studentData,
-                        studentList: this.studentList,
-                        teacherAccount: tempTeacher.account,
-                        teacherName: tempTeacher.name,
-                        state: '已报名',
-                        ticketNumber: this.ticketNumber,
-                        score: null,
-                        teamName: this.teamContestForm.teamName,
-                        remarksIndex: this.captainState.index
-                      })
-                      .then(successResponse => {
-                        this.$message({
-                          message: '报名成功',
-                          type: 'success'
-                        })
-                        // 一秒后刷新
-                        setTimeout(() => {
-                          window.open(
-                            this.$router.resolve({
-                              path: '/index/teamSignUp'
-                            }).href, '_self'
-                            // 打开新窗口：_blank
-                            // 在本地窗口打开：_self
-                          )
-                        }, 1000)
-                      })
-                      .catch(failResponse => {
-                        this.$message({
-                          message: '报名失败',
-                          type: 'error'
-                        })
-                      })
-                  }).catch(() => {
-                    this.$message({
-                      type: 'info',
-                      message: '已取消报名'
-                    })
-                  })
                 }
-              } else {
+              })
+              .catch(failResponse => {
                 this.$message({
-                  message: '该团队名称已被使用，请重新填写',
+                  message: '查询失败',
                   type: 'error'
                 })
-              }
-            })
-            .catch(failResponse => {
-              this.$message({
-                message: '查询失败',
-                type: 'error'
               })
+          } else {
+            this.$message({
+              message: '请填写团队名称',
+              type: 'error'
             })
-        } else {
-          this.$message({
-            message: '请填写团队名称',
-            type: 'error'
-          })
-        }
-      })
+          }
+        })
+      } else {
+        this.$message({
+          message: '请先添加学生',
+          type: 'error'
+        })
+      }
     }
   }
 }
