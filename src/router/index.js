@@ -91,7 +91,9 @@ import AdminTeamSignUp from '@/components/admin/signUp/AdminTeamSignUp'
 import OrganizerDataAnalysis from '@/components/organizer/dataAnalysis/OrganizerDataAnalysis'
 import OrganizerDataAnalysisSignUp from '@/components/organizer/dataAnalysis/OrganizerDataAnalysisSignUp'
 import OrganizerDataAnalysisContestDetails from '@/components/organizer/dataAnalysis/OrganizerDataAnalysisContestDetails'
-import OrganizerInputScore from '@/components/organizer/OrganizerInputScore'
+import OrganizerInputScore from '@/components/organizer/inputScore/OrganizerInputScore'
+import OrganizerInputScoreSignUp from '@/components/organizer/inputScore/OrganizerInputScoreSignUp'
+import OrganizerInputScoreTeamSignUp from '@/components/organizer/inputScore/OrganizerInputScoreTeamSignUp'
 
 Vue.use(Router)
 
@@ -411,6 +413,16 @@ export default new Router({
               component: OrganizerDataAnalysisContestDetails
             }
           ]
+        },
+        {
+          path: 'inputScoreSignUp',
+          name: 'OrganizerInputScoreSignUp',
+          component: OrganizerInputScoreSignUp
+        },
+        {
+          path: 'inputScoreTeamSignUp',
+          name: 'OrganizerInputScoreTeamSignUp',
+          component: OrganizerInputScoreTeamSignUp
         }
       ]
     },

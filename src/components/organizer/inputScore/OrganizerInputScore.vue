@@ -1,8 +1,8 @@
 <template>
   <div style="width: 800px; background-color: #f6f6f6">
     <div style="height: 520px; background-color: #ffffff; margin-bottom: 10px; padding: 20px 30px;">
-      <span style="font-size: 16px; font-weight: bolder">获奖查询</span>
-      <div style="padding: 20px 0 10px 10px; font-weight: bolder">已结束的竞赛科目列表如下：</div>
+      <span style="font-size: 16px; font-weight: bolder">录入成绩</span>
+      <div style="padding: 20px 0 10px 10px; font-weight: bolder">可录入成绩的竞赛科目列表如下：</div>
       <div v-if="contestDetailList.length !== 0">
         <!--  可通过竞赛标题查询  -->
         <el-table
@@ -10,15 +10,13 @@
           style="width: 100%"
           max-height="350">
           <el-table-column
-            fixed
             prop="contestTitle"
-            width="500"
+            width="380"
             align="left">
           </el-table-column>
           <el-table-column
-            fixed="right"
             label="操作"
-            min-width="160"
+            min-width="350"
             align="right">
             <template slot="header" slot-scope="scope">
               <el-input
@@ -34,10 +32,16 @@
                 删除
               </el-button>
               <el-button
-                @click.native.prevent="gotoPrizeWinningDetails(scope.$index, contestDetailList)"
+                @click.native.prevent="setContestDetailState(scope.$index, contestDetailList)"
                 type="primary"
                 size="small">
-                查看详情
+                设为查看成绩阶段
+              </el-button>
+              <el-button
+                @click.native.prevent="gotoSignUpList(scope.$index, contestDetailList)"
+                type="primary"
+                size="small">
+                查看参赛名单
               </el-button>
             </template>
           </el-table-column>
@@ -172,7 +176,7 @@ export default {
           .then(successResponse => {
             this.contestDetailList = []
             for (let i = 0; i < successResponse.data.length; i++) {
-              if (successResponse.data[i].state === '查看成绩阶段') {
+              if (successResponse.data[i].state === '录入成绩阶段') {
                 this.contestDetailList.push(successResponse.data[i])
               }
             }
@@ -185,20 +189,33 @@ export default {
           })
       }
     },
-    gotoPrizeWinningDetails: function (index, contestDetailList) {
+    gotoSignUpList: function (index, contestDetailList) {
       let contestDetailJson = JSON.stringify(contestDetailList[index])
       // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
       // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
       sessionStorage.setItem('contestDetailJson', contestDetailJson)
-      this.$router.push({
-        path: '/organizer/prizeWinningDetails'
-        // name: 'noticeDetails/'
-        // query: {
-        //   data: contestDetailJson
-        // // 以加问号接续的方式显示内容
-        // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
-        // }
-      })
+      if (this.contestDetailList[index].type === '个人赛') {
+        this.$router.push({
+          path: '/organizer/inputScoreSignUp'
+          // name: 'noticeDetails/'
+          // query: {
+          //   data: contestDetailJson
+          // // 以加问号接续的方式显示内容
+          // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+          // }
+        })
+      }
+      if (this.contestDetailList[index].type === '团队赛') {
+        this.$router.push({
+          path: '/organizer/inputScoreTeamSignUp'
+          // name: 'noticeDetails/'
+          // query: {
+          //   data: contestDetailJson
+          // // 以加问号接续的方式显示内容
+          // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+          // }
+        })
+      }
     },
     deleteContestDetails: function (index, contestDetailList) {
       this.$axios
@@ -230,6 +247,47 @@ export default {
         .catch(failResponse => {
           this.$message({
             message: '删除失败',
+            type: 'error'
+          })
+        })
+    },
+    setContestDetailState (index, contestDetailList) {
+      this.$axios
+        .post('/updateContestDetail', {
+          id: contestDetailList[index].id,
+          contestTitle: contestDetailList[index].contestTitle,
+          organizer: this.organizerData,
+          contestContent: contestDetailList[index].contestContent,
+          signUpStartTime: contestDetailList[index].signUpStartTime,
+          signUpEndTime: contestDetailList[index].signUpEndTime,
+          // 获取当前时间
+          publishTime: contestDetailList[index].publishTime,
+          place: contestDetailList[index].place,
+          holdDate: contestDetailList[index].holdDate,
+          holdStartTime: contestDetailList[index].holdStartTime,
+          holdEndTime: contestDetailList[index].holdEndTime,
+          type: contestDetailList[index].type,
+          upperLimit: contestDetailList[index].upperLimit,
+          state: '查看成绩阶段'
+        })
+        .then(successResponse => {
+          if (successResponse.data !== '') {
+            this.loadContestDetail()
+            this.$message({
+              message: '设置成功',
+              type: 'success'
+            })
+            contestDetailList.splice(index, 1)
+          } else {
+            this.$message({
+              message: '设置失败',
+              type: 'error'
+            })
+          }
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '设置失败',
             type: 'error'
           })
         })
