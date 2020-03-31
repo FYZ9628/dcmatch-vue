@@ -1,23 +1,21 @@
 <template>
-  <div style="background-color: #f6f6f6; height: 600px">
-    <div style="height: 500px; width: 1230px; background-color: #ffffff;
-     margin-bottom: 10px; text-align: left;">
-      <div style="height: 50px; width: 1230px;">
-        <div style="padding: 20px 0 10px 10px; font-weight: bolder; display: block; float: left">报名数据</div>
-        <div style="padding: 20px 20px 10px 0; display: block; float: right;">
-          <el-select v-model="contestDetailOptionsValue" filterable placeholder="请选择或输入搜索"
-                     size="small" @change="contestDetailOptionChange" style="width: 250px">
-            <el-option
-              v-for="item in contestDetailOptions"
-              :key="item.id"
-              :label="item.contestTitle"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </div>
+  <div>
+    <el-row>
+      <div style="padding: 20px 20px 10px 0; display: block; float: right;">
+        <el-select v-model="contestDetailOptionsValue" filterable placeholder="请选择或输入搜索"
+                   size="small" @change="contestDetailOptionChange" style="width: 250px">
+          <el-option
+            v-for="item in contestDetailOptions"
+            :key="item.id"
+            :label="item.contestTitle"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </div>
-      <v-chart class="userType" :options="signUpDataOptions" :auto-resize="true" style="margin: 0 auto;"></v-chart>
-    </div>
+    </el-row>
+    <el-row>
+      <v-chart :options="signUpDataOptions" :auto-resize="true" style="margin: 0 auto;"></v-chart>
+    </el-row>
   </div>
 </template>
 
@@ -36,7 +34,7 @@ import 'echarts/lib/component/legend'
 import 'echarts/lib/component/title'
 import 'echarts/lib/component/graphic'
 export default {
-  name: 'SignUpData',
+  name: 'OrganizerDataAnalysisSignUp',
   data () {
     return {
       contestDetailList: [], // 获取所有的竞赛
@@ -85,27 +83,39 @@ export default {
   },
   methods: {
     loadContestDetailList () {
-      this.$axios.get('/getAllContestDetail').then(resp => {
-        if (resp && resp.status === 200) {
-          this.contestDetailList = resp.data
-          for (let i = 0; i < this.contestDetailList.length; i++) {
-            this.contestDetailOptions.push({id: this.contestDetailList[i].id,
-              contestTitle: this.contestDetailList[i].contestTitle})
-          }
-          if (this.contestDetailList.length !== 0) {
-            this.contestDetailOptionsValue = this.contestDetailList[0].contestTitle
-            if (this.contestDetailList[0].type === '个人赛') {
-              this.loadContestList(this.contestDetailList[0].id)
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchContestDetailByOrganizerAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            if (successResponse && successResponse.status === 200) {
+              this.contestDetailList = successResponse.data
+              for (let i = 0; i < this.contestDetailList.length; i++) {
+                this.contestDetailOptions.push({id: this.contestDetailList[i].id,
+                  contestTitle: this.contestDetailList[i].contestTitle})
+              }
+              if (this.contestDetailList.length !== 0) {
+                this.contestDetailOptionsValue = this.contestDetailList[0].contestTitle
+                if (this.contestDetailList[0].type === '个人赛') {
+                  this.loadContestList(this.contestDetailList[0].id)
+                }
+                if (this.contestDetailList[0].type === '团队赛') {
+                  this.loadTeamContestList(this.contestDetailList[0].id)
+                }
+              }
+              if (this.contestDetailList.length === 0) {
+                this.loadSignUpDataOptions(this.studentManNum, this.studentWomanNum)
+              }
             }
-            if (this.contestDetailList[0].type === '团队赛') {
-              this.loadTeamContestList(this.contestDetailList[0].id)
-            }
-          }
-          if (this.contestDetailList.length === 0) {
-            this.loadSignUpDataOptions(this.studentManNum, this.studentWomanNum)
-          }
-        }
-      })
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
     },
     contestDetailOptionChange (query) {
       // console.log('选中后测试')
@@ -287,13 +297,5 @@ export default {
 </script>
 
 <style scoped>
-  /**
- * 默认尺寸为 600px×400px，如果想让图表响应尺寸变化，可以像下面这样
- * 把尺寸设为百分比值（同时请记得为容器设置尺寸）。
- */
-  .userType {
-    width: 900px;
-    height: 350px;
-    /*background: #409EFF;*/
-  }
+
 </style>

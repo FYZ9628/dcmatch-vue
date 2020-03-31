@@ -21,7 +21,7 @@
     </el-submenu>
     <el-submenu index="/admin/authentication">
       <template slot="title">
-        <i class="el-icon-s-home"></i>
+        <i class="el-icon-s-claim"></i>
         <span>认证请求</span>
       </template>
       <el-menu-item-group>

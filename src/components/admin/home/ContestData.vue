@@ -23,8 +23,10 @@
      margin-bottom: 10px; text-align: left;">
       <div style="padding: 20px 0 10px 10px; font-weight: bolder"></div>
 <!--      <div style="padding: 20px 0 10px 10px; font-weight: bolder">竞赛数据</div>-->
-      <v-chart class="StudentGenderRatio" :options="contestDetailTypeOptions" :auto-resize="true"></v-chart>
-      <v-chart class="StudentGenderRatio" :options="contestDetailPublisherOptions" :auto-resize="true"></v-chart>
+      <el-row>
+        <v-chart class="StudentGenderRatio" :options="contestDetailTypeOptions" :auto-resize="true"></v-chart>
+        <v-chart class="StudentGenderRatio" :options="contestDetailPublisherOptions" :auto-resize="true"></v-chart>
+      </el-row>
     </div>
   </div>
 </template>

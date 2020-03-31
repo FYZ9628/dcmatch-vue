@@ -25,6 +25,10 @@
         <i class="el-icon-trophy"></i>
         <span slot="title">获奖查询</span>
       </el-menu-item>
+      <el-menu-item index="/organizer/dataAnalysis">
+        <i class="el-icon-zoom-in"></i>
+        <span slot="title">数据分析</span>
+      </el-menu-item>
 <!--      <el-menu-item index="/organizer/myOrder">-->
 <!--        <i class="el-icon-s-order"></i>-->
 <!--        <span slot="title">我的订单</span>-->

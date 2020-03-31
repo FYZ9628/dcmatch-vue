@@ -88,6 +88,9 @@ import AdminTeamContest from '@/components/admin/contest/AdminTeamContest'
 import AdminSignUpIndex from '@/components/admin/signUp/AdminSignUpIndex'
 import AdminIndividualSignUp from '@/components/admin/signUp/AdminIndividualSignUp'
 import AdminTeamSignUp from '@/components/admin/signUp/AdminTeamSignUp'
+import OrganizerDataAnalysis from '@/components/organizer/OrganizerDataAnalysis'
+import OrganizerDataAnalysisSignUp from '@/components/organizer/OrganizerDataAnalysisSignUp'
+import OrganizerDataAnalysisContestDetails from '@/components/organizer/OrganizerDataAnalysisContestDetails'
 
 Vue.use(Router)
 
@@ -384,6 +387,24 @@ export default new Router({
           path: 'prizeWinningTeamList',
           name: 'OrganizerPrizeWinningTeamList',
           component: OrganizerPrizeWinningTeamList
+        },
+        {
+          path: 'dataAnalysis',
+          name: 'OrganizerDataAnalysis',
+          component: OrganizerDataAnalysis,
+          redirect: '/organizer/dataAnalysis/signUp',
+          children: [
+            {
+              path: 'signUp',
+              name: 'OrganizerDataAnalysisSignUp',
+              component: OrganizerDataAnalysisSignUp
+            },
+            {
+              path: 'contestDetails',
+              name: 'OrganizerDataAnalysisContestDetails',
+              component: OrganizerDataAnalysisContestDetails
+            }
+          ]
         }
       ]
     },

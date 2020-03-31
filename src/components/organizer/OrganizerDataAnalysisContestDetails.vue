@@ -1,0 +1,492 @@
+<template>
+  <div>
+    <div style="height: 400px">
+      <div style="height: 50px;">
+        <div style="padding: 20px 0 10px 30px; font-weight: bolder; display: block; float: left">每个月发布的竞赛数量</div>
+        <div style="padding: 20px 20px 10px 0; display: block; float: right;">
+          <el-select v-model="yearOptionsValue" filterable placeholder="请选择或输入搜索"
+                     size="small" @change="contestDetailOptionChange" style="width: 160px">
+            <el-option
+              v-for="item in yearOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <v-chart style="width: 800px" ref="chart1" :options="contestDetailDataOptions" :auto-resize="true"></v-chart>
+    </div>
+    <div style="height: 400px; width: 800px; background-color: #ffffff;
+     margin-bottom: 10px; text-align: center; margin-top: 80px;">
+      <!--      <div style="padding: 20px 0 10px 10px; font-weight: bolder">竞赛数据</div>-->
+      <el-row>
+        <v-chart style="margin: 0 auto" :options="contestDetailTypeOptions" :auto-resize="true"></v-chart>
+      </el-row>
+    </div>
+  </div>
+</template>
+
+<script>
+// 折线
+import 'echarts/lib/chart/line'
+// 饼状图
+import 'echarts/lib/chart/pie'
+// 柱状图
+import 'echarts/lib/chart/bar'
+// 提示
+import 'echarts/lib/component/tooltip'
+// 图例
+import 'echarts/lib/component/legend'
+// 标题
+import 'echarts/lib/component/title'
+import 'echarts/lib/component/graphic'
+export default {
+  name: 'OrganizerDataAnalysisContestDetails',
+  data () {
+    return {
+      contestDetailList: [], // 获取所有的竞赛
+      contestDetailDataOptions: {}, // 每月竞赛数量数据
+      AllSingleContestDetailList: [], // 每个月发布的竞赛数量 用
+      AllTeamContestDetailList: [], // 每个月发布的竞赛数量 用
+      singleChartList: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 每个月发布的竞赛数量 用
+      teamChartList: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 每个月发布的竞赛数量 用
+      // AllTeamContestDetailList: [{name: 2019年, contestDetailDataList: []}],
+      singleContestDetailList: [], // 每个月发布的竞赛数量 用
+      teamContestDetailList: [], // 每个月发布的竞赛数量 用
+      yearOptions: [], // 下拉选择  每个月发布的竞赛数量 用
+      yearOptionsValue: '', // 选中后显示的值  每个月发布的竞赛数量 用
+      // ------------------- 分割 -------------------
+      singleContestDetailNum: 0, // 竞赛类型数据 用
+      teamContestDetailNum: 0, // 竞赛类型数据 用
+      contestDetailTypeOptions: {} // 竞赛类型数据
+    }
+  },
+  mounted () {
+    this.loadContestDetailList()
+    this.loadContestDetailDataOptions()
+    // this.loadContestDetailTypeOptions()
+    // this.loadContestDetailPublisherOptions()
+  },
+  methods: {
+    loadContestDetailList () {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchContestDetailByOrganizerAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            if (successResponse && successResponse.status === 200) {
+              this.contestDetailList = successResponse.data
+              this.singleContestDetailNum = 0
+              this.teamContestDetailNum = 0
+              for (let i = 0; i < this.contestDetailList.length; i++) {
+                if (this.contestDetailList[i].type === '个人赛') {
+                  this.singleContestDetailNum++
+                  this.singleContestDetailList.push(this.contestDetailList[i])
+                }
+                if (this.contestDetailList[i].type === '团队赛') {
+                  this.teamContestDetailNum++
+                  this.teamContestDetailList.push(this.contestDetailList[i])
+                }
+              }
+              // --------------------------------------- 分割线 -------------------------------------------------
+              // --------------------------------------- 下面是每个月发布的竞赛数量 -------------------------------------
+              // --------------------------------------- 个人赛先获取年数据 -------------------------------------
+              let tempSingleYear = {}
+              // 得到的结果是类似
+              // {软信学院: 2, 信工学院: 1, 文学院: 1}
+              for (let i = 0; i < this.singleContestDetailList.length; i++) {
+                // 先把从后台获取的时间进行格式转换
+                let reg = new RegExp('-', 'g')
+                let dateTime = new Date(this.singleContestDetailList[i].publishTime.replace(reg, '/'))
+                let item = dateTime.getFullYear() + '年'
+                tempSingleYear[item] = (tempSingleYear[item] + 1) || 1
+              }
+              // 从对象中分离放到 list 中
+              for (let i in tempSingleYear) {
+                this.AllSingleContestDetailList.push({name: i, contestDetailDataList: []})
+              }
+              // --------------------------------------- 团队赛先获取年数据 -------------------------------------
+              let tempTeamYear = {}
+              // 得到的结果是类似
+              // {软信学院: 2, 信工学院: 1, 文学院: 1}
+              for (let i = 0; i < this.teamContestDetailList.length; i++) {
+                // 先把从后台获取的时间进行格式转换
+                let reg = new RegExp('-', 'g')
+                let dateTime = new Date(this.teamContestDetailList[i].publishTime.replace(reg, '/'))
+                let item = dateTime.getFullYear() + '年'
+                tempTeamYear[item] = (tempTeamYear[item] + 1) || 1
+              }
+              // 从对象中分离放到 list 中
+              for (let i in tempTeamYear) {
+                this.AllTeamContestDetailList.push({name: i, contestDetailDataList: []})
+              }
+              // --------------------------------------- 分割线 -------------------------------------------------
+              // --------------------------------------- 个人赛再加上月份数据 -------------------------------------
+              for (let i = 0; i < this.AllSingleContestDetailList.length; i++) {
+                let JanData = 0
+                let FebData = 0
+                let MarData = 0
+                let AprData = 0
+                let MayData = 0
+                let JunData = 0
+                let JulData = 0
+                let AugData = 0
+                let SepData = 0
+                let OctData = 0
+                let NovData = 0
+                let DecData = 0
+                for (let j = 0; j < this.singleContestDetailList.length; j++) {
+                  // 先把从后台获取的时间进行格式转换
+                  let reg = new RegExp('-', 'g')
+                  let dateTime = new Date(this.singleContestDetailList[j].publishTime.replace(reg, '/'))
+                  let tempDateTimeYear = dateTime.getFullYear() + '年'
+                  if (tempDateTimeYear === this.AllSingleContestDetailList[i].name) {
+                    switch (dateTime.getMonth() + 1) {
+                      case 1:
+                        JanData++
+                        break
+                      case 2:
+                        FebData++
+                        break
+                      case 3:
+                        MarData++
+                        break
+                      case 4:
+                        AprData++
+                        break
+                      case 5:
+                        MayData++
+                        break
+                      case 6:
+                        JunData++
+                        break
+                      case 7:
+                        JulData++
+                        break
+                      case 8:
+                        AugData++
+                        break
+                      case 9:
+                        SepData++
+                        break
+                      case 10:
+                        OctData++
+                        break
+                      case 11:
+                        NovData++
+                        break
+                      case 12:
+                        DecData++
+                        break
+                    }
+                  }
+                }
+                this.AllSingleContestDetailList[i].contestDetailDataList = [JanData, FebData, MarData, AprData, MayData, JunData,
+                  JulData, AugData, SepData, OctData, NovData, DecData]
+              }
+              // --------------------------------------- 分割线 -------------------------------------------------
+              // --------------------------------------- 个人赛再加上月份数据 -------------------------------------
+              for (let i = 0; i < this.AllTeamContestDetailList.length; i++) {
+                let JanData2 = 0
+                let FebData2 = 0
+                let MarData2 = 0
+                let AprData2 = 0
+                let MayData2 = 0
+                let JunData2 = 0
+                let JulData2 = 0
+                let AugData2 = 0
+                let SepData2 = 0
+                let OctData2 = 0
+                let NovData2 = 0
+                let DecData2 = 0
+                for (let j = 0; j < this.teamContestDetailList.length; j++) {
+                  // 先把从后台获取的时间进行格式转换
+                  let reg = new RegExp('-', 'g')
+                  let dateTime = new Date(this.teamContestDetailList[j].publishTime.replace(reg, '/'))
+                  let tempDateTimeYear = dateTime.getFullYear() + '年'
+                  if (tempDateTimeYear === this.AllTeamContestDetailList[i].name) {
+                    switch (dateTime.getMonth() + 1) {
+                      case 1:
+                        JanData2++
+                        break
+                      case 2:
+                        FebData2++
+                        break
+                      case 3:
+                        MarData2++
+                        break
+                      case 4:
+                        AprData2++
+                        break
+                      case 5:
+                        MayData2++
+                        break
+                      case 6:
+                        JunData2++
+                        break
+                      case 7:
+                        JulData2++
+                        break
+                      case 8:
+                        AugData2++
+                        break
+                      case 9:
+                        SepData2++
+                        break
+                      case 10:
+                        OctData2++
+                        break
+                      case 11:
+                        NovData2++
+                        break
+                      case 12:
+                        DecData2++
+                        break
+                    }
+                  }
+                }
+                this.AllTeamContestDetailList[i].contestDetailDataList = [JanData2, FebData2, MarData2, AprData2, MayData2, JunData2,
+                  JulData2, AugData2, SepData2, OctData2, NovData2, DecData2]
+              }
+              // --------------------------------------- 获取所有年份数据 -------------------------------------
+              let tempAllYear = {}
+              // 得到的结果是类似
+              // {软信学院: 2, 信工学院: 1, 文学院: 1}
+              for (let i = 0; i < this.contestDetailList.length; i++) {
+                // 先把从后台获取的时间进行格式转换
+                let reg = new RegExp('-', 'g')
+                let dateTime = new Date(this.contestDetailList[i].publishTime.replace(reg, '/'))
+                let item = dateTime.getFullYear() + '年'
+                tempAllYear[item] = (tempAllYear[item] + 1) || 1
+              }
+              // 从对象中分离放到 list 中
+              let pp = 1
+              for (let i in tempAllYear) {
+                this.yearOptions.push({id: pp, name: i})
+                pp++
+              }
+              if (this.yearOptions.length !== 0) {
+                this.yearOptionsValue = this.yearOptions[0].name
+                for (let i = 0; i < this.AllSingleContestDetailList.length; i++) {
+                  if (this.AllSingleContestDetailList[i].name === this.yearOptions[0].name) {
+                    this.singleChartList = this.AllSingleContestDetailList[i].contestDetailDataList
+                  }
+                }
+                for (let i = 0; i < this.AllTeamContestDetailList.length; i++) {
+                  if (this.AllTeamContestDetailList[i].name === this.yearOptions[0].name) {
+                    this.teamChartList = this.AllTeamContestDetailList[i].contestDetailDataList
+                  }
+                }
+                this.loadContestDetailDataOptions(this.singleChartList, this.teamChartList)
+              }
+              // --------------------------------------- 分割线 -------------------------------------------------
+              // --------------------------------------- 下面是竞赛类型数据 -------------------------------------
+              // 竞赛类型数据
+              this.loadContestDetailTypeOptions(this.singleContestDetailNum, this.teamContestDetailNum)
+              // let arr = ['apple', 'orange', 'apple', 'orange', 'pear', 'orange']
+              // let obj = {}
+              // for (let i = 0; i < arr.length; i++) {
+              //   let item = arr[i]
+              //   obj[item] = (obj[item] + 1) || 1
+              // }
+              // console.log('测试算法')
+              // console.log(obj)
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    },
+    loadContestDetailDataOptions (tempSingleContestDetailList, tempTeamContestDetailList) {
+      this.contestDetailDataOptions = {
+        xAxis: {
+          type: 'category',
+          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+          axisLabel: {
+            textStyle: {
+              color: '#000000',
+              fontSize: 14
+            }
+          }
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            textStyle: {
+              color: '#000000',
+              fontSize: 14
+            }
+          }
+        },
+        series: [
+          {
+            name: '个人赛',
+            // 柱子宽度
+            barWidth: 20,
+            barGap: '0%', /* 多个并排柱子设置柱子之间的间距 */
+            data: tempSingleContestDetailList,
+            // data: [28, 18, 33, 44, 55, 43, 34, 25, 36, 16, 36, 28],
+            type: 'bar',
+            smooth: true
+          },
+          {
+            name: '团队赛',
+            // 柱子宽度
+            barWidth: 20,
+            data: tempTeamContestDetailList,
+            // data: [28, 18, 33, 44, 55, 43, 34, 25, 36, 16, 36, 28],
+            type: 'bar',
+            smooth: true
+          }
+        ],
+        // 标签是否显示，默认是显示的，但默认真的字体较小
+        label: {
+          show: true,
+          fontSize: 16
+        },
+        // 工具提示(鼠标经过的时候出现的提示)
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} <br/>{a} : {c}'
+        },
+        // 图例说明
+        legend: {
+          x: 'center',
+          data: ['个人赛', '团队赛'],
+          textStyle: {
+            // color: '#1314ff',
+            fontSize: 16
+          }
+        },
+        // 各个部分的颜色
+        color: ['#18DBDF', '#f65e28']
+      }
+    },
+    loadContestDetailTypeOptions (singleContestDetailNum, teamContestDetailNum) {
+      this.contestDetailTypeOptions = {
+        // 标题
+        title: {
+          text: '竞赛类型',
+          x: 'center',
+          textStyle: {
+            color: '#000000',
+            fontSize: 16,
+            fontWeight: 'normal'
+          }
+        },
+        series: [
+          {
+            name: '竞赛类型',
+            // 类型：这里是饼图
+            type: 'pie',
+            // radius: '50%',
+            radius: ['40%', '60%'], // 饼图的半径，第一个为内半径，第二个为外半径
+            // center 左右 上下
+            // center: ['50%', '50%'], // 默认就是50%
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  // 标签内容显示的格式
+                  formatter: '{d}%'
+                  // a 标题，b 标签，c 数量，d 百分比
+                  // formatter: '{b} :{c} ({d}%)'
+                },
+                labelLine: {
+                  show: true
+                }
+              }
+            },
+            // 数据
+            data: [
+              {value: singleContestDetailNum, name: '个人赛'},
+              {value: teamContestDetailNum, name: '团队赛'}
+            ]
+          }
+        ],
+        // 标签是否显示，默认是显示的，但默认真的字体较小
+        label: {
+          show: true,
+          fontSize: 16
+        },
+        // 工具提示(鼠标经过的时候出现的提示)
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        // 图例说明
+        legend: {
+          show: true,
+          orient: 'vertical', // 图例的布局，竖直    horizontal为水平
+          // x: 'center', 水平的时候用
+          x: 'right', // 垂直的时候用
+          top: 10,
+          data: ['个人赛', '团队赛'],
+          textStyle: {
+            // color: '#1314ff',
+            fontSize: 16
+          }
+        },
+        // 各个部分的颜色
+        color: ['#18DBDF', '#f65e28'],
+        graphic: {
+          type: 'group',
+          top: '45%',
+          left: 'center',
+          height: 60,
+          children: [
+            {
+              type: 'text',
+              left: 'center',
+              top: '30%',
+              style: {
+                text: '竞赛总数',
+                textAlign: 'center',
+                fill: '#999',
+                font: "15px 'Helvetica',sans-serif"
+              }
+            },
+            {
+              type: 'text',
+              top: '60%',
+              left: 'center',
+              position: [0, 10],
+              style: {
+                text: singleContestDetailNum + teamContestDetailNum,
+                textAlign: 'center',
+                fill: '#3d383a',
+                font: "22px 'Helvetica',sans-serif"
+              }
+            }
+          ]
+        }
+      }
+    },
+    contestDetailOptionChange (query) {
+      this.singleChartList = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      this.teamChartList = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      for (let i = 0; i < this.AllSingleContestDetailList.length; i++) {
+        if (this.AllSingleContestDetailList[i].name === query) {
+          this.singleChartList = this.AllSingleContestDetailList[i].contestDetailDataList
+        }
+      }
+      for (let i = 0; i < this.AllTeamContestDetailList.length; i++) {
+        if (this.AllTeamContestDetailList[i].name === query) {
+          this.teamChartList = this.AllTeamContestDetailList[i].contestDetailDataList
+        }
+      }
+      this.loadContestDetailDataOptions(this.singleChartList, this.teamChartList)
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
