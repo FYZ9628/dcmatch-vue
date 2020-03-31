@@ -1,6 +1,6 @@
 <template>
   <div style="height: 550px; background-color: #ffffff; margin-bottom: 10px; text-align: left">
-    <div style="padding: 20px 0 10px 10px; font-weight: bolder">个人竞赛管理</div>
+    <div style="padding: 20px 0 10px 10px; font-weight: bolder">团队竞赛管理</div>
     <!--  可通过用户姓名、账号、电话、邮箱、学校、学院、专业查询  -->
     <el-table
       :data="contestDetailList.filter(data => !search || data.contestTitle.toLowerCase().includes(search.toLowerCase()))"
@@ -70,7 +70,7 @@
         min-width="50"
         align="center">
         <template slot-scope="scope">
-          1{{scope.row.upperLimit}}人
+          {{scope.row.upperLimit}}人
         </template>
       </el-table-column>
       <el-table-column

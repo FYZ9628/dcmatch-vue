@@ -65,15 +65,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="upperLimit"
-        label="上限"
-        min-width="50"
-        align="center">
-        <template slot-scope="scope">
-          1{{scope.row.upperLimit}}人
-        </template>
-      </el-table-column>
-      <el-table-column
         prop="state"
         label="状态"
         min-width="120"

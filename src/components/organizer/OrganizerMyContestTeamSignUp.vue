@@ -448,12 +448,12 @@ export default {
             message: '成功删除了一名学生',
             type: 'success'
           })
-          for (let i = 0; i < this.teamContestList.length; i++) {
-            if (row.id === this.teamContestList[i].id) {
-              // 在删除该行数据的同时，数组的长度也减 1
-              this.teamContestList.splice(i, 1)
-            }
-          }
+          // for (let i = 0; i < this.teamContestList.length; i++) {
+          //   if (row.id === this.teamContestList[i].id) {
+          //     // 在删除该行数据的同时，数组的长度也减 1
+          //     this.teamContestList.splice(i, 1)
+          //   }
+          // }
           this.loadTeamContest()
         })
         .catch(failResponse => {
