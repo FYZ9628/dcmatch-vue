@@ -21,6 +21,10 @@
         <i class="el-icon-star-off"></i>
         <span slot="title">我的大赛</span>
       </el-menu-item>
+      <el-menu-item index="/organizer/inputScore">
+        <i class="el-icon-edit"></i>
+        <span slot="title">录入成绩</span>
+      </el-menu-item>
       <el-menu-item index="/organizer/prizeWinning">
         <i class="el-icon-trophy"></i>
         <span slot="title">获奖查询</span>
