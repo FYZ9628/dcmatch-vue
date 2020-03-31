@@ -235,7 +235,7 @@ export default {
         })
     },
     allDelete () {
-      this.loadContest()
+      this.loadContestDetail()
       if (this.contestDetailList.length > 0) {
         this.$confirm('确认全部删除？', '提示', {
           confirmButtonText: '确定',

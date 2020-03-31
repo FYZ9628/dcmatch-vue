@@ -554,7 +554,6 @@ export default new Router({
             }
           ]
         },
-        ,
         {
           path: 'signUp',
           name: 'AdminSignUpIndex',
