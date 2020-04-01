@@ -11,7 +11,12 @@
           max-height="350">
           <el-table-column
             prop="contestTitle"
-            width="380"
+            width="220"
+            align="left">
+          </el-table-column>
+          <el-table-column
+            prop="state"
+            min-width="100"
             align="left">
           </el-table-column>
           <el-table-column
@@ -142,7 +147,8 @@ export default {
         type: '',
         state: ''
       },
-      search: ''
+      search: '',
+      contestList: []
     }
   },
   mounted: function () {
@@ -252,6 +258,40 @@ export default {
         })
     },
     setContestDetailState (index, contestDetailList) {
+      this.loadContest(index, contestDetailList)
+    },
+    loadContest (index, contestDetailList) {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchContestByContestDetailId', {
+            keywords: contestDetailList[index].id
+          })
+          .then(successResponse => {
+            this.contestList = successResponse.data
+            let isHasNotInput = false
+            for (let i = 0; i < this.contestList.length; i++) {
+              if (this.contestList[i].state !== '查看成绩') {
+                isHasNotInput = true
+                this.$message({
+                  message: '还有学生的成绩未录入，请先录入学生成绩',
+                  type: 'warning'
+                })
+                break
+              }
+            }
+            if (isHasNotInput === false) {
+              this.setStateSeeScore(index, contestDetailList)
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    },
+    setStateSeeScore (index, contestDetailList) {
       this.$axios
         .post('/updateContestDetail', {
           id: contestDetailList[index].id,

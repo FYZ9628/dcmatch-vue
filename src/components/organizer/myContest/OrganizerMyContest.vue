@@ -10,19 +10,43 @@
       <div v-if="contestDetailList.length !== 0">
         <!--  可通过竞赛标题查询  -->
         <el-table
-          :data="contestDetailList.filter(data => !search || data.contestTitle.toLowerCase().includes(search.toLowerCase()))"
+          :data="contestDetailList.filter(data => !search || data.contestTitle.toLowerCase().includes(search.toLowerCase())
+          || data.state.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
           max-height="350">
           <el-table-column
             fixed
             prop="contestTitle"
-            width="500"
+            width="190"
             align="left">
+          </el-table-column>
+          <el-table-column
+            prop="state"
+            min-width="80"
+            align="left">
+          </el-table-column>
+          <el-table-column
+            min-width="305"
+            align="right">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="setStateDownLoad(scope.$index, contestDetailList)"
+                type="primary"
+                size="small">
+                设为下载准考证阶段
+              </el-button>
+              <el-button
+                @click.native.prevent="setStateInputScore(scope.$index, contestDetailList)"
+                type="primary"
+                size="small">
+                设为录入成绩阶段
+              </el-button>
+            </template>
           </el-table-column>
           <el-table-column
             fixed="right"
             label="操作"
-            min-width="160"
+            min-width="180"
             align="right">
             <template slot="header" slot-scope="scope">
               <el-input
@@ -388,7 +412,7 @@ export default {
           .then(successResponse => {
             this.contestDetailList = []
             for (let i = 0; i < successResponse.data.length; i++) {
-              if (successResponse.data[i].state !== '查看成绩阶段') {
+              if (successResponse.data[i].state === '报名阶段' || successResponse.data[i].state === '下载准考证阶段') {
                 this.contestDetailList.push(successResponse.data[i])
               }
             }
@@ -576,6 +600,100 @@ export default {
         this.$message({
           message: '当前无数据',
           type: 'warning'
+        })
+      }
+    },
+    setStateDownLoad (index, contestDetailList) {
+      if (contestDetailList[index].state === '报名阶段') {
+        this.$axios
+          .post('/updateContestDetail', {
+            id: contestDetailList[index].id,
+            contestTitle: contestDetailList[index].contestTitle,
+            organizer: this.organizerData,
+            contestContent: contestDetailList[index].contestContent,
+            signUpStartTime: contestDetailList[index].signUpStartTime,
+            signUpEndTime: contestDetailList[index].signUpEndTime,
+            // 获取当前时间
+            publishTime: contestDetailList[index].publishTime,
+            place: contestDetailList[index].place,
+            holdDate: contestDetailList[index].holdDate,
+            holdStartTime: contestDetailList[index].holdStartTime,
+            holdEndTime: contestDetailList[index].holdEndTime,
+            type: contestDetailList[index].type,
+            upperLimit: contestDetailList[index].upperLimit,
+            state: '下载准考证阶段'
+          })
+          .then(successResponse => {
+            if (successResponse.data !== '') {
+              this.$message({
+                message: '设置成功',
+                type: 'success'
+              })
+              contestDetailList[index].state = '下载准考证阶段'
+            } else {
+              this.$message({
+                message: '设置失败',
+                type: 'error'
+              })
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '设置失败',
+              type: 'error'
+            })
+          })
+      } else {
+        this.$message({
+          message: '当前已为下载准考证阶段',
+          type: 'warning'
+        })
+      }
+    },
+    setStateInputScore (index, contestDetailList) {
+      if (contestDetailList[index].state === '下载准考证阶段') {
+        this.$axios
+          .post('/updateContestDetail', {
+            id: contestDetailList[index].id,
+            contestTitle: contestDetailList[index].contestTitle,
+            organizer: this.organizerData,
+            contestContent: contestDetailList[index].contestContent,
+            signUpStartTime: contestDetailList[index].signUpStartTime,
+            signUpEndTime: contestDetailList[index].signUpEndTime,
+            // 获取当前时间
+            publishTime: contestDetailList[index].publishTime,
+            place: contestDetailList[index].place,
+            holdDate: contestDetailList[index].holdDate,
+            holdStartTime: contestDetailList[index].holdStartTime,
+            holdEndTime: contestDetailList[index].holdEndTime,
+            type: contestDetailList[index].type,
+            upperLimit: contestDetailList[index].upperLimit,
+            state: '录入成绩阶段'
+          })
+          .then(successResponse => {
+            if (successResponse.data !== '') {
+              this.$message({
+                message: '设置成功',
+                type: 'success'
+              })
+              contestDetailList.splice(index, 1)
+            } else {
+              this.$message({
+                message: '设置失败',
+                type: 'error'
+              })
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '设置失败',
+              type: 'error'
+            })
+          })
+      } else {
+        this.$message({
+          message: '不能跳过下载准考证阶段',
+          type: 'error'
         })
       }
     }
