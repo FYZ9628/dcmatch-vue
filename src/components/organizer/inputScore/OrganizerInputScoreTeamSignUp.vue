@@ -321,7 +321,7 @@ export default {
               student: this.teamContestList[i].student,
               teacherAccount: this.teamContestList[i].teacherAccount,
               teacherName: this.teamContestList[i].teacherName,
-              state: this.teamContestList[i].state,
+              state: '查看成绩',
               ticketNumber: this.teamContestList[i].ticketNumber,
               // 只改了成绩
               score: this.editTeamContestForm.score,

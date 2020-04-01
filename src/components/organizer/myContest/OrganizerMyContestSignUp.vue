@@ -90,11 +90,11 @@
         label="状态"
         width="100"
         align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.state === 1">已报名</span>
-          <span v-if="scope.row.state === 2">已下载准考证</span>
-          <span v-if="scope.row.state === 3">已结束比赛</span>
-        </template>
+<!--        <template slot-scope="scope">-->
+<!--          <span v-if="scope.row.state === 1">已报名</span>-->
+<!--          <span v-if="scope.row.state === 2">已下载准考证</span>-->
+<!--          <span v-if="scope.row.state === 3">已结束比赛</span>-->
+<!--        </template>-->
       </el-table-column>
       <el-table-column
         fixed="right"

@@ -148,7 +148,8 @@ export default {
         state: ''
       },
       search: '',
-      contestList: []
+      contestList: [],
+      teamContestList: []
     }
   },
   mounted: function () {
@@ -258,7 +259,12 @@ export default {
         })
     },
     setContestDetailState (index, contestDetailList) {
-      this.loadContest(index, contestDetailList)
+      if (contestDetailList[index].type === '个人赛') {
+        this.loadContest(index, contestDetailList)
+      }
+      if (contestDetailList[index].type === '团队赛') {
+        this.loadTeamContest(index, contestDetailList)
+      }
     },
     loadContest (index, contestDetailList) {
       if (this.$store.getters.account) {
@@ -271,6 +277,37 @@ export default {
             let isHasNotInput = false
             for (let i = 0; i < this.contestList.length; i++) {
               if (this.contestList[i].state !== '查看成绩') {
+                isHasNotInput = true
+                this.$message({
+                  message: '还有学生的成绩未录入，请先录入学生成绩',
+                  type: 'warning'
+                })
+                break
+              }
+            }
+            if (isHasNotInput === false) {
+              this.setStateSeeScore(index, contestDetailList)
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    },
+    loadTeamContest (index, contestDetailList) {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchTeamContestByContestDetailId', {
+            keywords: contestDetailList[index].id
+          })
+          .then(successResponse => {
+            this.teamContestList = successResponse.data
+            let isHasNotInput = false
+            for (let i = 0; i < this.teamContestList.length; i++) {
+              if (this.teamContestList[i].state !== '查看成绩') {
                 isHasNotInput = true
                 this.$message({
                   message: '还有学生的成绩未录入，请先录入学生成绩',
