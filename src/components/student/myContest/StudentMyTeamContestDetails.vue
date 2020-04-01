@@ -1,14 +1,23 @@
 <template>
   <div style="width: 800px; background-color: #f6f6f6">
-    <el-page-header @back="goBack" content="详情页面" style="padding: 20px 20px; background-color: #ffffff">
+    <el-page-header @back="goBack" content="详情页面" style="padding: 20px 20px 0 20px; background-color: #ffffff">
     </el-page-header>
-    <div style="height: 100px; background-color: #ffffff; padding: 20px 30px; margin-bottom: 10px">
-      <span style="font-weight: bolder">{{teamContestDate.contestDetail.contestTitle}}</span>
-      <el-steps :active="activeState" finish-status="success" simple style="margin-top: 20px">
-        <el-step title="报名"></el-step>
-        <el-step title="下载准考证" ></el-step>
-        <el-step title="查看成绩" ></el-step>
-      </el-steps>
+    <div style="height: 110px; background-color: #ffffff; padding: 0 30px 20px 30px; margin-bottom: 10px">
+      <el-row>
+        <span style="font-weight: bolder; display: block; float: left; margin-top: 20px">
+          {{teamContestDate.contestDetail.contestTitle}}
+        </span>
+        <el-button type="primary" @click="downloadTicket" style="display: block; float: right">
+          下载准考证
+        </el-button>
+      </el-row>
+      <el-row>
+        <el-steps :active="activeState" finish-status="success" simple style="margin-top: 20px">
+          <el-step title="报名"></el-step>
+          <el-step title="下载准考证" ></el-step>
+          <el-step title="查看成绩" ></el-step>
+        </el-steps>
+      </el-row>
     </div>
     <div style="height: 370px; background-color: #ffffff; padding: 30px 30px">
       <el-row>
@@ -253,7 +262,7 @@ export default {
       if (this.teamContestDate.state === '已报名') {
         this.activeState = 1
       }
-      if (this.teamContestDate.state === '下载准考证') {
+      if (this.teamContestDate.state === '已下载准考证') {
         this.activeState = 2
       }
       if (this.teamContestDate.state === '查看成绩') {
@@ -276,6 +285,36 @@ export default {
             //     this.myTeamContestDateList.push(successResponse.data[i])
             //   }
             // }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    },
+    loadTeamContest (teamContestId) {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchTeamContestById', {
+            keywords: teamContestId
+          })
+          .then(successResponse => {
+            this.teamContestDate = successResponse.data
+            if (this.teamContestDate) {
+              // state 说明
+              // 1 为已报名，2 为下载准考证，3为查看成绩（比赛结束了）
+              if (this.teamContestDate.state === '已报名') {
+                this.activeState = 1
+              }
+              if (this.teamContestDate.state === '已下载准考证') {
+                this.activeState = 2
+              }
+              if (this.teamContestDate.state === '查看成绩') {
+                this.activeState = 3
+              }
+            }
           })
           .catch(failResponse => {
             this.$message({
@@ -372,6 +411,34 @@ export default {
           type: 'error'
         })
       }
+    },
+    downloadTicket () {
+      this.$axios
+        .post('/updateTeamContest', {
+          id: this.teamContestDate.id,
+          contestDetail: this.teamContestDate.contestDetail,
+          student: this.teamContestDate.student,
+          teacherAccount: this.teamContestDate.teacherAccount,
+          teacherName: this.teamContestDate.teacherName,
+          state: '已下载准考证',
+          ticketNumber: this.teamContestDate.ticketNumber,
+          score: this.teamContestDate.score,
+          teamName: this.teamContestDate.teamName,
+          remarks: this.teamContestDate.remarks
+        })
+        .then(successResponse => {
+          this.$message({
+            message: '成功下载准考证',
+            type: 'success'
+          })
+          this.loadTeamContest(this.teamContestDate.id)
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '下载失败',
+            type: 'error'
+          })
+        })
     }
   }
 }

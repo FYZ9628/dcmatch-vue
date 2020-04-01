@@ -1,14 +1,23 @@
 <template>
   <div style="width: 800px; background-color: #f6f6f6">
-    <el-page-header @back="goBack" content="详情页面" style="padding: 20px 20px; background-color: #ffffff">
+    <el-page-header @back="goBack" content="详情页面" style="padding: 20px 20px 0 20px; background-color: #ffffff">
     </el-page-header>
-    <div style="height: 100px; background-color: #ffffff; padding: 20px 30px; margin-bottom: 10px">
-      <span style="font-weight: bolder">{{contestDate.contestDetail.contestTitle}}</span>
-      <el-steps :active="activeState" finish-status="success" simple style="margin-top: 20px">
-        <el-step title="报名"></el-step>
-        <el-step title="下载准考证" ></el-step>
-        <el-step title="查看成绩" ></el-step>
-      </el-steps>
+    <div style="height: 110px; background-color: #ffffff; padding: 0 30px 20px 30px; margin-bottom: 10px">
+      <el-row>
+        <span style="font-weight: bolder; display: block; float: left; margin-top: 20px">
+          {{contestDate.contestDetail.contestTitle}}
+        </span>
+        <el-button type="primary" @click="downloadTicket" style="display: block; float: right">
+          下载准考证
+        </el-button>
+      </el-row>
+      <el-row>
+        <el-steps :active="activeState" finish-status="success" simple style="margin-top: 20px">
+          <el-step title="报名"></el-step>
+          <el-step title="下载准考证" ></el-step>
+          <el-step title="查看成绩" ></el-step>
+        </el-steps>
+      </el-row>
     </div>
     <div style="height: 270px; background-color: #ffffff; padding: 30px 30px">
       <el-row>
@@ -121,10 +130,48 @@ export default {
     if (this.contestDate) {
       // state 说明
       // 1 为已报名，2 为下载准考证，3为查看成绩（比赛结束了）
-      this.activeState = this.contestDate.state
+      if (this.contestDate.state === '已报名') {
+        this.activeState = 1
+      }
+      if (this.contestDate.state === '已下载准考证') {
+        this.activeState = 2
+      }
+      if (this.contestDate.state === '查看成绩') {
+        this.activeState = 3
+      }
     }
   },
   methods: {
+    loadMyContest (contestId) {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchContestById', {
+            keywords: contestId
+          })
+          .then(successResponse => {
+            this.contestDate = successResponse.data
+            if (this.contestDate) {
+              // state 说明
+              // 1 为已报名，2 为下载准考证，3为查看成绩（比赛结束了）
+              if (this.contestDate.state === '已报名') {
+                this.activeState = 1
+              }
+              if (this.contestDate.state === '已下载准考证') {
+                this.activeState = 2
+              }
+              if (this.contestDate.state === '查看成绩') {
+                this.activeState = 3
+              }
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    },
     goBack () {
       if (this.gotoContestDetailState.state === 1) {
         this.$router.push({
@@ -161,6 +208,11 @@ export default {
               // 后端接收的是整个 contest 对象，但是其实只用到了 id
               // 所以只要传 id 到后端就行了
               id: this.contestDate.id
+              // contestDetail: this.contestDate.contestDetail,
+              // student: this.contestDate.student,
+              // state: this.contestDate.state,
+              // ticketNumber: this.contestDate.ticketNumber,
+              // score: this.contestDate.score
             })
             .then(successResponse => {
               this.$message({
@@ -203,6 +255,32 @@ export default {
           this.$message({
             type: 'info',
             message: '已取消操作'
+          })
+        })
+    },
+    downloadTicket () {
+      this.$axios
+        .post('/updateContest', {
+          // 后端接收的是整个 contest 对象，但是其实只用到了 id
+          // 所以只要传 id 到后端就行了
+          id: this.contestDate.id,
+          contestDetail: this.contestDate.contestDetail,
+          student: this.contestDate.student,
+          state: '已下载准考证',
+          ticketNumber: this.contestDate.ticketNumber,
+          score: this.contestDate.score
+        })
+        .then(successResponse => {
+          this.$message({
+            message: '成功下载准考证',
+            type: 'success'
+          })
+          this.loadMyContest(this.contestDate.id)
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '下载失败',
+            type: 'error'
           })
         })
     }

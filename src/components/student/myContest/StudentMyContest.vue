@@ -241,7 +241,7 @@ export default {
           .then(successResponse => {
             this.contestList = []
             for (let i = 0; i < successResponse.data.length; i++) {
-              if (successResponse.data[i].state !== 3) {
+              if (successResponse.data[i].state !== '查看成绩') {
                 this.contestList.push(successResponse.data[i])
               }
             }
