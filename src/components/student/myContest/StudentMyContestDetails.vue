@@ -50,6 +50,8 @@
         <span style="display: block; float: left; margin-left: 30px">{{contestDate.ticketNumber}}</span>
       </el-row>
     </div>
+    <div style="height: 270px; background-color: #ffffff; padding: 30px 30px">
+    </div>
   </div>
 </template>
 

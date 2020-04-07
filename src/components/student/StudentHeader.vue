@@ -18,9 +18,9 @@
           <el-dropdown-item divided @click.native="identification">个人认证</el-dropdown-item>
           <el-dropdown-item divided @click.native="myContest">我的大赛</el-dropdown-item>
           <el-dropdown-item divided @click.native="prizeWinning">获奖查询</el-dropdown-item>
-          <el-dropdown-item divided @click.native="myOrder">我的订单</el-dropdown-item>
-          <el-dropdown-item divided @click.native="myNews">我的消息</el-dropdown-item>
-          <el-dropdown-item divided @click.native="myAddress">我的地址</el-dropdown-item>
+<!--          <el-dropdown-item divided @click.native="myOrder">我的订单</el-dropdown-item>-->
+<!--          <el-dropdown-item divided @click.native="myNews">我的消息</el-dropdown-item>-->
+<!--          <el-dropdown-item divided @click.native="myAddress">我的地址</el-dropdown-item>-->
           <el-dropdown-item divided @click.native="accountSetting">账号设置</el-dropdown-item>
           <el-dropdown-item divided @click.native="logOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>

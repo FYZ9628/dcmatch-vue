@@ -18,7 +18,9 @@
           <el-dropdown-item divided @click.native="identification">个人认证</el-dropdown-item>
           <el-dropdown-item divided @click.native="myNotice">我的通知</el-dropdown-item>
           <el-dropdown-item divided @click.native="myContest">我的大赛</el-dropdown-item>
+          <el-dropdown-item divided @click.native="inputScore">录入成绩</el-dropdown-item>
           <el-dropdown-item divided @click.native="prizeWinning">获奖查询</el-dropdown-item>
+          <el-dropdown-item divided @click.native="dataAnalysis">数据分析</el-dropdown-item>
 <!--          <el-dropdown-item divided @click.native="myOrder">我的订单</el-dropdown-item>-->
 <!--          <el-dropdown-item divided @click.native="myNews">我的消息</el-dropdown-item>-->
 <!--          <el-dropdown-item divided @click.native="myAddress">我的地址</el-dropdown-item>-->
@@ -55,9 +57,19 @@ export default {
         path: '/organizer/myContest'
       })
     },
+    inputScore: function () {
+      this.$router.push({
+        path: '/organizer/inputScore'
+      })
+    },
     prizeWinning: function () {
       this.$router.push({
         path: '/organizer/prizeWinning'
+      })
+    },
+    dataAnalysis: function () {
+      this.$router.push({
+        path: '/organizer/dataAnalysis'
       })
     },
     myOrder: function () {

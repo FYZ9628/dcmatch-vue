@@ -13,10 +13,10 @@
         <i class="el-icon-s-custom"></i>
         <span slot="title">个人认证</span>
       </el-menu-item>
-      <el-menu-item index="/default/myNews">
-        <i class="el-icon-chat-square"></i>
-        <span slot="title">我的消息</span>
-      </el-menu-item>
+<!--      <el-menu-item index="/default/myNews">-->
+<!--        <i class="el-icon-chat-square"></i>-->
+<!--        <span slot="title">我的消息</span>-->
+<!--      </el-menu-item>-->
       <el-menu-item index="/default/accountSetting">
         <i class="el-icon-setting"></i>
         <span slot="title">账号设置</span>

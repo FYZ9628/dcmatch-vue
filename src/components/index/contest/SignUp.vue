@@ -276,7 +276,7 @@ export default {
             id: '',
             contestDetail: this.signUpContestDetailData,
             student: this.studentData,
-            state: 1,
+            state: '已报名',
             ticketNumber: this.ticketNumber,
             score: null
           })
