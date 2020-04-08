@@ -270,6 +270,7 @@ export default {
       }
     }
     this.loadMyTeamContest()
+    this.loadTeamContest(this.teamContestDate.id)
   },
   methods: {
     loadMyTeamContest () {

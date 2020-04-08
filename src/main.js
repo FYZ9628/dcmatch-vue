@@ -9,6 +9,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import ECharts from 'vue-echarts'
+import htmlToPdf from '@/plugs/htmlToPdf'
+import Print from 'vue-print-nb'
+
+Vue.use(Print)
+Vue.use(htmlToPdf)
 
 // 设置反向代理，前端请求默认发送到 http://localhost:8999/api
 var axios = require('axios')
