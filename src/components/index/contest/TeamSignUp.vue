@@ -128,7 +128,7 @@
         <el-row style="margin-bottom: 20px">
           <el-row>
             <span style="display: block; float: left; line-height: 30px">
-              添加队员，最多可添加 {{signUpContestDetailData.upperLimit - 1}} 人
+              添加队员，团队人数上限为 {{signUpContestDetailData.upperLimit}} 人
             </span>
             <div style="display: block; float: left; margin-left: 30px">
               <el-upload
@@ -136,12 +136,11 @@
                 action=""
                 :on-change="handleChange"
                 :on-exceed="handleExceed"
-                :on-remove="handleRemove"
                 :file-list="fileList"
                 :limit="1"
                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                 :auto-upload="false">
-                <el-button type="primary" size="small" @click="addByExcel">
+                <el-button type="primary" size="small">
                   Excel导入
                 </el-button>
               </el-upload>
@@ -413,7 +412,8 @@ export default {
         account: [{required: true, message: '请输入账号', trigger: 'blur'}],
         name: [{required: true, message: '请输入导师名称', trigger: 'blur'}]
       },
-      fileList: []
+      fileList: [],
+      ExcelList: []
       // contest: {
       //   id: '',
       //   contestDetail: {
@@ -822,23 +822,6 @@ export default {
         })
       }
     },
-    addByExcel () {
-      // if (this.fileTemp) {
-      //   if ((this.fileTemp.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
-      //     this.importfxx(this.fileTemp)
-      //   } else {
-      //     this.$message({
-      //       type: 'warning',
-      //       message: '附件格式错误，请删除后重新上传！'
-      //     })
-      //   }
-      // } else {
-      //   this.$message({
-      //     type: 'warning',
-      //     message: '请上传附件！'
-      //   })
-      // }
-    },
     importExcel (fileObj) {
       // 通过DOM取文件数据
       let _this = this
@@ -871,19 +854,27 @@ export default {
           }
           // outData就是你想要的东西
           outData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
+          _this.ExcelList = []
+          for (let i = 0; i < outData.length; i++) {
+            console.log(outData[i].账号)
+            console.log(outData[i].密码)
+            _this.ExcelList.push({account: outData[i].账号, password: outData[i].密码})
+          }
+          _this.addStudentByExcel(_this.ExcelList)
+          console.log(outData)
+          console.log(_this.ExcelList)
           this.da = [...outData]
           let arr = []
-          console.log(outData)
           this.da.map(v => {
             let obj = {}
             obj.id = v.id
             obj.status = v.status
             arr.push(obj)
           })
-          _this.$message({
-            message: '导入成功',
-            type: 'success'
-          })
+          // _this.$message({
+          //   message: '导入成功',
+          //   type: 'success'
+          // })
         }
         reader.readAsArrayBuffer(f)
       }
@@ -893,6 +884,55 @@ export default {
         reader.readAsBinaryString(f)
       }
     },
+    addStudentByExcel (ExcelList) {
+      let tempCount = this.signUpContestDetailData.upperLimit - this.studentList.length
+      if (this.studentList.length < this.signUpContestDetailData.upperLimit && ExcelList.length <= tempCount) {
+        let addSuccessCount = 0
+        let addFailCount = 0
+        for (let i = 0; i < ExcelList.length; i++) {
+          let isAddStudent = false
+          for (let j = 0; j < this.studentList.length; j++) {
+            if (ExcelList[i].account === this.studentList[j].user.account ||
+              ExcelList[i].account === this.studentList[j].user.phone) {
+              addFailCount++
+              isAddStudent = true
+              break
+            }
+          }
+          if (isAddStudent === false) {
+            this.$axios
+              .post('/teamSignUpAddStudent', {
+                account: ExcelList[i].account,
+                password: ExcelList[i].password
+              })
+              .then(successResponse => {
+                if (successResponse.data !== '') {
+                  if (successResponse.data.user.type === 3) {
+                    addSuccessCount++
+                    this.studentList.push(successResponse.data)
+                  } else {
+                    addFailCount++
+                  }
+                } else {
+                  addFailCount++
+                }
+              })
+              .catch(failResponse => {
+              })
+          }
+        }
+        // 一秒后刷新
+        setTimeout(() => {
+          this.$message(addSuccessCount + '名同学添加成功，' + addFailCount + '名同学添加失败')
+        }, 500)
+      } else {
+        this.$message({
+          message: '超出人数上限，无法添加',
+          type: 'error'
+        })
+      }
+    },
+    // 选择Excel表格时
     handleChange (file, fileList) {
       if (file.raw) {
         if ((file.raw.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') ||
@@ -911,9 +951,7 @@ export default {
         })
       }
     },
-    handleRemove (file, fileList) {
-      this.fileTemp = null
-    },
+    // 文件数量超出上限时
     handleExceed (files, fileList) {
       this.$message.warning(`只能选择一个文件，如需重选，请先删除旧文件`)
     }
