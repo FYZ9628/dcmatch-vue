@@ -145,6 +145,10 @@
                 </el-button>
               </el-upload>
             </div>
+            <el-button type="primary" size="small" @click="exportExcel"
+                       style="display: block; float: left; margin-left: 30px">
+              导出模板
+            </el-button>
           </el-row>
         </el-row>
         <el-row>
@@ -413,7 +417,14 @@ export default {
         name: [{required: true, message: '请输入导师名称', trigger: 'blur'}]
       },
       fileList: [],
-      ExcelList: []
+      ExcelList: [],
+      // Excel导出模板用到的数据
+      tableList: [
+        {
+          account: '116263000909',
+          password: '123456'
+        }
+      ]
       // contest: {
       //   id: '',
       //   contestDetail: {
@@ -822,6 +833,7 @@ export default {
         })
       }
     },
+    // Excel导入
     importExcel (fileObj) {
       // 通过DOM取文件数据
       let _this = this
@@ -856,13 +868,9 @@ export default {
           outData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
           _this.ExcelList = []
           for (let i = 0; i < outData.length; i++) {
-            console.log(outData[i].账号)
-            console.log(outData[i].密码)
             _this.ExcelList.push({account: outData[i].账号, password: outData[i].密码})
           }
           _this.addStudentByExcel(_this.ExcelList)
-          console.log(outData)
-          console.log(_this.ExcelList)
           this.da = [...outData]
           let arr = []
           this.da.map(v => {
@@ -954,7 +962,23 @@ export default {
     // 文件数量超出上限时
     handleExceed (files, fileList) {
       this.$message.warning(`只能选择一个文件，如需重选，请先删除旧文件`)
+    },
+    // excel数据导出
+    exportExcel () {
+      require.ensure([], () => {
+        // eslint-disable-next-line camelcase
+        const { export_json_to_excel } = require('../../../excel/Export2Excel')
+        const tHeader = ['账号', '密码']
+        const filterVal = ['account', 'password']
+        const list = this.tableList
+        const data = this.formatJson(filterVal, list)
+        export_json_to_excel(tHeader, data, '添加队员Excel模板')
+      })
+    },
+    formatJson (filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
     }
+
   }
 }
 </script>
