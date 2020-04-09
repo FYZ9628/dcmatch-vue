@@ -119,7 +119,7 @@
                width="720px">
       <div id="printMe" style="width: 630px; height: 430px; margin: 0 auto">
         <div style="text-align: center; margin-bottom: 30px">
-          <h3 style="font-size: 18px">第11届数学竞赛准考证</h3>
+          <h3 style="font-size: 18px">{{contestDate.contestDetail.contestTitle}}准考证</h3>
         </div>
         <el-table
           :data="tableData"
@@ -303,14 +303,6 @@ export default {
           name4: ''
         }
       ],
-      tableDataObj: {
-        id: '',
-        title: '',
-        name1: '',
-        name2: '',
-        name3: '',
-        name4: ''
-      },
       printObj: {
         id: 'printMe',
         popTitle: '准考证',
