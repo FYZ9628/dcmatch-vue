@@ -126,7 +126,27 @@
           </el-table>
         </el-row>
         <el-row style="margin-bottom: 20px">
-          添加队员，最多可添加 {{signUpContestDetailData.upperLimit - 1}} 人
+          <el-row>
+            <span style="display: block; float: left; line-height: 30px">
+              添加队员，最多可添加 {{signUpContestDetailData.upperLimit - 1}} 人
+            </span>
+            <div style="display: block; float: left; margin-left: 30px">
+              <el-upload
+                class="upload-demo"
+                action=""
+                :on-change="handleChange"
+                :on-exceed="handleExceed"
+                :on-remove="handleRemove"
+                :file-list="fileList"
+                :limit="1"
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                :auto-upload="false">
+                <el-button type="primary" size="small" @click="addByExcel">
+                  Excel导入
+                </el-button>
+              </el-upload>
+            </div>
+          </el-row>
         </el-row>
         <el-row>
           <div style="display: block; float: left">
@@ -239,7 +259,7 @@
           </el-table>
           <el-row style="margin: 20px 0">
             <span style="display: block; float: left; line-height: 30px">添加指导老师，只能添加一人</span>
-            <el-button type="primary" size="small" @click="addMySelfAsTeacher"
+            <el-button type="primary" v-if="$store.getters.code === '200'" size="small" @click="addMySelfAsTeacher"
                        style="display: block; float: right; margin-right: 20px">
               添加自己作为指导老师
             </el-button>
@@ -392,7 +412,8 @@ export default {
       addTeacherFormRules: {
         account: [{required: true, message: '请输入账号', trigger: 'blur'}],
         name: [{required: true, message: '请输入导师名称', trigger: 'blur'}]
-      }
+      },
+      fileList: []
       // contest: {
       //   id: '',
       //   contestDetail: {
@@ -800,6 +821,101 @@ export default {
           type: 'error'
         })
       }
+    },
+    addByExcel () {
+      // if (this.fileTemp) {
+      //   if ((this.fileTemp.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
+      //     this.importfxx(this.fileTemp)
+      //   } else {
+      //     this.$message({
+      //       type: 'warning',
+      //       message: '附件格式错误，请删除后重新上传！'
+      //     })
+      //   }
+      // } else {
+      //   this.$message({
+      //     type: 'warning',
+      //     message: '请上传附件！'
+      //   })
+      // }
+    },
+    importExcel (fileObj) {
+      // 通过DOM取文件数据
+      let _this = this
+      this.file = fileObj
+      let rABS = false // 是否将文件读取为二进制字符串
+      let f = this.file
+      let reader = new FileReader()
+      FileReader.prototype.readAsBinaryString = function (f) {
+        let binary = ''
+        let rABS = false // 是否将文件读取为二进制字符串
+        let wb // 读取完成的数据
+        let outData
+        let reader = new FileReader()
+        reader.onload = function (e) {
+          let bytes = new Uint8Array(reader.result)
+          let length = bytes.byteLength
+          for (let i = 0; i < length; i++) {
+            binary += String.fromCharCode(bytes[i])
+          }
+          let XLSX = require('xlsx')
+          if (rABS) {
+            // wb = XLSX.read(btoa(fixdata(binary)), { // 手动转化
+            wb = XLSX.read(btoa(outData(binary)), { // 手动转化
+              type: 'base64'
+            })
+          } else {
+            wb = XLSX.read(binary, {
+              type: 'binary'
+            })
+          }
+          // outData就是你想要的东西
+          outData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
+          this.da = [...outData]
+          let arr = []
+          console.log(outData)
+          this.da.map(v => {
+            let obj = {}
+            obj.id = v.id
+            obj.status = v.status
+            arr.push(obj)
+          })
+          _this.$message({
+            message: '导入成功',
+            type: 'success'
+          })
+        }
+        reader.readAsArrayBuffer(f)
+      }
+      if (rABS) {
+        reader.readAsArrayBuffer(f)
+      } else {
+        reader.readAsBinaryString(f)
+      }
+    },
+    handleChange (file, fileList) {
+      if (file.raw) {
+        if ((file.raw.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') ||
+          (file.raw.type === 'application/vnd.ms-excel')) {
+          this.importExcel(file.raw)
+        } else {
+          this.$message({
+            type: 'warning',
+            message: '附件格式错误，请删除后重新上传！'
+          })
+        }
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '请上传附件！'
+        })
+      }
+    },
+    handleRemove (file, fileList) {
+      this.fileTemp = null
+    },
+    handleExceed (files, fileList) {
+      this.$message.warning(`只能选择一个文件，如需重选，请先删除旧文件`)
     }
   }
 }
