@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import DefaultAuthenticationMenu from '@/components/default/DefaultAuthenticationMenu'
+import DefaultAuthenticationMenu from '@/components/default/authentication/DefaultAuthenticationMenu'
 export default {
   name: 'DefaultAuthentication',
   components: {DefaultAuthenticationMenu},
@@ -34,10 +34,7 @@ export default {
           // 只要数据库有添加了（只加在了一个表，但其它表不成功也算）
           // 就会返回 successResponse.status 状态码 200
           // this.student = successResponse.data
-          console.log(successResponse.data)
-          console.log(this.$store.getters.phone)
           if (successResponse.data) {
-            console.log(successResponse.data)
             this.isAuthentication = true
           }
         })

@@ -1,16 +1,24 @@
 <template>
   <div style="width: 800px; background-color: #f6f6f6">
-    <div style="height: 220px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
+    <div style="height: 300px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
       <span style="font-size: 16px; font-weight: bolder">个人认证</span>
       <div style="margin-top: 30px">
-        <p>以下信息将用于验证贵院校的真实信息，请务必填写真实资料</p>
+        <p>以下信息将用于准考证、获奖证书等申请、制作，请务必填写真实资料</p>
         <el-form :model="individualAuthenticationForm" ref="individualAuthenticationForm" label-width="80px" :rules="individualAuthenticationFormRules"
                  style="width: 500px; margin-top: 30px">
           <el-form-item
-            label="组织名称"
+            label="姓  名"
             prop="name">
             <!--              v-model.number 只有输入数字才不会提示错误-->
-            <el-input type="age" v-model="individualAuthenticationForm.name" placeholder="组织名称" autocomplete="off" size="small" style="margin-left: 20px"></el-input>
+            <el-input type="age" v-model="individualAuthenticationForm.name" placeholder="姓名" autocomplete="off" size="small" style="margin-left: 20px"></el-input>
+          </el-form-item>
+          <el-form-item
+            label="性  别"
+            prop="sex">
+            <el-radio-group v-model="individualAuthenticationForm.sex" style="margin-left: 20px">
+              <el-radio label="男"></el-radio>
+              <el-radio label="女"></el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item
             label="邮  箱"
@@ -20,7 +28,7 @@
         </el-form>
       </div>
     </div>
-    <div style="height: 720px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
+    <div style="height: 850px; background-color: #ffffff; margin-bottom: 10px; padding: 30px 50px;">
       <span style="font-size: 16px; font-weight: bolder">院校认证</span>
       <div style="margin-top: 30px">
         <el-form :model="schoolAuthenticationForm" ref="schoolAuthenticationForm" label-width="80px" :rules="schoolAuthenticationFormRules"
@@ -39,42 +47,50 @@
             </el-select>
           </el-form-item>
           <el-form-item
-            label="编  号"
-            prop="organizer_id">
+            label="学  号"
+            prop="student_id">
             <!--              v-model.number 只有输入数字才不会提示错误-->
-            <el-input v-model="schoolAuthenticationForm.organizer_id" placeholder="编号" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
+            <el-input v-model="schoolAuthenticationForm.student_id" placeholder="学号" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
           </el-form-item>
           <el-form-item
-            label="创立日期"
-            prop="establish_date">
+            label="入学日期"
+            prop="admission_date">
             <el-date-picker
-              v-model="schoolAuthenticationForm.establish_date"
+              v-model="schoolAuthenticationForm.admission_date"
               type="date"
-              placeholder="创立日期"
+              placeholder="入学日期"
               size="small"
               style="margin-left: 20px; width: 420px">
             </el-date-picker>
           </el-form-item>
           <el-form-item
-            label="学校类型"
-            prop="school_type">
-            <el-select v-model="schoolAuthenticationForm.school_type" placeholder="请选择" size="small"
-                       style="margin-left: 20px; width: 420px">
-              <el-option
-                v-for="item in schoolTypeList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.name">
-              </el-option>
-            </el-select>
+            label="毕业日期"
+            prop="graduation_date">
+            <el-date-picker
+              v-model="schoolAuthenticationForm.graduation_date"
+              type="date"
+              placeholder="毕业日期"
+              size="small"
+              style="margin-left: 20px; width: 420px">
+            </el-date-picker>
           </el-form-item>
           <el-form-item
-            label="办学类型"
-            prop="school_running_type">
-            <el-select v-model="schoolAuthenticationForm.school_running_type" placeholder="请选择" size="small"
+            label="所在院系"
+            prop="academy">
+            <el-input v-model="schoolAuthenticationForm.academy" placeholder="所在院系" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="专  业"
+            prop="major">
+            <el-input v-model="schoolAuthenticationForm.major" placeholder="专业" autocomplete="off" size="small" style="margin-left: 20px" ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="学  历"
+            prop="education">
+            <el-select v-model="schoolAuthenticationForm.education" placeholder="请选择" size="small"
                        style="margin-left: 20px; width: 420px">
               <el-option
-                v-for="item in schoolRunningTypeList"
+                v-for="item in educationList"
                 :key="item.id"
                 :label="item.name"
                 :value="item.name">
@@ -83,7 +99,7 @@
           </el-form-item>
         </el-form>
         <div style="height: 200px; margin-top: 30px">
-          <p>事业单位法人证书照片  2M以内的JPG、PNG格式，请上传事业单位法人证书粘贴照片一页</p>
+          <p>学生证照片  2M以内的JPG、PNG格式，请上传学生证粘贴照片一页</p>
           <el-upload
             id="avatar-uploader"
             action="http://localhost:8999/api/upLoadImg"
@@ -115,32 +131,38 @@
 
 <script>
 export default {
-  name: 'DefaultAuthenticationOrganizer',
+  name: 'DefaultAuthenticationStudent',
   data: function () {
     return {
       individualAuthenticationForm: {
         name: '',
+        sex: '',
         email: ''
       },
       individualAuthenticationFormRules: {
         name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
+        sex: [{required: true, message: '请选择性别', trigger: 'blur'}],
         email: [{required: true, message: '请输入邮箱', trigger: 'blur'}]
       },
       schoolAuthenticationForm: {
         school: '',
-        organizer_id: '',
-        establish_date: '',
-        school_type: '',
-        school_running_type: ''
+        student_id: '',
+        admission_date: '',
+        graduation_date: '',
+        academy: '',
+        major: '',
+        education: ''
       },
       schoolAuthenticationFormRules: {
         school: [{required: true, message: '请输入学校', trigger: 'blur'}],
-        organizer_id: [{required: true, message: '请输入编号', trigger: 'blur'}],
-        establish_date: [{required: true, message: '请输入创立日期', trigger: 'blur'}],
-        school_type: [{required: true, message: '请选择学校类型', trigger: 'blur'}],
-        school_running_type: [{required: true, message: '请选择办学类型', trigger: 'blur'}]
+        student_id: [{required: true, message: '请输入学号', trigger: 'blur'}],
+        admission_date: [{required: true, message: '请输入入学日期', trigger: 'blur'}],
+        graduation_date: [{required: true, message: '请输入毕业日期', trigger: 'blur'}],
+        academy: [{required: true, message: '请输入所在院系', trigger: 'blur'}],
+        major: [{required: true, message: '请输入专业', trigger: 'blur'}],
+        education: [{required: true, message: '请选择学历', trigger: 'blur'}]
       },
-      organizer: {
+      student: {
         id: '',
         user: {
           id: '',
@@ -150,83 +172,33 @@ export default {
           name: '',
           type: ''
         },
+        sex: '',
         email: '',
         school: '',
-        establishDate: '',
-        schoolType: '',
-        schoolRunningType: ''
+        admissionDate: '',
+        graduationDate: '',
+        academy: '',
+        major: '',
+        education: '',
+        idImg: ''
       },
       schoolList: [],
-      schoolTypeList: [
+      educationList: [
         {
           id: 1,
-          name: '综合类'
+          name: '本科'
         },
         {
           id: 2,
-          name: '民族类'
+          name: '专科'
         },
         {
           id: 3,
-          name: '理工类'
+          name: '硕士研究生'
         },
         {
           id: 4,
-          name: '师范类'
-        },
-        {
-          id: 5,
-          name: '农林类'
-        },
-        {
-          id: 6,
-          name: '政法类'
-        },
-        {
-          id: 7,
-          name: '医药类'
-        },
-        {
-          id: 8,
-          name: '财经类'
-        },
-        {
-          id: 9,
-          name: '语言类'
-        },
-        {
-          id: 10,
-          name: '艺术类'
-        },
-        {
-          id: 11,
-          name: '体育类'
-        },
-        {
-          id: 12,
-          name: '军事类'
-        },
-        {
-          id: 11,
-          name: '旅游类'
-        }
-      ],
-      schoolRunningTypeList: [
-        {
-          id: 1,
-          name: '普通本科'
-        },
-        {
-          id: 2,
-          name: '211高校'
-        },
-        {
-          id: 3,
-          name: '985高校'
-        },
-        {
-          id: 4,
-          name: '高职（高专）高校'
+          name: '博士研究生'
         }
       ],
       imageUrl: '',
@@ -262,23 +234,26 @@ export default {
         if (i === 1 && k === 1) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
             this.$axios
-              .post('/addOrganizer', {
+              .post('/addStudent', {
                 id: '',
                 user: {
                   id: '',
-                  account: this.schoolAuthenticationForm.organizer_id,
+                  account: this.schoolAuthenticationForm.student_id,
                   phone: this.$store.getters.account,
                   password: this.$store.getters.password,
                   name: this.individualAuthenticationForm.name,
                   // 认证为教师 20，认证为学生 30 认证为院校 60
-                  type: 60
+                  type: 30
                 },
+                sex: this.individualAuthenticationForm.sex,
                 email: this.individualAuthenticationForm.email,
                 school: this.schoolAuthenticationForm.school,
                 // 日期格式 2020/3/6
-                establishDate: this.schoolAuthenticationForm.establish_date.toLocaleDateString(),
-                schoolType: this.schoolAuthenticationForm.school_type,
-                schoolRunningType: this.schoolAuthenticationForm.school_running_type,
+                admissionDate: this.schoolAuthenticationForm.admission_date.toLocaleDateString(),
+                graduationDate: this.schoolAuthenticationForm.graduation_date.toLocaleDateString(),
+                academy: this.schoolAuthenticationForm.academy,
+                major: this.schoolAuthenticationForm.major,
+                education: this.schoolAuthenticationForm.education,
                 idImg: this.imageUrl
               })
               .then(successResponse => {
@@ -294,7 +269,7 @@ export default {
                   setTimeout(() => {
                     window.open(
                       this.$router.resolve({
-                        path: '/default/authentication/authenticationOrganizer'
+                        path: '/default/authentication/authenticationStudent'
                       }).href, '_self'
                       // 打开新窗口：_blank
                       // 在本地窗口打开：_self
@@ -302,7 +277,7 @@ export default {
                   }, 1000)
                 } else {
                   this.$message({
-                    message: '编号已被认证',
+                    message: '学号已被认证',
                     type: 'error'
                   })
                 }
@@ -358,11 +333,11 @@ export default {
 </script>
 
 <style scoped>
-  /*class用不了 所以用了 id*/
+/*class用不了 所以用了 id*/
   #avatar-uploader {
     display: block;
     float: left;
-    background: url('../../assets/organizer_id_card.jpg') no-repeat;
+    background: url('../../../assets/student_id_card.jpg') no-repeat;
     background-size: cover;
     width: 220px; height: 150px
   }

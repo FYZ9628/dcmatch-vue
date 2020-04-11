@@ -348,7 +348,7 @@ export default {
   #avatar-uploader {
     display: block;
     float: left;
-    background: url('../../assets/teacher_id_card.jpg') no-repeat;
+    background: url('../../../assets/teacher_id_card.jpg') no-repeat;
     background-size: cover;
     width: 220px; height: 150px
   }

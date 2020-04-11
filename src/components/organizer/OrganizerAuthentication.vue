@@ -106,7 +106,8 @@ export default {
         school: '',
         establishDate: '',
         schoolType: '',
-        schoolRunningType: ''
+        schoolRunningType: '',
+        idImg: ''
       }
     }
   },
