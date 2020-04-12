@@ -178,7 +178,7 @@ export default {
                 })
                 .catch(failResponse => {
                   this.$message({
-                    message: '修改密码失败',
+                    message: '修改号码失败',
                     type: 'error'
                   })
                 })

@@ -56,6 +56,8 @@ export default {
         .then(successResponse => {
           if (successResponse.data.code === 100) {
             _this.$store.commit('login', successResponse.data)
+            console.log('管理员登录后返回的数据')
+            console.log(successResponse.data)
             var path = this.$route.query.redirect
             this.$router.replace({path: path === '/' || path === undefined ? '/admin' : path})
           }
