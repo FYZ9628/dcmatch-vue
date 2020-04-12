@@ -131,6 +131,8 @@ export default {
                 .then(successResponse => {
                   this.changePasswordForm.password = ''
                   this.changePasswordForm.checkPassword = ''
+                  // 修改浏览器本地存储数据
+                  localStorage.setItem('password', successResponse.data.password)
                   this.loadStudent()
                   this.$message({
                     message: '修改密码成功',

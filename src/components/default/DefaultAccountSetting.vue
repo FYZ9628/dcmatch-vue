@@ -68,6 +68,7 @@ export default {
     }
     return {
       registerData: '',
+      userData: '',
       changePasswordForm: {
         password: '',
         checkPassword: ''
@@ -94,6 +95,7 @@ export default {
   },
   mounted: function () {
     this.loadRegister()
+    this.loadUser()
   },
   methods: {
     loadRegister () {
@@ -114,6 +116,41 @@ export default {
           })
       }
     },
+    loadUser () {
+      this.$axios
+        .post('/searchUserByPhone', {
+          keywords: this.$store.getters.account
+        })
+        .then(successResponse => {
+          this.userData = successResponse.data
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '查询用户失败',
+            type: 'error'
+          })
+        })
+    },
+    changeUsr (register) {
+      this.$axios
+        .post('/updateUser', {
+          id: this.userData.id,
+          account: this.userData.account,
+          phone: register.phone,
+          password: register.password,
+          name: this.userData.name,
+          type: this.userData.type
+        })
+        .then(successResponse => {
+          this.userData = successResponse.data
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '修改用户资料失败',
+            type: 'error'
+          })
+        })
+    },
     submitChangePasswordForm () {
       this.$refs.changePasswordForm.validate((valid) => {
         if (valid) {
@@ -128,7 +165,11 @@ export default {
                 .then(successResponse => {
                   this.changePasswordForm.password = ''
                   this.changePasswordForm.checkPassword = ''
-                  this.loadRegister()
+                  // 修改浏览器本地存储数据
+                  localStorage.setItem('account', successResponse.data.phone)
+                  localStorage.setItem('password', successResponse.data.password)
+                  localStorage.setItem('name', successResponse.data.phone)
+                  this.changeUsr(successResponse.data)
                   this.$message({
                     message: '修改密码成功',
                     type: 'success'
@@ -162,12 +203,25 @@ export default {
                 .then(successResponse => {
                   this.changePhoneForm.newPhone = null
                   this.changePhoneForm.oldPhone = successResponse.data.phone
-                  this.$store.getters.account = successResponse.data.phone
-                  this.loadRegister()
+                  // 修改浏览器本地存储数据
+                  localStorage.setItem('account', successResponse.data.phone)
+                  localStorage.setItem('password', successResponse.data.password)
+                  localStorage.setItem('name', successResponse.data.phone)
+                  this.changeUsr(successResponse.data)
                   this.$message({
                     message: '修改号码成功',
                     type: 'success'
                   })
+                  // 一秒后刷新
+                  setTimeout(() => {
+                    window.open(
+                      this.$router.resolve({
+                        path: '/default/accountSetting'
+                      }).href, '_self'
+                      // 打开新窗口：_blank
+                      // 在本地窗口打开：_self
+                    )
+                  }, 1000)
                 })
                 .catch(failResponse => {
                   this.$message({
