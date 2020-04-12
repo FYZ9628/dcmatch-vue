@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div>
-      <el-button type="primary" class="sign-up" @click="signUp">报 名</el-button>
+      <el-button type="primary" class="sign-up" @click="signUp">去参赛</el-button>
 <!--      <p class="sign-up-end">已报名人数: 1000</p>-->
     </div>
     <div style="margin-top: 30px">

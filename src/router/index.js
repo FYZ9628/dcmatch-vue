@@ -94,6 +94,7 @@ import OrganizerDataAnalysisContestDetails from '@/components/organizer/dataAnal
 import OrganizerInputScore from '@/components/organizer/inputScore/OrganizerInputScore'
 import OrganizerInputScoreSignUp from '@/components/organizer/inputScore/OrganizerInputScoreSignUp'
 import OrganizerInputScoreTeamSignUp from '@/components/organizer/inputScore/OrganizerInputScoreTeamSignUp'
+import SignUpSuccess from '@/components/index/contest/SignUpSuccess'
 
 Vue.use(Router)
 
@@ -173,6 +174,11 @@ export default new Router({
       path: '/index/teamSignUp',
       name: 'TeamSignUp',
       component: TeamSignUp
+    },
+    {
+      path: '/index/signUpSuccess',
+      name: 'SignUpSuccess',
+      component: SignUpSuccess
     },
     {
       path: '/defaultIndex',

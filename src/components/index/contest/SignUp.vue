@@ -289,7 +289,7 @@ export default {
             setTimeout(() => {
               window.open(
                 this.$router.resolve({
-                  path: '/index/signUp'
+                  path: '/index/signUpSuccess'
                 }).href, '_self'
                 // 打开新窗口：_blank
                 // 在本地窗口打开：_self

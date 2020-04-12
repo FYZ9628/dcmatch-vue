@@ -90,12 +90,12 @@ export default {
   methods: {
     signUp: function () {
       if (this.$store.getters.name) {
-        if (this.isLoginState === 300 || this.isLoginState === 200) {
+        if (this.contestDetailData.type === '个人赛') {
           let signUpContestDetailJson = JSON.stringify(this.contestDetailData)
           // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
           // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
           sessionStorage.setItem('signUpContestDetailJson', signUpContestDetailJson)
-          if (this.contestDetailData.type === '个人赛') {
+          if (this.isLoginState === 300) {
             this.$router.push({
               path: '/index/signUp'
               // name: 'noticeDetails/'
@@ -105,8 +105,24 @@ export default {
               // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
               // }
             })
+          } else if (this.isLoginState === 500) {
+            this.$message({
+              message: '请先认证',
+              type: 'error'
+            })
+          } else {
+            this.$message({
+              message: '只有学生才可以报名个人赛',
+              type: 'error'
+            })
           }
-          if (this.contestDetailData.type === '团队赛') {
+        }
+        if (this.contestDetailData.type === '团队赛') {
+          let signUpContestDetailJson = JSON.stringify(this.contestDetailData)
+          // 解决 router路由跳转使用query传递参数刷新后数据无法获取 问题
+          // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
+          sessionStorage.setItem('signUpContestDetailJson', signUpContestDetailJson)
+          if (this.isLoginState === 300 || this.isLoginState === 200) {
             this.$router.push({
               path: '/index/teamSignUp'
               // name: 'noticeDetails/'
@@ -116,17 +132,17 @@ export default {
               // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
               // }
             })
+          } else if (this.isLoginState === 500) {
+            this.$message({
+              message: '请先认证',
+              type: 'error'
+            })
+          } else {
+            this.$message({
+              message: '只有学生和教师才可以报名团队赛',
+              type: 'error'
+            })
           }
-        } else if (this.isLoginState === 500) {
-          this.$message({
-            message: '请先认证',
-            type: 'error'
-          })
-        } else {
-          this.$message({
-            message: '只有学生和教师才可以报名',
-            type: 'error'
-          })
         }
       } else {
         this.$message({
