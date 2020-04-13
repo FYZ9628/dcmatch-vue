@@ -178,52 +178,61 @@
     <el-dialog title="下载准考证"
                :visible.sync="downloadTicketVisible"
                width="720px">
-      <div id="printMe" style="width: 630px; height: 470px; margin: 0 auto">
-        <div style="text-align: center; margin-bottom: 30px">
-          <h3 style="font-size: 18px">{{teamContestDate.contestDetail.contestTitle}}准考证</h3>
+<!--      <el-carousel :interval="5000" arrow="always" indicator-position="outside" height="550px">-->
+<!--        <el-carousel-item v-for="item in 4" :key="item">-->
+<!--          <h3>{{ item }}</h3>-->
+<!--         -->
+<!--        </el-carousel-item>-->
+<!--      </el-carousel>-->
+      <div id="printMe" style="width: 630px; min-height: 470px; margin: 0 auto; overflow-y: hidden">
+        <div v-for="item in tableDataList"
+           :key="item.value" style="height: 1020px">
+          <div style="text-align: center; margin-bottom: 30px">
+            <h3 style="font-size: 18px">{{teamContestDate.contestDetail.contestTitle}}准考证</h3>
+          </div>
+          <el-table
+            :data="item"
+            border
+            :show-header="false"
+            :span-method="arraySpanMethod"
+            style="width: 100%;">
+            <el-table-column
+              prop="title"
+              label="标题"
+              width="100"
+              align="center">
+            </el-table-column>
+            <el-table-column
+              prop="name1"
+              label="姓名1"
+              width="150"
+              align="left">
+            </el-table-column>
+            <el-table-column
+              prop="name2"
+              label="姓名2"
+              width="100"
+              align="center">
+              <!--            <template slot-scope="scope">-->
+              <!--              {{scope.row.name}}-->
+              <!--            </template>-->
+            </el-table-column>
+            <el-table-column
+              prop="name3"
+              label="姓名3"
+              width="100"
+              align="left">
+            </el-table-column>
+            <el-table-column
+              prop="name4"
+              min-width="160"
+              label="姓名4">
+              <template slot-scope="scope">
+                <img v-if="scope.$index === 0" style="width: 146px; height: 150px;" :src="scope.row.name4"/>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-        <el-table
-          :data="tableData"
-          border
-          :show-header="false"
-          :span-method="arraySpanMethod"
-          style="width: 100%;">
-          <el-table-column
-            prop="title"
-            label="标题"
-            width="100"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="name1"
-            label="姓名1"
-            width="150"
-            align="left">
-          </el-table-column>
-          <el-table-column
-            prop="name2"
-            label="姓名2"
-            width="100"
-            align="center">
-            <!--            <template slot-scope="scope">-->
-            <!--              {{scope.row.name}}-->
-            <!--            </template>-->
-          </el-table-column>
-          <el-table-column
-            prop="name3"
-            label="姓名3"
-            width="100"
-            align="left">
-          </el-table-column>
-          <el-table-column
-            prop="name4"
-            min-width="160"
-            label="姓名4">
-            <template slot-scope="scope">
-              <img v-if="scope.$index === 0" style="width: 146px; height: 150px;" :src="scope.row.name4"/>
-            </template>
-          </el-table-column>
-        </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="downloadTicketVisible = false">取 消</el-button>
@@ -304,6 +313,336 @@ export default {
       },
       myTeamContestDateList: [],
       search: '',
+      tableDataList: [
+        [
+          {
+            id: '1',
+            title: '准考证号',
+            name1: '12345678901234',
+            name2: '',
+            name3: '',
+            name4: 'http://localhost:8999/api/file/dlcv0d.jpg'
+          },
+          {
+            id: '2',
+            title: '团队名称',
+            name1: '团队名称',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '3',
+            title: '考生姓名',
+            name1: '冯钰臻',
+            name2: '队长',
+            name3: '否',
+            name4: ''
+          },
+          {
+            id: '4',
+            title: '学号',
+            name1: '116263000202',
+            name2: '性别',
+            name3: '男',
+            name4: ''
+          },
+          {
+            id: '5',
+            title: '指导老师',
+            name1: '无',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '6',
+            title: '学校',
+            name1: '广西民族大学',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '7',
+            title: '学院',
+            name1: '软信学院',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '8',
+            title: '专业',
+            name1: '软件工程',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '9',
+            title: '考试日期',
+            name1: '2020-06-11',
+            name2: '考试时间',
+            name3: '09:00 - 11:30',
+            name4: ''
+          },
+          {
+            id: '10',
+            title: '考试地点',
+            name1: '广西民族大学',
+            name2: '',
+            name3: '',
+            name4: ''
+          }
+        ],
+        [
+          {
+            id: '1',
+            title: '准考证号',
+            name1: '12345678901234',
+            name2: '',
+            name3: '',
+            name4: 'http://localhost:8999/api/file/dlcv0d.jpg'
+          },
+          {
+            id: '2',
+            title: '团队名称',
+            name1: '团队名称',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '3',
+            title: '考生姓名',
+            name1: '冯钰臻',
+            name2: '队长',
+            name3: '否',
+            name4: ''
+          },
+          {
+            id: '4',
+            title: '学号',
+            name1: '116263000202',
+            name2: '性别',
+            name3: '男',
+            name4: ''
+          },
+          {
+            id: '5',
+            title: '指导老师',
+            name1: '无',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '6',
+            title: '学校',
+            name1: '广西民族大学',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '7',
+            title: '学院',
+            name1: '软信学院',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '8',
+            title: '专业',
+            name1: '软件工程',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '9',
+            title: '考试日期',
+            name1: '2020-06-11',
+            name2: '考试时间',
+            name3: '09:00 - 11:30',
+            name4: ''
+          },
+          {
+            id: '10',
+            title: '考试地点',
+            name1: '广西民族大学',
+            name2: '',
+            name3: '',
+            name4: ''
+          }
+        ],
+        [
+          {
+            id: '1',
+            title: '准考证号',
+            name1: '12345678901234',
+            name2: '',
+            name3: '',
+            name4: 'http://localhost:8999/api/file/dlcv0d.jpg'
+          },
+          {
+            id: '2',
+            title: '团队名称',
+            name1: '团队名称',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '3',
+            title: '考生姓名',
+            name1: '冯钰臻',
+            name2: '队长',
+            name3: '否',
+            name4: ''
+          },
+          {
+            id: '4',
+            title: '学号',
+            name1: '116263000202',
+            name2: '性别',
+            name3: '男',
+            name4: ''
+          },
+          {
+            id: '5',
+            title: '指导老师',
+            name1: '无',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '6',
+            title: '学校',
+            name1: '广西民族大学',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '7',
+            title: '学院',
+            name1: '软信学院',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '8',
+            title: '专业',
+            name1: '软件工程',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '9',
+            title: '考试日期',
+            name1: '2020-06-11',
+            name2: '考试时间',
+            name3: '09:00 - 11:30',
+            name4: ''
+          },
+          {
+            id: '10',
+            title: '考试地点',
+            name1: '广西民族大学',
+            name2: '',
+            name3: '',
+            name4: ''
+          }
+        ],
+        [
+          {
+            id: '1',
+            title: '准考证号',
+            name1: '12345678901234',
+            name2: '',
+            name3: '',
+            name4: 'http://localhost:8999/api/file/dlcv0d.jpg'
+          },
+          {
+            id: '2',
+            title: '团队名称',
+            name1: '团队名称',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '3',
+            title: '考生姓名',
+            name1: '冯钰臻',
+            name2: '队长',
+            name3: '否',
+            name4: ''
+          },
+          {
+            id: '4',
+            title: '学号',
+            name1: '116263000202',
+            name2: '性别',
+            name3: '男',
+            name4: ''
+          },
+          {
+            id: '5',
+            title: '指导老师',
+            name1: '无',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '6',
+            title: '学校',
+            name1: '广西民族大学',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '7',
+            title: '学院',
+            name1: '软信学院',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '8',
+            title: '专业',
+            name1: '软件工程',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '9',
+            title: '考试日期',
+            name1: '2020-06-11',
+            name2: '考试时间',
+            name3: '09:00 - 11:30',
+            name4: ''
+          },
+          {
+            id: '10',
+            title: '考试地点',
+            name1: '广西民族大学',
+            name2: '',
+            name3: '',
+            name4: ''
+          }
+        ]
+      ],
       tableData: [
         {
           id: '1',
@@ -339,6 +678,14 @@ export default {
         },
         {
           id: '5',
+          title: '指导老师',
+          name1: '无',
+          name2: '',
+          name3: '',
+          name4: ''
+        },
+        {
+          id: '6',
           title: '学校',
           name1: '广西民族大学',
           name2: '',
@@ -346,7 +693,7 @@ export default {
           name4: ''
         },
         {
-          id: '6',
+          id: '7',
           title: '学院',
           name1: '软信学院',
           name2: '',
@@ -354,7 +701,7 @@ export default {
           name4: ''
         },
         {
-          id: '7',
+          id: '8',
           title: '专业',
           name1: '软件工程',
           name2: '',
@@ -362,7 +709,7 @@ export default {
           name4: ''
         },
         {
-          id: '8',
+          id: '9',
           title: '考试日期',
           name1: '2020-06-11',
           name2: '考试时间',
@@ -370,7 +717,7 @@ export default {
           name4: ''
         },
         {
-          id: '9',
+          id: '10',
           title: '考试地点',
           name1: '广西民族大学',
           name2: '',
@@ -553,40 +900,129 @@ export default {
       }
     },
     downloadTicket () {
-      for (let i = 0; i < 9; i++) {
-        if (i === 0) {
-          this.tableData[i].name1 = this.teamContestDate.ticketNumber
-        }
-        if (i === 1) {
-          this.tableData[i].name1 = this.teamContestDate.teamName
-        }
-        if (i === 2) {
-          this.tableData[i].name1 = this.teamContestDate.student.user.name
-          if (this.teamContestDate.remarks === '队长') {
-            this.tableData[i].name3 = '是'
+      this.tableDataList = []
+      for (let i = 0; i < this.myTeamContestDateList.length; i++) {
+        let tempTableData = [
+          {
+            id: '1',
+            title: '准考证号',
+            name1: '12345678901234',
+            name2: '',
+            name3: '',
+            name4: 'http://localhost:8999/api/file/dlcv0d.jpg'
+          },
+          {
+            id: '2',
+            title: '团队名称',
+            name1: '团队名称',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '3',
+            title: '考生姓名',
+            name1: '冯钰臻',
+            name2: '队长',
+            name3: '否',
+            name4: ''
+          },
+          {
+            id: '4',
+            title: '学号',
+            name1: '116263000202',
+            name2: '性别',
+            name3: '男',
+            name4: ''
+          },
+          {
+            id: '5',
+            title: '指导老师',
+            name1: '无',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '6',
+            title: '学校',
+            name1: '广西民族大学',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '7',
+            title: '学院',
+            name1: '软信学院',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '8',
+            title: '专业',
+            name1: '软件工程',
+            name2: '',
+            name3: '',
+            name4: ''
+          },
+          {
+            id: '9',
+            title: '考试日期',
+            name1: '2020-06-11',
+            name2: '考试时间',
+            name3: '09:00 - 11:30',
+            name4: ''
+          },
+          {
+            id: '10',
+            title: '考试地点',
+            name1: '广西民族大学',
+            name2: '',
+            name3: '',
+            name4: ''
+          }
+        ]
+        for (let j = 0; j < 9; j++) {
+          if (j === 0) {
+            tempTableData[j].name1 = this.myTeamContestDateList[i].ticketNumber
+          }
+          if (j === 1) {
+            tempTableData[j].name1 = this.myTeamContestDateList[i].teamName
+          }
+          if (j === 2) {
+            tempTableData[j].name1 = this.myTeamContestDateList[i].student.user.name
+            if (this.myTeamContestDateList[i].remarks === '队长') {
+              tempTableData[j].name3 = '是'
+            }
+          }
+          if (j === 3) {
+            tempTableData[j].name1 = this.myTeamContestDateList[i].student.user.account
+            tempTableData[j].name3 = this.myTeamContestDateList[i].student.sex
+          }
+          if (j === 4) {
+            tempTableData[j].name1 = this.myTeamContestDateList[i].teacherName
+          }
+          if (j === 5) {
+            tempTableData[j].name1 = this.myTeamContestDateList[i].student.school
+          }
+          if (j === 6) {
+            tempTableData[j].name1 = this.myTeamContestDateList[i].student.academy
+          }
+          if (j === 7) {
+            tempTableData[j].name1 = this.myTeamContestDateList[i].student.major
+          }
+          if (j === 8) {
+            tempTableData[j].name1 = this.myTeamContestDateList[i].contestDetail.holdDate
+            tempTableData[j].name3 = this.myTeamContestDateList[i].contestDetail.holdStartTime +
+              ' -  ' + this.myTeamContestDateList[i].contestDetail.holdStartTime
+          }
+          if (j === 9) {
+            tempTableData[j].name1 = this.myTeamContestDateList[i].contestDetail.place
           }
         }
-        if (i === 3) {
-          this.tableData[i].name1 = this.teamContestDate.student.user.account
-          this.tableData[i].name3 = this.teamContestDate.student.sex
-        }
-        if (i === 4) {
-          this.tableData[i].name1 = this.teamContestDate.student.school
-        }
-        if (i === 5) {
-          this.tableData[i].name1 = this.teamContestDate.student.academy
-        }
-        if (i === 6) {
-          this.tableData[i].name1 = this.teamContestDate.student.major
-        }
-        if (i === 7) {
-          this.tableData[i].name1 = this.teamContestDate.contestDetail.holdDate
-          this.tableData[i].name3 = this.teamContestDate.contestDetail.holdStartTime +
-            ' -  ' + this.teamContestDate.contestDetail.holdStartTime
-        }
-        if (i === 8) {
-          this.tableData[i].name1 = this.teamContestDate.contestDetail.place
-        }
+        this.tableDataList.push(tempTableData)
       }
       this.downloadTicketVisible = true
     },
@@ -674,13 +1110,24 @@ export default {
         }
       }
       if (rowIndex === 7) {
+        if (columnIndex === 1) {
+          return [1, 4]
+        } else if (columnIndex === 2) {
+          return [0, 0]
+        } else if (columnIndex === 3) {
+          return [0, 0]
+        } else if (columnIndex === 4) {
+          return [0, 0]
+        }
+      }
+      if (rowIndex === 8) {
         if (columnIndex === 3) {
           return [1, 2]
         } else if (columnIndex === 4) {
           return [0, 0]
         }
       }
-      if (rowIndex === 8) {
+      if (rowIndex === 9) {
         if (columnIndex === 1) {
           return [1, 4]
         } else if (columnIndex === 2) {
@@ -721,5 +1168,17 @@ export default {
 </script>
 
 <style scoped>
-
+  /*.el-carousel__item h3 {*/
+  /*  color: #475669;*/
+  /*  font-size: 18px;*/
+  /*  opacity: 0.75;*/
+  /*  line-height: 300px;*/
+  /*  margin: 0;*/
+  /*}*/
+  /*.el-carousel__item:nth-child(2n) {*/
+  /*  background-color: #99a9bf;*/
+  /*}*/
+  /*.el-carousel__item:nth-child(2n+1) {*/
+  /*  background-color: #d3dce6;*/
+  /*}*/
 </style>
