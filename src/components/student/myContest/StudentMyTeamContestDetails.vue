@@ -178,12 +178,6 @@
     <el-dialog title="下载准考证"
                :visible.sync="downloadTicketVisible"
                width="720px">
-<!--      <el-carousel :interval="5000" arrow="always" indicator-position="outside" height="550px">-->
-<!--        <el-carousel-item v-for="item in 4" :key="item">-->
-<!--          <h3>{{ item }}</h3>-->
-<!--         -->
-<!--        </el-carousel-item>-->
-<!--      </el-carousel>-->
       <div id="printMe" style="width: 630px; min-height: 470px; margin: 0 auto; overflow-y: hidden">
         <div v-for="item in tableDataList"
            :key="item.value" style="height: 1020px">
