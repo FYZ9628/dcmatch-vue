@@ -131,6 +131,10 @@ export default {
   },
   mounted: function () {
     this.loadTeacher()
+    // var path = this.$route.matched[1].path
+    // console.log('测试路由')
+    // console.log(path)
+    // this.$router.push(path)
   },
   methods: {
     loadTeacher () {

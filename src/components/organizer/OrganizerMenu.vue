@@ -7,7 +7,7 @@
       <h3>名 称</h3>
     </div>
     <el-menu
-      default-active="this.$route.path"
+      :default-active="this.$route.path"
       router>
       <el-menu-item index="/organizer/authentication">
         <i class="el-icon-s-custom"></i>
@@ -29,7 +29,7 @@
         <i class="el-icon-trophy"></i>
         <span slot="title">获奖查询</span>
       </el-menu-item>
-      <el-menu-item index="/organizer/dataAnalysis">
+      <el-menu-item index="/organizer/dataAnalysis/signUp">
         <i class="el-icon-zoom-in"></i>
         <span slot="title">数据分析</span>
       </el-menu-item>

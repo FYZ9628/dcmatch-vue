@@ -7,7 +7,7 @@
       <h3>名 称</h3>
     </div>
     <el-menu
-      default-active="this.$route.path"
+      :default-active="this.$route.path"
       router>
       <el-menu-item index="/teacher/authentication">
         <i class="el-icon-s-custom"></i>

@@ -7,7 +7,7 @@
       <h3>名 称</h3>
     </div>
     <el-menu
-      default-active="this.$route.path"
+      :default-active="this.$route.path"
       router>
       <el-menu-item index="/student/authentication">
         <i class="el-icon-s-custom"></i>
@@ -17,7 +17,7 @@
         <i class="el-icon-star-off"></i>
         <span slot="title">我的大赛</span>
       </el-menu-item>
-      <el-menu-item index="/student/prizeWinning">
+      <el-menu-item index="/student/prizeWinning/contestList">
         <i class="el-icon-trophy"></i>
         <span slot="title">获奖查询</span>
       </el-menu-item>
