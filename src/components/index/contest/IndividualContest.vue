@@ -12,7 +12,7 @@
       <el-button size="medium" type="primary" icon="el-icon-search" style="background-color: #545c64"
                  @click="searchClick">搜 索</el-button>
     </el-header>
-    <el-main style="margin: 0 50px">
+    <el-main style="min-width: 1050px; margin: 0 50px">
       <el-container  v-for="(item, index) in currentPageData"
                      :key="item.value">
         <el-container>
@@ -32,6 +32,9 @@
             <p style="font-size: 12px; color: #a0a0a0;; display: block; float: left">发布时间：{{currentPageData[index].publishTime}}</p>
             <p style="font-size: 12px; color: #5c5c5c;; display: block; float: left; margin-left: 50px">报名开始时间：{{currentPageData[index].signUpStartTime}}</p>
             <p style="font-size: 12px; color: #5c5c5c;; display: block; float: left; margin-left: 50px">报名截止时间：{{currentPageData[index].signUpEndTime}}</p>
+            <p style="font-size: 12px; color: #5c5c5c;; display: block; float: left; margin-left: 50px">
+              举办时间：{{currentPageData[index].holdDate}}  {{currentPageData[index].holdStartTime}} - {{currentPageData[index].holdEndTime}}
+            </p>
             <el-button type="text" style="display: block; float: right; color: #409EFF; line-height: 30px; font-size: 12px;" v-on:click="gotoCompetitionDetail(item)">详 情</el-button>
           </el-footer>
           <el-divider></el-divider>

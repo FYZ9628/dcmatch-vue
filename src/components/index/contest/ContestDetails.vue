@@ -25,6 +25,11 @@
               <p style="width: 280px; font-size: 14px; color: #5c5c5c; display: block; float: left; padding: 0; margin: 0">报名开始时间：{{contestDetailData.signUpStartTime}}</p>
               <p style="font-size: 14px; color: #5c5c5c; display: block; float: left; margin: 0 0 0 50px; padding: 0;">报名截止时间：{{contestDetailData.signUpEndTime}}</p>
             </el-row>
+            <el-row>
+              <p style="width: 280px; font-size: 14px; color: #5c5c5c; display: block; float: left; padding: 0; margin: 0">
+                举办时间：{{contestDetailData.holdDate}}  {{contestDetailData.holdStartTime}} - {{contestDetailData.holdEndTime}}
+              </p>
+            </el-row>
           </div>
           <div  style="display: block; float: right">
             <el-button class="sign-up" @click="signUp">报名</el-button>
