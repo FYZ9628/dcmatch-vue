@@ -108,7 +108,8 @@ export default {
 
 <style>
   #poster {
-    background: url("../assets/login_background.jpg") no-repeat center;
+    /*background: url("../assets/login_background.jpg") no-repeat center;*/
+    background-color: #f6f6f6;
     height: 100%;
     width: 100%;
     background-size: cover;

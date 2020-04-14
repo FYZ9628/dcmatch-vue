@@ -92,6 +92,7 @@ import OrganizerInputScore from '@/components/organizer/inputScore/OrganizerInpu
 import OrganizerInputScoreSignUp from '@/components/organizer/inputScore/OrganizerInputScoreSignUp'
 import OrganizerInputScoreTeamSignUp from '@/components/organizer/inputScore/OrganizerInputScoreTeamSignUp'
 import SignUpSuccess from '@/components/index/contest/SignUpSuccess'
+import Home from '@/components/Home'
 
 Vue.use(Router)
 
@@ -103,6 +104,12 @@ Vue.use(Router)
 export default new Router({
   mode: 'history', /* 访问时不用再写 # 号 */
   routes: [
+    {
+      path: '/',
+      name: 'Default',
+      redirect: '/index',
+      component: Home
+    },
     {
       path: '/register',
       name: 'Register',
