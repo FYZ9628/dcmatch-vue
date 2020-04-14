@@ -45,7 +45,7 @@ Vue.use(ElementUI)
  */
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
-    if (store.state.user.account) {
+    if (store.state.account) {
       next()
     } else {
       next({

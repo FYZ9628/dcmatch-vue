@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import AppIndex from '@/components/AppIndex'
 import Login from '@/components/Login'
 import AdminLogin from '@/components/AdminLogin'
-import DefaultIndex from '@/components/default/DefaultIndex'
 import DefaultHome from '@/components/default/DefaultHome'
 import DefaultAuthentication from '@/components/default/authentication/DefaultAuthentication'
 import DefaultAuthenticationStudent from '@/components/default/authentication/DefaultAuthenticationStudent'
@@ -11,7 +10,6 @@ import DefaultAuthenticationTeacher from '@/components/default/authentication/De
 import DefaultAuthenticationOrganizer from '@/components/default/authentication/DefaultAuthenticationOrganizer'
 import DefaultMyNews from '@/components/default/DefaultMyNews'
 import DefaultAccountSetting from '@/components/default/DefaultAccountSetting'
-import StudentIndex from '@/components/student/StudentIndex'
 import StudentHome from '@/components/student/StudentHome'
 import StudentAuthentication from '@/components/student/StudentAuthentication'
 import StudentMyContest from '@/components/student/myContest/StudentMyContest'
@@ -20,7 +18,6 @@ import StudentMyOrder from '@/components/student/StudentMyOrder'
 import StudentMyNews from '@/components/student/StudentMyNews'
 import StudentMyAddress from '@/components/student/StudentMyAddress'
 import StudentAccountSetting from '@/components/student/StudentAccountSetting'
-import TeacherIndex from '@/components/teacher/TeacherIndex'
 import TeacherHome from '@/components/teacher/TeacherHome'
 import TeacherAuthentication from '@/components/teacher/TeacherAuthentication'
 import TeacherMyContest from '@/components/teacher/myContest/TeacherMyContest'
@@ -126,9 +123,7 @@ export default new Router({
       name: 'AppIndex',
       component: AppIndex,
       meta: {
-        /**
-         * 为了区分页面是否需要拦截
-         */
+        // 为了区分页面是否需要拦截
         requireAuth: false
       }
     },
@@ -173,22 +168,29 @@ export default new Router({
     {
       path: '/index/signUp',
       name: 'SignUp',
-      component: SignUp
+      component: SignUp,
+      meta: {
+        // 为了区分页面是否需要拦截
+        requireAuth: true
+      }
     },
     {
       path: '/index/teamSignUp',
       name: 'TeamSignUp',
-      component: TeamSignUp
+      component: TeamSignUp,
+      meta: {
+        // 为了区分页面是否需要拦截
+        requireAuth: true
+      }
     },
     {
       path: '/index/signUpSuccess',
       name: 'SignUpSuccess',
-      component: SignUpSuccess
-    },
-    {
-      path: '/defaultIndex',
-      name: 'DefaultIndex',
-      component: DefaultIndex
+      component: SignUpSuccess,
+      meta: {
+        // 为了区分页面是否需要拦截
+        requireAuth: true
+      }
     },
     {
       path: '/default',
@@ -204,17 +206,29 @@ export default new Router({
             {
               path: 'authenticationStudent',
               name: 'DefaultAuthenticationStudent',
-              component: DefaultAuthenticationStudent
+              component: DefaultAuthenticationStudent,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'authenticationTeacher',
               name: 'DefaultAuthenticationTeacher',
-              component: DefaultAuthenticationTeacher
+              component: DefaultAuthenticationTeacher,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'authenticationOrganizer',
               name: 'DefaultAuthenticationOrganizer',
-              component: DefaultAuthenticationOrganizer
+              component: DefaultAuthenticationOrganizer,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             }
           ]
         },
@@ -226,14 +240,13 @@ export default new Router({
         {
           path: 'accountSetting',
           name: 'DefaultAccountSetting',
-          component: DefaultAccountSetting
+          component: DefaultAccountSetting,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         }
       ]
-    },
-    {
-      path: '/studentIndex',
-      name: 'StudentIndex',
-      component: StudentIndex
     },
     {
       path: '/student',
@@ -244,12 +257,20 @@ export default new Router({
         {
           path: 'authentication',
           name: 'StudentAuthentication',
-          component: StudentAuthentication
+          component: StudentAuthentication,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myContest',
           name: 'StudentMyContest',
-          component: StudentMyContest
+          component: StudentMyContest,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'prizeWinning',
@@ -260,64 +281,112 @@ export default new Router({
             {
               path: '/student/prizeWinning/contestList',
               name: 'StudentPrizeWinningContestList',
-              component: StudentPrizeWinningContestList
+              component: StudentPrizeWinningContestList,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: '/student/prizeWinning/teamContestList',
               name: 'StudentPrizeWinningTeamContestList',
-              component: StudentPrizeWinningTeamContestList
+              component: StudentPrizeWinningTeamContestList,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             }
           ]
         },
         {
           path: 'myOrder',
           name: 'StudentMyOrder',
-          component: StudentMyOrder
+          component: StudentMyOrder,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myNews',
           name: 'StudentMyNews',
-          component: StudentMyNews
+          component: StudentMyNews,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myAddress',
           name: 'StudentMyAddress',
-          component: StudentMyAddress
+          component: StudentMyAddress,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'accountSetting',
           name: 'StudentAccountSetting',
-          component: StudentAccountSetting
+          component: StudentAccountSetting,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'contestDetails',
           name: 'StudentMyContestDetails',
-          component: StudentMyContestDetails
+          component: StudentMyContestDetails,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'contestList',
           name: 'StudentMyContestList',
-          component: StudentMyContestList
+          component: StudentMyContestList,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'teamContestDetails',
           name: 'StudentMyTeamContestDetails',
-          component: StudentMyTeamContestDetails
+          component: StudentMyTeamContestDetails,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'teamContestList',
           name: 'StudentMyTeamContestList',
-          component: StudentMyTeamContestList
+          component: StudentMyTeamContestList,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'prizeWinningDetails',
           name: 'StudentPrizeWinningDetails',
-          component: StudentPrizeWinningDetails
+          component: StudentPrizeWinningDetails,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'prizeWinningTeamDetails',
           name: 'StudentPrizeWinningTeamDetails',
-          component: StudentPrizeWinningTeamDetails
+          component: StudentPrizeWinningTeamDetails,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         }
       ]
     },
@@ -330,82 +399,146 @@ export default new Router({
         {
           path: 'authentication',
           name: 'OrganizerAuthentication',
-          component: OrganizerAuthentication
+          component: OrganizerAuthentication,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myNotice',
           name: 'OrganizerMyNotice',
-          component: OrganizerMyNotice
+          component: OrganizerMyNotice,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myContest',
           name: 'OrganizerMyContest',
-          component: OrganizerMyContest
+          component: OrganizerMyContest,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'inputScore',
           name: 'OrganizerInputScore',
-          component: OrganizerInputScore
+          component: OrganizerInputScore,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'prizeWinning',
           name: 'OrganizerPrizeWinning',
-          component: OrganizerPrizeWinning
+          component: OrganizerPrizeWinning,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myOrder',
           name: 'OrganizerMyOrder',
-          component: OrganizerMyOrder
+          component: OrganizerMyOrder,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myNews',
           name: 'OrganizerMyNews',
-          component: OrganizerMyNews
+          component: OrganizerMyNews,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myAddress',
           name: 'OrganizerMyAddress',
-          component: OrganizerMyAddress
+          component: OrganizerMyAddress,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'accountSetting',
           name: 'OrganizerAccountSetting',
-          component: OrganizerAccountSetting
+          component: OrganizerAccountSetting,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'noticeDetails',
           name: 'OrganizerMyNoticeDetails',
-          component: OrganizerMyNoticeDetails
+          component: OrganizerMyNoticeDetails,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'contestDetails',
           name: 'OrganizerMyContestDetails',
-          component: OrganizerMyContestDetails
+          component: OrganizerMyContestDetails,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'contestSignUp',
           name: 'OrganizerMyContestSignUp',
-          component: OrganizerMyContestSignUp
+          component: OrganizerMyContestSignUp,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'contestTeamSignUp',
           name: 'OrganizerMyContestTeamSignUp',
-          component: OrganizerMyContestTeamSignUp
+          component: OrganizerMyContestTeamSignUp,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'prizeWinningDetails',
           name: 'OrganizerPrizeWinningDetails',
-          component: OrganizerPrizeWinningDetails
+          component: OrganizerPrizeWinningDetails,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'prizeWinningList',
           name: 'OrganizerPrizeWinningList',
-          component: OrganizerPrizeWinningList
+          component: OrganizerPrizeWinningList,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'prizeWinningTeamList',
           name: 'OrganizerPrizeWinningTeamList',
-          component: OrganizerPrizeWinningTeamList
+          component: OrganizerPrizeWinningTeamList,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'dataAnalysis',
@@ -416,31 +549,42 @@ export default new Router({
             {
               path: 'signUp',
               name: 'OrganizerDataAnalysisSignUp',
-              component: OrganizerDataAnalysisSignUp
+              component: OrganizerDataAnalysisSignUp,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'contestDetails',
               name: 'OrganizerDataAnalysisContestDetails',
-              component: OrganizerDataAnalysisContestDetails
+              component: OrganizerDataAnalysisContestDetails,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             }
           ]
         },
         {
           path: 'inputScoreSignUp',
           name: 'OrganizerInputScoreSignUp',
-          component: OrganizerInputScoreSignUp
+          component: OrganizerInputScoreSignUp,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'inputScoreTeamSignUp',
           name: 'OrganizerInputScoreTeamSignUp',
-          component: OrganizerInputScoreTeamSignUp
+          component: OrganizerInputScoreTeamSignUp,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         }
       ]
-    },
-    {
-      path: '/teacherIndex',
-      name: 'TeacherIndex',
-      component: TeacherIndex
     },
     {
       path: '/teacher',
@@ -451,52 +595,92 @@ export default new Router({
         {
           path: 'authentication',
           name: 'TeacherAuthentication',
-          component: TeacherAuthentication
+          component: TeacherAuthentication,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myContest',
           name: 'TeacherMyContest',
-          component: TeacherMyContest
+          component: TeacherMyContest,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'prizeWinning',
           name: 'TeacherPrizeWinning',
-          component: TeacherPrizeWinning
+          component: TeacherPrizeWinning,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myOrder',
           name: 'TeacherMyOrder',
-          component: TeacherMyOrder
+          component: TeacherMyOrder,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myNews',
           name: 'TeacherMyNews',
-          component: TeacherMyNews
+          component: TeacherMyNews,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'myAddress',
           name: 'TeacherMyAddress',
-          component: TeacherMyAddress
+          component: TeacherMyAddress,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'accountSetting',
           name: 'TeacherAccountSetting',
-          component: TeacherAccountSetting
+          component: TeacherAccountSetting,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'contestDetails',
           name: 'TeacherMyContestDetails',
-          component: TeacherMyContestDetails
+          component: TeacherMyContestDetails,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'contestList',
           name: 'TeacherMyContestList',
-          component: TeacherMyContestList
+          component: TeacherMyContestList,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'prizeWinningDetails',
           name: 'TeacherPrizeWinningDetails',
-          component: TeacherPrizeWinningDetails
+          component: TeacherPrizeWinningDetails,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         }
       ]
     },
@@ -507,6 +691,40 @@ export default new Router({
       component: AdminIndex,
       children: [
         {
+          path: 'home',
+          name: 'AdminHomeIndex',
+          component: AdminHomeIndex,
+          children: [
+            {
+              path: 'userData',
+              name: 'UserData',
+              component: UserData,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
+            },
+            {
+              path: 'contestData',
+              name: 'ContestData',
+              component: ContestData,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
+            },
+            {
+              path: 'signUpData',
+              name: 'SignUpData',
+              component: SignUpData,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
+            }
+          ]
+        },
+        {
           path: 'authentication',
           name: 'AuthenticationIndex',
           component: AuthenticationIndex,
@@ -514,17 +732,29 @@ export default new Router({
             {
               path: 'studentAuthentic',
               name: 'StudentAuthentic',
-              component: StudentAuthentic
+              component: StudentAuthentic,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'teacherAuthentic',
               name: 'TeacherAuthentic',
-              component: TeacherAuthentic
+              component: TeacherAuthentic,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'organizerAuthentic',
               name: 'OrganizerAuthentic',
-              component: OrganizerAuthentic
+              component: OrganizerAuthentic,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             }
           ]
         },
@@ -536,56 +766,58 @@ export default new Router({
             {
               path: 'studentUser',
               name: 'StudentUser',
-              component: StudentUser
+              component: StudentUser,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'teacherUser',
               name: 'TeacherUser',
-              component: TeacherUser
+              component: TeacherUser,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'organizerUser',
               name: 'OrganizerUser',
-              component: OrganizerUser
+              component: OrganizerUser,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'registerUser',
               name: 'RegisterUser',
-              component: RegisterUser
+              component: RegisterUser,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'adminUser',
               name: 'AdminUser',
-              component: AdminUser
-            }
-          ]
-        },
-        {
-          path: 'home',
-          name: 'AdminHomeIndex',
-          component: AdminHomeIndex,
-          children: [
-            {
-              path: 'userData',
-              name: 'UserData',
-              component: UserData
-            },
-            {
-              path: 'contestData',
-              name: 'ContestData',
-              component: ContestData
-            },
-            {
-              path: 'signUpData',
-              name: 'SignUpData',
-              component: SignUpData
+              component: AdminUser,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             }
           ]
         },
         {
           path: '/admin/setting',
           name: 'AdminSetting',
-          component: AdminSetting
+          component: AdminSetting,
+          meta: {
+            // 为了区分页面是否需要拦截
+            requireAuth: true
+          }
         },
         {
           path: 'contest',
@@ -595,12 +827,20 @@ export default new Router({
             {
               path: 'individualContest',
               name: 'AdminIndividualContest',
-              component: AdminIndividualContest
+              component: AdminIndividualContest,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'teamContest',
               name: 'AdminTeamContest',
-              component: AdminTeamContest
+              component: AdminTeamContest,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             }
           ]
         },
@@ -612,12 +852,20 @@ export default new Router({
             {
               path: 'individualSignUp',
               name: 'AdminIndividualSignUp',
-              component: AdminIndividualSignUp
+              component: AdminIndividualSignUp,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             },
             {
               path: 'teamSignUp',
               name: 'AdminTeamSignUp',
-              component: AdminTeamSignUp
+              component: AdminTeamSignUp,
+              meta: {
+                // 为了区分页面是否需要拦截
+                requireAuth: true
+              }
             }
           ]
         }

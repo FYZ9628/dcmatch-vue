@@ -15,16 +15,16 @@ export default new Vuex.Store({
     account: '' || localStorage.getItem('account'),
     password: '' || localStorage.getItem('password'),
     name: '' || localStorage.getItem('name'),
-    code: '' || localStorage.getItem('code'),
-    user: {
-      // 用于拦截没有登录的用户
-      // 在路由中设置 requireAuth: true  就是表示当前页面要拦截
-      // 同时在 main.js 也要写上 router.beforeEach 配置
-      account: window.localStorage
-        .getItem('user' || '[]') == null ? '' : JSON.parse(
-          window.localStorage.getItem('user' || '[]')).account
-    }
+    code: '' || localStorage.getItem('code')
   },
+  // user: {
+  //   // 用于拦截没有登录的用户
+  //   // 在路由中设置 requireAuth: true  就是表示当前页面要拦截
+  //   // 同时在 main.js 也要写上 router.beforeEach 配置
+  //   account: window.localStorage
+  //     .getItem('user' || '[]') == null ? '' : JSON.parse(
+  //       window.localStorage.getItem('user' || '[]')).account
+  // },
   mutations: {
     login (state, user) {
       state.account = user.account
