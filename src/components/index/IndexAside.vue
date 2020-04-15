@@ -25,14 +25,11 @@ export default {
   data: function () {
     return {
       notice: [],
-      tempNotice: [],
-      contestDetail: [],
-      tempContestDetail: []
+      tempNotice: []
     }
   },
   mounted: function () {
     this.loadNotice()
-    this.loadContestDetail()
   },
   methods: {
     loadNotice () {
@@ -40,6 +37,8 @@ export default {
       this.$axios.get('/getAllNotice').then(resp => {
         if (resp && resp.status === 200) {
           _this.notice = resp.data
+          console.log('测试通知')
+          console.log(resp.data)
           if (_this.notice.length >= 7) {
             for (let i = 0; i < 7; ++i) {
               let tempNotice = {
@@ -61,58 +60,23 @@ export default {
                 },
                 content: ''
               }
-              tempNotice.id = _this.noticeData[i].id
-              tempNotice.title = _this.noticeData[i].title
-              tempNotice.time = _this.noticeData[i].time
-              tempNotice.organizer.id = _this.noticeData[i].organizer.id
-              tempNotice.organizer.phone = _this.noticeData[i].organizer.phone
-              tempNotice.organizer.name = _this.noticeData[i].organizer.name
-              tempNotice.organizer.user.id = _this.noticeData[i].organizer.user.id
-              tempNotice.organizer.user.account = _this.noticeData[i].organizer.user.account
-              tempNotice.organizer.user.phone = _this.noticeData[i].organizer.user.phone
-              tempNotice.organizer.user.password = _this.noticeData[i].organizer.user.password
-              tempNotice.organizer.user.name = _this.noticeData[i].organizer.user.name
-              tempNotice.organizer.user.type = _this.noticeData[i].organizer.user.type
-              tempNotice.content = this.noticeData[i].content
+              tempNotice.id = _this.notice[i].id
+              tempNotice.title = _this.notice[i].title
+              tempNotice.time = _this.notice[i].time
+              tempNotice.organizer.id = _this.notice[i].organizer.id
+              tempNotice.organizer.phone = _this.notice[i].organizer.phone
+              tempNotice.organizer.name = _this.notice[i].organizer.name
+              tempNotice.organizer.user.id = _this.notice[i].organizer.user.id
+              tempNotice.organizer.user.account = _this.notice[i].organizer.user.account
+              tempNotice.organizer.user.phone = _this.notice[i].organizer.user.phone
+              tempNotice.organizer.user.password = _this.notice[i].organizer.user.password
+              tempNotice.organizer.user.name = _this.notice[i].organizer.user.name
+              tempNotice.organizer.user.type = _this.notice[i].organizer.user.type
+              tempNotice.content = this.notice[i].content
               _this.tempNotice.push(tempNotice)
             }
           } else {
             _this.tempNotice = _this.notice
-          }
-        }
-      })
-    },
-    loadContestDetail () {
-      let _this = this
-      this.$axios.get('/getAllContestDetail').then(resp => {
-        if (resp && resp.status === 200) {
-          _this.contestDetail = resp.data
-          if (_this.contestDetail.length >= 7) {
-            for (let i = 0; i < 7; ++i) {
-              let tempContestDetail = {
-                id: '',
-                contestTitle: '',
-                organizerId: '',
-                contestContent: '',
-                startTime: '',
-                endTime: '',
-                publishTime: '',
-                link: ''
-              }
-              tempContestDetail.id = _this.contestDetail[i].id
-              tempContestDetail.contestTitle = _this.contestDetail[i].contestTitle
-              tempContestDetail.organizerId = _this.contestDetail[i].organizerId
-              tempContestDetail.contestContent = _this.contestDetail[i].contestContent
-              tempContestDetail.startTime = _this.contestDetail[i].startTime
-              tempContestDetail.endTime = _this.contestDetail[i].endTime
-              tempContestDetail.publishTime = _this.contestDetail[i].publishTime
-              tempContestDetail.link = _this.contestDetail[i].link
-              _this.tempContestDetail.push(tempContestDetail)
-            }
-            console.log(_this.tempContestDetail)
-          } else {
-            _this.tempContestDetail = _this.contestDetail
-            console.log(_this.tempContestDetail)
           }
         }
       })

@@ -128,11 +128,7 @@ export default new Router({
     {
       path: '/index',
       name: 'AppIndex',
-      component: AppIndex,
-      meta: {
-        // 为了区分页面是否需要拦截
-        requireAuth: false
-      }
+      component: AppIndex
     },
     {
       path: '/index/noticeList',
