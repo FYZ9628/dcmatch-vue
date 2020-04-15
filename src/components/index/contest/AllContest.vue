@@ -16,7 +16,7 @@
       <el-container  v-for="(item, index) in currentPageData"
                      :key="item.value">
         <el-container>
-          {{ currentPage - 1 > 0 ? ((currentPage - 1) * pageSize + index) : index }}
+<!--          {{ currentPage - 1 > 0 ? ((currentPage - 1) * pageSize + index) : index }}-->
           <el-header>
             <el-button type="text" style="display: block; float: left; font-size: 18px" v-on:click="gotoCompetitionDetail(item)">{{currentPageData[index].contestTitle}}</el-button>
             <!--            <el-link :underline="false" style="display: block; float: left; font-size: 18px" :href="item.link" target="_blank">{{currentPageData[index].contestTitle}}</el-link>-->
