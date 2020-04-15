@@ -368,6 +368,8 @@ export default {
       },
       studentList: [],
       teacherList: [],
+      teamContestList: [],
+      isAlreadyTeamSignUp: false,
       teacherData: {
         id: '',
         user: {
@@ -424,7 +426,9 @@ export default {
           account: '116263000909',
           password: '123456'
         }
-      ]
+      ],
+      addSuccessCount: 0,
+      addFailCount: 0
       // contest: {
       //   id: '',
       //   contestDetail: {
@@ -543,6 +547,234 @@ export default {
           })
       }
     },
+    loadStudentTeamContest (studentAccount) {
+      this.$axios
+        .post('/searchTeamContestByStudentAccount', {
+          keywords: studentAccount
+        })
+        .then(successResponse => {
+          let studentIsSignUp = false
+          for (let i = 0; i < successResponse.data.length; i++) {
+            if (successResponse.data[i].contestDetail.id === this.signUpContestDetailData.id) {
+              studentIsSignUp = true
+            }
+          }
+          if (studentIsSignUp === false) {
+            this.$axios
+              .post('/teamSignUpAddStudent', {
+                account: this.addStudentForm.account,
+                password: this.addStudentForm.password
+              })
+              .then(successResponse => {
+                if (successResponse.data !== '') {
+                  if (successResponse.data.user.type === 3) {
+                    this.studentList.push(successResponse.data)
+                    this.$message({
+                      message: '添加成功',
+                      type: 'success'
+                    })
+                    this.addStudentForm.account = ''
+                    this.addStudentForm.password = ''
+                  } else {
+                    this.$message({
+                      message: '该学生未通过认证',
+                      type: 'error'
+                    })
+                  }
+                } else {
+                  this.$message({
+                    message: '该学生不存在',
+                    type: 'error'
+                  })
+                }
+              })
+              .catch(failResponse => {
+                this.$message({
+                  message: '该学生不存在或未认证',
+                  type: 'error'
+                })
+              })
+          } else {
+            this.$message({
+              message: '该学生已报名加入其它团队',
+              type: 'error'
+            })
+          }
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        })
+    },
+    loadStudentTeamContestForExcel (studentAccount, studentPassword) {
+      this.$axios
+        .post('/searchTeamContestByStudentAccount', {
+          keywords: studentAccount
+        })
+        .then(successResponse => {
+          let studentIsSignUp = false
+          for (let i = 0; i < successResponse.data.length; i++) {
+            if (successResponse.data[i].contestDetail.id === this.signUpContestDetailData.id) {
+              studentIsSignUp = true
+              this.addFailCount++
+            }
+          }
+          if (studentIsSignUp === false) {
+            this.$axios
+              .post('/teamSignUpAddStudent', {
+                account: studentAccount,
+                password: studentPassword
+              })
+              .then(successResponse => {
+                if (successResponse.data !== '') {
+                  if (successResponse.data.user.type === 3) {
+                    this.addSuccessCount++
+                    this.studentList.push(successResponse.data)
+                  } else {
+                    this.addFailCount++
+                  }
+                } else {
+                  this.addFailCount++
+                }
+              })
+              .catch(failResponse => {
+              })
+          } else {
+            this.$message({
+              message: '该学生已报名加入其它团队',
+              type: 'error'
+            })
+          }
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        })
+    },
+    loadTeacherTeamContest (teacherAccount) {
+      this.$axios
+        .post('/searchTeamContestByTeacherAccount', {
+          keywords: teacherAccount
+        })
+        .then(successResponse => {
+          let teacherIsSignUp = false
+          for (let i = 0; i < successResponse.data.length; i++) {
+            if (successResponse.data[i].contestDetail.id === this.signUpContestDetailData.id) {
+              teacherIsSignUp = true
+            }
+          }
+          if (teacherIsSignUp === false) {
+            this.$axios
+              .post('/teamSignUpAddTeacher', {
+                account: this.addTeacherForm.account,
+                name: this.addTeacherForm.name
+              })
+              .then(successResponse => {
+                if (successResponse.data !== '') {
+                  if (successResponse.data.user.type === 2) {
+                    this.teacherList.push(successResponse.data)
+                    this.$message({
+                      message: '添加成功',
+                      type: 'success'
+                    })
+                    this.addTeacherForm.account = ''
+                    this.addTeacherForm.name = ''
+                  } else {
+                    this.$message({
+                      message: '该老师未通过认证',
+                      type: 'error'
+                    })
+                  }
+                } else {
+                  this.$message({
+                    message: '该老师不存在',
+                    type: 'error'
+                  })
+                }
+              })
+              .catch(failResponse => {
+                this.$message({
+                  message: '该老师不存在或未认证',
+                  type: 'error'
+                })
+              })
+          } else {
+            this.$message({
+              message: '该教师已作为其他参赛团队的指导老师',
+              type: 'error'
+            })
+          }
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        })
+    },
+    loadTeacherTeamContestForMyself (teacherAccount) {
+      this.$axios
+        .post('/searchTeamContestByTeacherAccount', {
+          keywords: teacherAccount
+        })
+        .then(successResponse => {
+          let teacherIsSignUp = false
+          for (let i = 0; i < successResponse.data.length; i++) {
+            if (successResponse.data[i].contestDetail.id === this.signUpContestDetailData.id) {
+              teacherIsSignUp = true
+            }
+          }
+          if (teacherIsSignUp === false) {
+            this.$axios
+              .post('/teamSignUpAddTeacher', {
+                account: this.teacherData.user.account,
+                name: this.teacherData.user.name
+              })
+              .then(successResponse => {
+                if (successResponse.data !== '') {
+                  if (successResponse.data.user.type === 2) {
+                    this.teacherList.push(successResponse.data)
+                    this.$message({
+                      message: '添加成功',
+                      type: 'success'
+                    })
+                  } else {
+                    this.$message({
+                      message: '该老师未通过认证',
+                      type: 'error'
+                    })
+                  }
+                } else {
+                  this.$message({
+                    message: '该老师不存在',
+                    type: 'error'
+                  })
+                }
+              })
+              .catch(failResponse => {
+                this.$message({
+                  message: '该老师不存在或未认证',
+                  type: 'error'
+                })
+              })
+          } else {
+            this.$message({
+              message: '您已作为其他参赛团队的指导老师',
+              type: 'error'
+            })
+          }
+        })
+        .catch(failResponse => {
+          this.$message({
+            message: '查询失败',
+            type: 'error'
+          })
+        })
+    },
     // 获取随机数
     getRandomNum (n) {
       let rnd = ''
@@ -593,40 +825,7 @@ export default {
               }
             }
             if (isAddStudent === false) {
-              this.$axios
-                .post('/teamSignUpAddStudent', {
-                  account: this.addStudentForm.account,
-                  password: this.addStudentForm.password
-                })
-                .then(successResponse => {
-                  if (successResponse.data !== '') {
-                    if (successResponse.data.user.type === 3) {
-                      this.studentList.push(successResponse.data)
-                      this.$message({
-                        message: '添加成功',
-                        type: 'success'
-                      })
-                      this.addStudentForm.account = ''
-                      this.addStudentForm.password = ''
-                    } else {
-                      this.$message({
-                        message: '该学生未通过认证',
-                        type: 'error'
-                      })
-                    }
-                  } else {
-                    this.$message({
-                      message: '该学生不存在',
-                      type: 'error'
-                    })
-                  }
-                })
-                .catch(failResponse => {
-                  this.$message({
-                    message: '该学生不存在或未认证',
-                    type: 'error'
-                  })
-                })
+              this.loadStudentTeamContest(this.addStudentForm.account)
             }
           }
         })
@@ -639,38 +838,7 @@ export default {
     },
     addMySelfAsTeacher () {
       if (this.teacherList.length < 1) {
-        this.$axios
-          .post('/teamSignUpAddTeacher', {
-            account: this.teacherData.user.account,
-            name: this.teacherData.user.name
-          })
-          .then(successResponse => {
-            if (successResponse.data !== '') {
-              if (successResponse.data.user.type === 2) {
-                this.teacherList.push(successResponse.data)
-                this.$message({
-                  message: '添加成功',
-                  type: 'success'
-                })
-              } else {
-                this.$message({
-                  message: '该老师未通过认证',
-                  type: 'error'
-                })
-              }
-            } else {
-              this.$message({
-                message: '该老师不存在',
-                type: 'error'
-              })
-            }
-          })
-          .catch(failResponse => {
-            this.$message({
-              message: '该老师不存在或未认证',
-              type: 'error'
-            })
-          })
+        this.loadTeacherTeamContestForMyself(this.teacherData.user.account)
       } else {
         this.$message({
           message: '只能添加一名指导老师',
@@ -682,40 +850,7 @@ export default {
       if (this.teacherList.length < 1) {
         this.$refs.addTeacherForm.validate((valid) => {
           if (valid) {
-            this.$axios
-              .post('/teamSignUpAddTeacher', {
-                account: this.addTeacherForm.account,
-                name: this.addTeacherForm.name
-              })
-              .then(successResponse => {
-                if (successResponse.data !== '') {
-                  if (successResponse.data.user.type === 2) {
-                    this.teacherList.push(successResponse.data)
-                    this.$message({
-                      message: '添加成功',
-                      type: 'success'
-                    })
-                    this.addTeacherForm.account = ''
-                    this.addTeacherForm.name = ''
-                  } else {
-                    this.$message({
-                      message: '该老师未通过认证',
-                      type: 'error'
-                    })
-                  }
-                } else {
-                  this.$message({
-                    message: '该老师不存在',
-                    type: 'error'
-                  })
-                }
-              })
-              .catch(failResponse => {
-                this.$message({
-                  message: '该老师不存在或未认证',
-                  type: 'error'
-                })
-              })
+            this.loadTeacherTeamContest(this.addTeacherForm.account)
           }
         })
       } else {
@@ -895,43 +1030,44 @@ export default {
     addStudentByExcel (ExcelList) {
       let tempCount = this.signUpContestDetailData.upperLimit - this.studentList.length
       if (this.studentList.length < this.signUpContestDetailData.upperLimit && ExcelList.length <= tempCount) {
-        let addSuccessCount = 0
-        let addFailCount = 0
+        this.addSuccessCount = 0
+        this.addFailCount = 0
         for (let i = 0; i < ExcelList.length; i++) {
           let isAddStudent = false
           for (let j = 0; j < this.studentList.length; j++) {
             if (ExcelList[i].account === this.studentList[j].user.account ||
               ExcelList[i].account === this.studentList[j].user.phone) {
-              addFailCount++
+              this.addFailCount++
               isAddStudent = true
               break
             }
           }
           if (isAddStudent === false) {
-            this.$axios
-              .post('/teamSignUpAddStudent', {
-                account: ExcelList[i].account,
-                password: ExcelList[i].password
-              })
-              .then(successResponse => {
-                if (successResponse.data !== '') {
-                  if (successResponse.data.user.type === 3) {
-                    addSuccessCount++
-                    this.studentList.push(successResponse.data)
-                  } else {
-                    addFailCount++
-                  }
-                } else {
-                  addFailCount++
-                }
-              })
-              .catch(failResponse => {
-              })
+            this.loadStudentTeamContestForExcel(ExcelList[i].account, ExcelList[i].password)
+            // this.$axios
+            //   .post('/teamSignUpAddStudent', {
+            //     account: ExcelList[i].account,
+            //     password: ExcelList[i].password
+            //   })
+            //   .then(successResponse => {
+            //     if (successResponse.data !== '') {
+            //       if (successResponse.data.user.type === 3) {
+            //         addSuccessCount++
+            //         this.studentList.push(successResponse.data)
+            //       } else {
+            //         addFailCount++
+            //       }
+            //     } else {
+            //       addFailCount++
+            //     }
+            //   })
+            //   .catch(failResponse => {
+            //   })
           }
         }
         // 一秒后刷新
         setTimeout(() => {
-          this.$message(addSuccessCount + '名同学添加成功，' + addFailCount + '名同学添加失败')
+          this.$message(this.addSuccessCount + '名同学添加成功，' + this.addFailCount + '名同学添加失败')
         }, 500)
       } else {
         this.$message({

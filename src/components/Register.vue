@@ -28,8 +28,8 @@ export default {
     return {
       logining: false,
       registerForm: {
-        phone: '18278539579',
-        password: '123456'
+        phone: '',
+        password: ''
       },
       rules2: {
         phone: [

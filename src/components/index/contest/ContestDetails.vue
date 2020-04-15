@@ -55,6 +55,10 @@ export default {
   components: {CommonHeader, CommonFooter, IndexHeader},
   data: function () {
     return {
+      contestList: [],
+      isAlreadySignUp: false,
+      teamContestList: [],
+      isAlreadyTeamSignUp: false,
       contestDetailData: '',
       isLogin: false,
       isLoginState: 0
@@ -91,8 +95,76 @@ export default {
         this.isLoginState = 600
       }
     }
+    this.loadContest()
+    this.loadTeamContest()
   },
   methods: {
+    loadContest () {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchContestByStudentAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            this.contestList = successResponse.data
+            for (let i = 0; i < this.contestList.length; i++) {
+              if (this.contestList[i].contestDetail.id === this.contestDetailData.id) {
+                this.isAlreadySignUp = true
+              }
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    },
+    loadTeamContest () {
+      // eslint-disable-next-line eqeqeq
+      if (this.$store.getters.account && this.$store.getters.code == '300') {
+        this.$axios
+          .post('/searchTeamContestByStudentAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            this.teamContestList = successResponse.data
+            for (let i = 0; i < this.teamContestList.length; i++) {
+              if (this.teamContestList[i].contestDetail.id === this.contestDetailData.id) {
+                this.isAlreadyTeamSignUp = true
+              }
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+      // eslint-disable-next-line eqeqeq
+      if (this.$store.getters.account && this.$store.getters.code == '200') {
+        this.$axios
+          .post('/searchTeamContestByTeacherAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            this.teamContestList = successResponse.data
+            for (let i = 0; i < this.teamContestList.length; i++) {
+              if (this.teamContestList[i].contestDetail.id === this.contestDetailData.id) {
+                this.isAlreadyTeamSignUp = true
+              }
+            }
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    },
     signUp: function () {
       if (this.$store.getters.name) {
         if (this.contestDetailData.type === '个人赛') {
@@ -101,15 +173,22 @@ export default {
           // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
           sessionStorage.setItem('signUpContestDetailJson', signUpContestDetailJson)
           if (this.isLoginState === 300) {
-            this.$router.push({
-              path: '/index/signUp'
-              // name: 'noticeDetails/'
-              // query: {
-              //   data: contestDetailJson
-              // // 以加问号接续的方式显示内容
-              // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
-              // }
-            })
+            if (this.isAlreadySignUp === false) {
+              this.$router.push({
+                path: '/index/signUp'
+                // name: 'noticeDetails/'
+                // query: {
+                //   data: contestDetailJson
+                // // 以加问号接续的方式显示内容
+                // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+                // }
+              })
+            } else {
+              this.$message({
+                message: '你已报名此竞赛，请勿重复报名',
+                type: 'error'
+              })
+            }
           } else if (this.isLoginState === 500) {
             this.$message({
               message: '请先认证',
@@ -128,15 +207,22 @@ export default {
           // 的网站https://blog.csdn.net/tianxintiandisheng/article/details/82774644
           sessionStorage.setItem('signUpContestDetailJson', signUpContestDetailJson)
           if (this.isLoginState === 300 || this.isLoginState === 200) {
-            this.$router.push({
-              path: '/index/teamSignUp'
-              // name: 'noticeDetails/'
-              // query: {
-              //   data: contestDetailJson
-              // // 以加问号接续的方式显示内容
-              // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
-              // }
-            })
+            if (this.isAlreadyTeamSignUp === false) {
+              this.$router.push({
+                path: '/index/teamSignUp'
+                // name: 'noticeDetails/'
+                // query: {
+                //   data: contestDetailJson
+                // // 以加问号接续的方式显示内容
+                // // http://localhost:8081/index/noticeDetails?data=%5Bobject%20Object%5D
+                // }
+              })
+            } else {
+              this.$message({
+                message: '你已报名此竞赛，请勿重复报名',
+                type: 'error'
+              })
+            }
           } else if (this.isLoginState === 500) {
             this.$message({
               message: '请先认证',

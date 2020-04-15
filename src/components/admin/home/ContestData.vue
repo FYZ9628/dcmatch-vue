@@ -67,7 +67,7 @@ export default {
       // ------------------- 分割 -------------------
       contestDetailPublisherOptions: {}, // 竞赛发布者数据
       publisherList: [], // 竞赛发布者数据 用
-      publisherNameList: [] // 竞赛发布者数据 用
+      publisherNameList: [] // 竞赛发布者数据 用,
     }
   },
   mounted () {
