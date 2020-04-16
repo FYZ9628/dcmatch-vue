@@ -963,7 +963,7 @@ export default {
         for (let j = 0; j < 9; j++) {
           if (j === 0) {
             tempTableData[j].name1 = this.myTeamContestDateList[i].ticketNumber
-            tempTableData[j].name4 = this.myTeamContestDateList[i].teacher.idImg
+            tempTableData[j].name4 = this.myTeamContestDateList[i].student.idImg
           }
           if (j === 1) {
             tempTableData[j].name1 = this.myTeamContestDateList[i].teamName
