@@ -1,10 +1,12 @@
 <template>
   <div style="height: 620px; width: 240px; background-color: white">
-    <div class="title">
-      <a href="#img">
-        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="height: 100px; width: 100px; margin-top: 40px"></el-avatar>
-      </a>
-      <h3>名 称</h3>
+    <div>
+      <!--      <el-avatar :src="studentData.idImg" :fit="fill"-->
+      <!--                 style="height: 100px; width: 100px; margin-top: 40px">-->
+      <!--      </el-avatar>-->
+      <img :src="teacherData.idImg"
+           style="height: 100px; width: 100px; margin-top: 40px; border-radius:50%"/>
+      <h3>{{teacherData.user.name}}</h3>
     </div>
     <el-menu
       :default-active="this.$route.path"
@@ -43,7 +45,56 @@
 
 <script>
 export default {
-  name: 'TeacherMenu'
+  name: 'TeacherMenu',
+  data: function () {
+    return {
+      teacherData: {
+        id: '',
+        user: {
+          id: '',
+          account: '',
+          phone: '',
+          password: '',
+          name: '',
+          type: ''
+        },
+        sex: '',
+        email: '',
+        school: '',
+        entryDate: '',
+        academy: '',
+        professionalTitle: '',
+        education: '',
+        idImg: ''
+      }
+    }
+  },
+  mounted: function () {
+    this.loadTeacher()
+    // var path = this.$route.matched[1].path
+    // console.log('测试路由')
+    // console.log(path)
+    // this.$router.push(path)
+  },
+  methods: {
+    loadTeacher () {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchTeacherByAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            this.teacherData = successResponse.data
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询教师失败',
+              type: 'error'
+            })
+          })
+      }
+    }
+  }
 }
 </script>
 

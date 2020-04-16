@@ -1,10 +1,12 @@
 <template>
   <div style="height: 620px; width: 240px; background-color: white">
-    <div class="title">
-      <a href="#img">
-        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="height: 100px; width: 100px; margin-top: 40px"></el-avatar>
-      </a>
-      <h3>名 称</h3>
+    <div>
+      <!--      <el-avatar :src="studentData.idImg" :fit="fill"-->
+      <!--                 style="height: 100px; width: 100px; margin-top: 40px">-->
+      <!--      </el-avatar>-->
+      <img :src="organizerData.idImg"
+           style="height: 100px; width: 100px; margin-top: 40px; border-radius:50%"/>
+      <h3>{{organizerData.user.name}}</h3>
     </div>
     <el-menu
       :default-active="this.$route.path"
@@ -55,7 +57,50 @@
 
 <script>
 export default {
-  name: 'OrganizerMenu'
+  name: 'OrganizerMenu',
+  data: function () {
+    return {
+      organizerData: {
+        id: '',
+        user: {
+          id: '',
+          account: '',
+          phone: '',
+          password: '',
+          name: '',
+          type: ''
+        },
+        email: '',
+        school: '',
+        establishDate: '',
+        schoolType: '',
+        schoolRunningType: '',
+        idImg: ''
+      }
+    }
+  },
+  mounted: function () {
+    this.loadOrganizer()
+  },
+  methods: {
+    loadOrganizer () {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchOrganizerByAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            this.organizerData = successResponse.data
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    }
+  }
 }
 </script>
 

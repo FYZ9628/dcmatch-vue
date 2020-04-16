@@ -11,7 +11,9 @@
           {{$store.getters.name}}
         </span>
         <span style="float: right; margin-left: 10px">
-          <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+         <!--          <el-avatar :src="studentData.idImg"></el-avatar>-->
+          <img :src="organizerData.idImg"
+               style="width: 40px; height: 40px; border-radius:50%"/>
         </span>
 
         <el-dropdown-menu slot="dropdown" >
@@ -39,9 +41,46 @@ export default {
   name: 'OrganizerHeader',
   data: function () {
     return {
+      organizerData: {
+        id: '',
+        user: {
+          id: '',
+          account: '',
+          phone: '',
+          password: '',
+          name: '',
+          type: ''
+        },
+        email: '',
+        school: '',
+        establishDate: '',
+        schoolType: '',
+        schoolRunningType: '',
+        idImg: ''
+      }
     }
   },
+  mounted: function () {
+    this.loadOrganizer()
+  },
   methods: {
+    loadOrganizer () {
+      if (this.$store.getters.account) {
+        this.$axios
+          .post('/searchOrganizerByAccount', {
+            keywords: this.$store.getters.account
+          })
+          .then(successResponse => {
+            this.organizerData = successResponse.data
+          })
+          .catch(failResponse => {
+            this.$message({
+              message: '查询失败',
+              type: 'error'
+            })
+          })
+      }
+    },
     identification: function () {
       this.$router.push({
         path: '/organizer/authentication'
