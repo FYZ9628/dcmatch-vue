@@ -756,8 +756,9 @@ export default {
     loadMyTeamContest () {
       if (this.$store.getters.account) {
         this.$axios
-          .post('/searchTeamContestByTeamName', {
-            keywords: this.teamContestDate.teamName
+          .post('/searchTeamContestByTeamNameAndContestDetailId', {
+            keywords: this.teamContestDate.teamName,
+            id: this.teamContestDate.contestDetail.id
           })
           .then(successResponse => {
             this.myTeamContestDateList = successResponse.data

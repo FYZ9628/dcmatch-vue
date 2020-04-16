@@ -872,8 +872,9 @@ export default {
         this.$refs.teamContestForm.validate((valid) => {
           if (valid) {
             this.$axios
-              .post('/searchTeamContestByTeamName', {
-                keywords: this.teamContestForm.teamName
+              .post('/searchTeamContestByTeamNameAndContestDetailId', {
+                keywords: this.teamContestForm.teamName,
+                id: this.signUpContestDetailData.id
               })
               .then(successResponse => {
                 if (successResponse.data.length === 0) {

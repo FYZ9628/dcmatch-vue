@@ -112,7 +112,8 @@ export default {
     if (this.contestDate) {
       // state 说明
       // 1 为已报名，2 为下载准考证，3为查看成绩（比赛结束了）
-      this.activeState = this.contestDate.state
+      // this.activeState = this.contestDate.state
+      this.activeState = 3
     }
     if (this.contestDate) {
       if (this.contestDate.score >= 95) {

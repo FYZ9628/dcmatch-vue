@@ -18,7 +18,7 @@
         <!--    <span style="color:#fff;position: absolute;padding-top: 20px;right: 43%;font-size: 20px;font-weight: bold">作业批改系统</span>-->
       </el-menu>
       <router-view/>
-    </div>
+  </div>
 </template>
 
 <script>

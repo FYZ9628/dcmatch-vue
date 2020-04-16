@@ -165,7 +165,8 @@ export default {
                 // 去重
                 let isExistTeacher = false
                 for (let j = 0; j < this.teamContestList.length; j++) {
-                  if (this.teamContestList[j].teamName === successResponse.data[i].teamName) {
+                  if (this.teamContestList[j].teamName === successResponse.data[i].teamName &&
+                    this.teamContestList[j].contestDetail.id === successResponse.data[i].contestDetail.id) {
                     isExistTeacher = true
                   }
                 }
