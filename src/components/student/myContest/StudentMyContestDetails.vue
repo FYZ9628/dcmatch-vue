@@ -466,6 +466,7 @@ export default {
       for (let i = 0; i < 8; i++) {
         if (i === 0) {
           this.tableData[i].name1 = this.contestDate.ticketNumber
+          this.tableData[i].name4 = this.contestDate.student.idImg
         }
         if (i === 1) {
           this.tableData[i].name1 = this.contestDate.student.user.name
