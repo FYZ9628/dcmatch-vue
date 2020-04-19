@@ -158,7 +158,7 @@
                 <el-input v-model="addStudentForm.account" placeholder="学号或电话" size="small" style="width: 250px">
                 </el-input>
               </el-form-item>
-              <el-form-item label="密  码" prop="name">
+              <el-form-item label="姓  名" prop="name">
                 <el-input v-model="addStudentForm.name" placeholder="密码" size="small" style="width: 250px">
                 </el-input>
               </el-form-item>
