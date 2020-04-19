@@ -158,8 +158,8 @@
                 <el-input v-model="addStudentForm.account" placeholder="学号或电话" size="small" style="width: 250px">
                 </el-input>
               </el-form-item>
-              <el-form-item label="密  码" prop="password">
-                <el-input v-model="addStudentForm.password" placeholder="密码" size="small" style="width: 250px">
+              <el-form-item label="密  码" prop="name">
+                <el-input v-model="addStudentForm.name" placeholder="密码" size="small" style="width: 250px">
                 </el-input>
               </el-form-item>
             </el-form>
@@ -392,11 +392,11 @@ export default {
       ticketNumber: '',
       addStudentForm: {
         account: '',
-        password: ''
+        name: ''
       },
       addStudentFormRules: {
         account: [{required: true, message: '请输入账号', trigger: 'blur'}],
-        password: [{required: true, message: '请输入密码', trigger: 'blur'}]
+        name: [{required: true, message: '请输入密码', trigger: 'blur'}]
       },
       // 设置为队长（默认第一个为队长）
       captainState: {
@@ -424,7 +424,7 @@ export default {
       tableList: [
         {
           account: '116263000909',
-          password: '123456'
+          name: '宋威龙'
         }
       ],
       addSuccessCount: 0,
@@ -559,11 +559,12 @@ export default {
               studentIsSignUp = true
             }
           }
+          // password: this.addStudentForm.password
           if (studentIsSignUp === false) {
             this.$axios
               .post('/teamSignUpAddStudent', {
                 account: this.addStudentForm.account,
-                password: this.addStudentForm.password
+                name: this.addStudentForm.name
               })
               .then(successResponse => {
                 if (successResponse.data !== '') {
@@ -574,7 +575,7 @@ export default {
                       type: 'success'
                     })
                     this.addStudentForm.account = ''
-                    this.addStudentForm.password = ''
+                    this.addStudentForm.name = ''
                   } else {
                     this.$message({
                       message: '该学生未通过认证',
@@ -608,7 +609,7 @@ export default {
           })
         })
     },
-    loadStudentTeamContestForExcel (studentAccount, studentPassword) {
+    loadStudentTeamContestForExcel (studentAccount, studentName) {
       this.$axios
         .post('/searchTeamContestByStudentAccount', {
           keywords: studentAccount
@@ -625,7 +626,7 @@ export default {
             this.$axios
               .post('/teamSignUpAddStudent', {
                 account: studentAccount,
-                password: studentPassword
+                name: studentName
               })
               .then(successResponse => {
                 if (successResponse.data !== '') {
@@ -1004,7 +1005,7 @@ export default {
           outData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
           _this.ExcelList = []
           for (let i = 0; i < outData.length; i++) {
-            _this.ExcelList.push({account: outData[i].账号, password: outData[i].密码})
+            _this.ExcelList.push({account: outData[i].账号, name: outData[i].姓名})
           }
           _this.addStudentByExcel(_this.ExcelList)
           this.da = [...outData]
@@ -1044,7 +1045,7 @@ export default {
             }
           }
           if (isAddStudent === false) {
-            this.loadStudentTeamContestForExcel(ExcelList[i].account, ExcelList[i].password)
+            this.loadStudentTeamContestForExcel(ExcelList[i].account, ExcelList[i].name)
             // this.$axios
             //   .post('/teamSignUpAddStudent', {
             //     account: ExcelList[i].account,
@@ -1105,8 +1106,8 @@ export default {
       require.ensure([], () => {
         // eslint-disable-next-line camelcase
         const { export_json_to_excel } = require('../../../excel/Export2Excel')
-        const tHeader = ['账号', '密码']
-        const filterVal = ['account', 'password']
+        const tHeader = ['账号', '姓名']
+        const filterVal = ['account', 'name']
         const list = this.tableList
         const data = this.formatJson(filterVal, list)
         export_json_to_excel(tHeader, data, '添加队员Excel模板')
