@@ -100,8 +100,10 @@
         </el-form>
         <div style="height: 200px; margin-top: 30px">
           <p>学生证照片  2M以内的JPG、PNG格式，请上传学生证粘贴照片一页</p>
+<!--          name="upLoadImg" 用于python版 -->
           <el-upload
             id="avatar-uploader"
+            name="upLoadImg"
             action="http://localhost:8999/api/upLoadImg"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"

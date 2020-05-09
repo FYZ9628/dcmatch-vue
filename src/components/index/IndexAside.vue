@@ -37,8 +37,8 @@ export default {
       this.$axios.get('/getAllNotice').then(resp => {
         if (resp && resp.status === 200) {
           _this.notice = resp.data
-          console.log('测试通知')
-          console.log(resp.data)
+          // console.log('测试通知')
+          // console.log(resp.data)
           if (_this.notice.length >= 7) {
             for (let i = 0; i < 7; ++i) {
               let tempNotice = {

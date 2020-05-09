@@ -159,7 +159,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item label="姓  名" prop="name">
-                <el-input v-model="addStudentForm.name" placeholder="密码" size="small" style="width: 250px">
+                <el-input v-model="addStudentForm.name" placeholder="姓名" size="small" style="width: 250px">
                 </el-input>
               </el-form-item>
             </el-form>

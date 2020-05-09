@@ -34,9 +34,14 @@ export default {
           // 只要数据库有添加了（只加在了一个表，但其它表不成功也算）
           // 就会返回 successResponse.status 状态码 200
           // this.student = successResponse.data
-          if (successResponse.data) {
+          // python版用
+          if (JSON.stringify(successResponse.data) !== '{}') {
             this.isAuthentication = true
           }
+          // java版用
+          // if (successResponse.data !== '') {
+          //   this.isAuthentication = true
+          // }
         })
         .catch(failResponse => {
         })
