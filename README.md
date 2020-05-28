@@ -7,6 +7,37 @@ webstorm项目：https://github.com/FYZ9628/dcmatch-vue
 
 pycharm项目：https://github.com/FYZ9628/dcmatch-django
 
+注意：如果是使用python版（pycharm）项目做后端，则需要修改两个地方：
+
+（1）dcmatch-vue\src\components\default\authentication\DefaultAuthentication.vue 文件下searchUser方法 then 中改为 
+
+          // python版用
+          if (JSON.stringify(successResponse.data) !== '{}') {
+            this.isAuthentication = true
+          }
+          // java版用
+          // if (successResponse.data !== '') {
+          //   this.isAuthentication = true
+          // }
+
+（2）dcmatch-vue\src\components\default\authentication\DefaultAuthenticationStudent.vue 文件下el-upload 组件添加属性名 name="upLoadImg" ，同理 DefaultAuthenticationOrganizer.vue 和 DefaultAuthenticationTeacher.vue 文件同样的操作。
+
+
+如果是使用java版（idea）项目做后端，则需要修改两个地方：
+（1）dcmatch-vue\src\components\default\authentication\DefaultAuthentication.vue 文件下searchUser方法 then 中改为 
+
+          // python版用
+          // if (JSON.stringify(successResponse.data) !== '{}') {
+          //   this.isAuthentication = true
+          // }
+          // java版用
+           if (successResponse.data !== '') {
+             this.isAuthentication = true
+           }
+
+（2）dcmatch-vue\src\components\default\authentication\DefaultAuthenticationStudent.vue 文件下el-upload 组件去掉属性名 name="upLoadImg" ，同理 DefaultAuthenticationOrganizer.vue 和 DefaultAuthenticationTeacher.vue 文件同样的操作。
+
+
 学科竞赛赛程管理信息系统
 
 本项目是我的本科毕业设计项目《学科竞赛赛程管理信息系统》，该系统采用了前后端完全分离的开发方法开发本系统，系统最开始是只做了java版的后端，后来因为对python比较感兴趣，于是花了一些时间做了一个python的后端，复用了前端，使用python版的后端可能有些功能会有一些bug，如有发现bug可看看java版的后端，也可私信我。使用到的技术有：
