@@ -1,11 +1,17 @@
 # dcmatch-vue
 
+后端：
+    
+idea项目(1)：https://github.com/FYZ9628/dcmatch
 
-idea项目：https://github.com/FYZ9628/dcmatch
+idea项目(2)：https://github.com/FYZ9628/dcmatch_ssm_springboot
+    
+pycharm项目：https://github.com/FYZ9628/dcmatch-django
 
+前端：
+    
 webstorm项目：https://github.com/FYZ9628/dcmatch-vue
 
-pycharm项目：https://github.com/FYZ9628/dcmatch-django
 
 注意、注意、注意：
 
@@ -47,7 +53,7 @@ pycharm项目：https://github.com/FYZ9628/dcmatch-django
 
 一、后端技术
 
-1、java版
+1、java版一（SpringBoot + Hibernate）
 
 （1）SpringBoot
 
@@ -55,8 +61,16 @@ pycharm项目：https://github.com/FYZ9628/dcmatch-django
 
 （3）MySQL
 
+2、java版二（SSM + SpringBoot）
 
-2、python版
+（1）SpringBoot
+
+（2）Mybatis
+
+（3）MySQL
+
+
+3、python版
 
 （1）Django
 
@@ -78,13 +92,20 @@ pycharm项目：https://github.com/FYZ9628/dcmatch-django
 
 1、后端
 
-（1）、java版
+（1）、java版一
 
 开发工具：idea（IntelliJ IDEA），2019年1月份发布的版本（切记不要用更高版本的工具，减少出现bug的可能）
 
 框架：SpringBoot（版本：2.1.6.RELEASE）
 
-（2）python版
+
+（2）、java版二
+
+开发工具：idea（IntelliJ IDEA），2019年1月份发布的版本（切记不要用更高版本的工具，减少出现bug的可能）
+
+框架：SSM + SpringBoot（版本：2.3.7.RELEASE）
+
+（3）python版
 
 开发工具：PyCharm，2019年1月份发布的版本（切记不要用更高版本的工具，减少出现bug的可能）
 
@@ -96,6 +117,10 @@ Pip：19.0.3
 
 
 2、前端
+
+开发工具：WebStorm，2019年1月份发布的版本（切记不要用更高版本的工具，减少出现bug的可能）
+
+框架：Vue
 
 vue：2.5.2
 
